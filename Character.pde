@@ -4,6 +4,8 @@ public abstract class Character {
     int width;
     int height;
 
+    boolean isOnGround;
+
     Character(int x, int y, int width, int height) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
@@ -13,7 +15,7 @@ public abstract class Character {
 
     void setPos(PVector newPos) {
         this.pos = newPos;
-        this.vel.y += gravity.y;
+        this.vel.y += global_gravity.y;
     }
 
     void show() {
@@ -22,16 +24,15 @@ public abstract class Character {
         ellipse(this.pos.x, this.pos.y, this.width, this.height);
     }
 
-    boolean collideWithBoundary() {
-        for(int i = 0; i < boundaryList.size(); i++) {
-            if(boundaryList.get(i).collide(this)) {
-                this.vel.y = 0;
-                this.pos.y = boundaryList.get(i).pos.y - this.height / 2;
-                playerCanJumpAgain = true;
-                return true;
-            }
-        }
-        return false;
+    void handleCollideWithBoundary(float boundaryYPoint) {
+        this.vel.y = 0;
+        this.pos.y = boundaryYPoint - this.height / 2;
+        global_playerOnGround = true;
+    }
+
+    void handleInAir() {
+        this.pos.add(this.vel);
+        this.vel.y += global_gravity.y;
     }
 
     // void draw() { }

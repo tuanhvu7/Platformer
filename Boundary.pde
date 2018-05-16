@@ -1,4 +1,4 @@
-class Boundary {
+public class Boundary {
     PVector pos;
     int x2Offset;
     int y2Offset;
@@ -27,13 +27,22 @@ class Boundary {
     }
 
     boolean collide(Character character) {
-        if(character.pos.x > this.pos.x 
+        if(character.pos.x > this.pos.x
             && character.pos.x < this.pos.x + this.x2Offset
             && character.pos.y <= this.pos.y + (character.height / 2)
             && character.pos.y >= this.pos.y - (character.height / 2)) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    void draw() {
+        this.show();
+        if(collide(global_player)) {
+            global_player.handleCollideWithBoundary(this.pos.y);
+        } else {
+           global_player.handleInAir();
         }
     }
 }

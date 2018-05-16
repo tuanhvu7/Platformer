@@ -1,14 +1,10 @@
-Character Player;
-PVector gravity;
-ArrayList<Boundary> boundaryList;
+Character global_player;
+PVector global_gravity;
 
-boolean PlayerStopHorizontal;
-boolean PlayerVerticalStill;
-
-boolean isPlayerMovingLeft;
-boolean isPlayerMovingRight;
-boolean isPlayerJumping;
-boolean playerCanJumpAgain;
+boolean global_isPlayerMovingLeft;
+boolean global_isPlayerMovingRight;
+boolean global_isPlayerJumping;
+boolean global_playerOnGround;
 
 void settings() {
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
@@ -16,61 +12,55 @@ void settings() {
 
 void setup() {
 
-    boundaryList = new ArrayList<Boundary>();
-
     background(Constants.SCREEN_BACKGROUND);
-    gravity = new PVector(0, Constants.GRAVITY);
-    Player = new Player(width / 2 + 20, height / 2 - 100, 16, 16);
-    isPlayerMovingLeft = false;
-    isPlayerMovingRight = false;
-    isPlayerJumping = false;
-    playerCanJumpAgain = false;
+    global_gravity = new PVector(0, Constants.GRAVITY);
+    global_player = new Player(width / 2 + 20, height / 2 - 100, 16, 16);
+    global_isPlayerMovingLeft = false;
+    global_isPlayerMovingRight = false;
+    global_isPlayerJumping = false;
+    global_playerOnGround = false;
 
     Boundary floor = new Boundary(width / 2, height / 2, 100, 0, 5);
-    Boundary floor2 = new Boundary(width / 2, height / 4, 100, 0, 5);
+    // Boundary floor2 = new Boundary(width / 2, height / 4, 100, 0, 5);
 
-    Boundary floor3 = new Boundary(width / 2, height / 6, 100, 0, 5);
-    Boundary floor4 = new Boundary(width / 2, height / 8, 100, 0, 5);
+    // Boundary floor3 = new Boundary(width / 2, height / 6, 100, 0, 5);
+    // Boundary floor4 = new Boundary(width / 2, height / 8, 100, 0, 5);
 
-    boundaryList.add(floor);
-    boundaryList.add(floor2);
-    boundaryList.add(floor3);
-    boundaryList.add(floor4);
-    registerMethod("draw", Player);
-    // registerMethod("keyEvent", Player);
+    registerMethod("draw", floor);
+    // registerMethod("draw", floor2);
+    // registerMethod("draw", floor3);
+    // registerMethod("draw", floor4);
+
+    registerMethod("draw", global_player);
+    // registerMethod("keyEvent", global_player);
 }
 
 void draw() {
     background(Constants.SCREEN_BACKGROUND);
-
-    for(int i = 0; i < boundaryList.size(); i++) {
-        boundaryList.get(i).show();
-    }
 }
 
 void keyPressed() {
     if (key == 'a') {//left
-        isPlayerMovingLeft = true;
+        global_isPlayerMovingLeft = true;
     }
     if (key == 'd') {//right
-        isPlayerMovingRight = true;
+        global_isPlayerMovingRight = true;
     }
     if (key == 'w') {
-        isPlayerJumping = true;
-        playerCanJumpAgain = false;
+        global_isPlayerJumping = true;
+        global_playerOnGround = false;
     }
 }
 
 void keyReleased() {
-    println("keyreleased");
     if (key == 'a') {//left
-        isPlayerMovingLeft = false;
+        global_isPlayerMovingLeft = false;
     }
     if (key == 'd') {//right
-        isPlayerMovingRight = false;
+        global_isPlayerMovingRight = false;
     }
     if (key == 'w') {
-        isPlayerJumping = false;
+        global_isPlayerJumping = false;
 	}
 }
 

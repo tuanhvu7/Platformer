@@ -4,46 +4,25 @@ public class Player extends Character {
         super(x, y, width, height);
     }
 
-    // void keyEvent(KeyEvent keyEvent) {
-
-    //     char keyPressed = keyEvent.getKey();
-    //     println("keypressed");
-    //     if (keyPressed == 'a') {
-    //         isMovingLeft = true;
-    //         PlayerStopHorizontal = false;
-    //     }
-    //     if (keyPressed == 'd') {
-    //         this.isMovingRight = true;
-    //         PlayerStopHorizontal = false;
-    //     }
-    //     if (keyPressed == 'w' && !this.isInAir) {
-    //         this.isjJumping = true;
-    //     }
-
-    // }
-
     void draw() {
 
-        if(isPlayerMovingLeft) {
+        if(global_isPlayerMovingLeft) {
             this.vel.x = -Constants.MAIN_CHARACTER_RUN_SPEED;
         }
-        if(isPlayerMovingRight) {
+        if(global_isPlayerMovingRight) {
             this.vel.x = Constants.MAIN_CHARACTER_RUN_SPEED;
         }
 
-        if(!isPlayerMovingLeft && !isPlayerMovingRight) {
+        if(!global_isPlayerMovingLeft && !global_isPlayerMovingRight) {
             this.vel.x = 0;
         }
 
-        if(isPlayerJumping && playerCanJumpAgain) {
+        if(global_isPlayerJumping && global_playerOnGround) {
             this.vel.y = -Constants.MAIN_CHARACTER_JUMP_HEIGHT;
-            playerCanJumpAgain = false;
+            global_playerOnGround = false;
         }
         this.pos.add(this.vel);
-        if(!collideWithBoundary()) {
-            this.pos.add(this.vel);
-            this.vel.y += gravity.y;
-        }
+        
         this.show();
     }
 }
