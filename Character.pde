@@ -1,16 +1,29 @@
 public abstract class Character {
-    PVector pos;
-    PVector vel;
-    int width;
-    int height;
+    protected PVector pos;
+    protected PVector vel;
+    
+    protected int width;
+    protected int height;
 
-    boolean isOnGround;
+    protected boolean isMovingLeft;
+    protected boolean isMovingRight;
+    protected boolean isJumping;
+
+    protected int numberOfBoundaryCollision;
+
+    void keyEvent(KeyEvent keyEvent) { }
 
     Character(int x, int y, int width, int height) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
         this.width = width;
         this.height = height;
+
+        this.isMovingLeft = false;
+        this.isMovingRight = false;
+        this.isJumping = false;
+
+        this.numberOfBoundaryCollision = 0;
     }
 
     void setPos(PVector newPos) {
@@ -27,7 +40,6 @@ public abstract class Character {
     void handleCollideWithBoundary(float boundaryYPoint) {
         this.vel.y = 0;
         this.pos.y = boundaryYPoint - this.height / 2;
-        global_playerOnGround = true;
     }
 
     void handleInAir() {
