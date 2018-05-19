@@ -1,4 +1,7 @@
-public class Player extends Character {
+/**
+ * player controllable character in game
+ */
+public class Player extends ACharacter {
 
     Player(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -34,6 +37,8 @@ public class Player extends Character {
     }
 
     void draw() {
+
+        println(this.vel.y);
 
         if(this.isMovingLeft) {
             this.vel.x = -Constants.MAIN_CHARACTER_RUN_SPEED;

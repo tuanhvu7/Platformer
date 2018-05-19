@@ -12,17 +12,23 @@ void setup() {
 
     background(Constants.SCREEN_BACKGROUND);
     global_gravity = new PVector(0, Constants.GRAVITY);
-    global_player = new Player(width / 2 + 20, height / 2 - 100, 16, 16);
+    global_player = new Player(width / 2 - 20, 0, 16, 16);
 
-    Boundary floor = new Boundary(width / 2, height / 2, 100, 0, 5);
-    Boundary floor2 = new Boundary(width / 2, height / 4, 100, 0, 5);
-    Boundary floor3 = new Boundary(width / 2, height / 6, 100, 0, 5);
-    Boundary floor4 = new Boundary(width / 2, height / 8, 100, 0, 5);
+    // HorizontalBoundary floor = new HorizontalBoundary(width / 2, height / 2, 100, 5);
+    // HorizontalBoundary floor2 = new HorizontalBoundary(width / 2, height / 4, 100, 5);
+    // HorizontalBoundary floor3 = new HorizontalBoundary(width / 2, height / 6, 100, 5);
+    // HorizontalBoundary floor4 = new HorizontalBoundary(width / 2, height / 8, 100, 5);
 
+    // registerMethod("draw", floor);
+    // registerMethod("draw", floor2);
+    // registerMethod("draw", floor3);
+    // registerMethod("draw", floor4);
+
+    HorizontalBoundary floor = new HorizontalBoundary(0, height - 100, width - 100, 5);
     registerMethod("draw", floor);
-    registerMethod("draw", floor2);
-    registerMethod("draw", floor3);
-    registerMethod("draw", floor4);
+
+    VerticalBoundary wall = new VerticalBoundary(width / 2, 0, height - 100, 5);
+    registerMethod("draw", wall);
 
     registerMethod("draw", global_player);
     registerMethod("keyEvent", global_player);
