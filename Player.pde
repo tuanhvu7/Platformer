@@ -3,10 +3,16 @@
  */
 public class Player extends ACharacter {
 
+    /**
+     * Set player properties
+     */
     Player(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
     
+    /**
+     * handle character keypress controls
+     */
     void keyEvent(KeyEvent keyEvent) {
 
         if(keyEvent.getAction() == KeyEvent.PRESS) {
@@ -36,9 +42,10 @@ public class Player extends ACharacter {
 
     }
 
+    /**
+     * runs continuously. handles player movement and physics
+     */
     void draw() {
-
-        println(this.vel.y);
 
         if(this.isMovingLeft) {
             this.vel.x = -Constants.MAIN_CHARACTER_RUN_SPEED;

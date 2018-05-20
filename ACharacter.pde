@@ -2,14 +2,16 @@
  * Common for circular characters
  */
 abstract class ACharacter {
-    // position vector
+    // position vector of character (x, y)
     protected PVector pos;
-    // velocity vector
+    // velocity vector of character (x, y)
     protected PVector vel;
     
+    // character width and height
     protected int width;
     protected int height;
 
+    // character movement states
     protected boolean isMovingLeft;
     protected boolean isMovingRight;
     protected boolean isJumping;
@@ -54,9 +56,14 @@ abstract class ACharacter {
     /**
      * handle collision with horizontal boundary
      */
-    void handleCollisionWithHorizontalBoundary(float boundaryYPoint) {
-        this.vel.y = 0;
-        this.pos.y = boundaryYPoint - this.height / 2;
+    void handleCollisionWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
+        if(isTopSideBoundary) {
+            this.vel.y = 0;
+            this.pos.y = boundaryYPoint - this.height / 2;
+        } else {
+            this.vel.y = 1;
+            this.pos.add(this.vel);
+        }
     }
 
     void handleCollisionWithVerticalBoundary(float boundaryXPoint) {

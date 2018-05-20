@@ -1,3 +1,6 @@
+/**
+ * vertical line boundaries
+ */
 public class VerticalBoundary extends ABoundary implements IBoundary {
 
     /**
@@ -11,10 +14,10 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
      * return true if collide with given character
      */
     boolean collisionWithCharacter(ACharacter character) {
-        if(character.pos.x >= this.pos.x - (character.width / 2)
-            && character.pos.x <= this.pos.x + (character.width / 2)
-            && character.pos.y < this.pos.y + this.y2Offset + (character.height / 2)
-            && character.pos.y > this.pos.y - (character.width / 2)) {
+        if(character.pos.x >= this.startPoint.x - (character.width / 2)
+            && character.pos.x <= this.startPoint.x + (character.width / 2)
+            && character.pos.y > this.startPoint.y - (character.height / 2)
+            && character.pos.y < this.endPoint.y + (character.height / 2)) {
             return true;
         } else {
             return false;
@@ -31,7 +34,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
                 global_player.numberOfBoundaryCollision++;
                 this.charactersTouchingThis.add(global_player);
             }
-            global_player.handleCollisionWithVerticalBoundary(this.pos.x);
+            global_player.handleCollisionWithVerticalBoundary(this.startPoint.x);
         } else {
             if(this.charactersTouchingThis.contains(global_player)) {
                 global_player.numberOfBoundaryCollision--;

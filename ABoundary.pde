@@ -2,9 +2,13 @@
  * Common for line boundaries
  */
 abstract class ABoundary {
-    protected PVector pos;
-    protected int x2Offset;
-    protected int y2Offset;
+    // start point (smaller x and smaller y) coordinate for boundary
+    protected PVector startPoint;
+    
+    // end piont (larger x and larger y) coordinate for boundary
+    protected PVector endPoint;
+
+    // width of boundary
     protected int boundaryWidth;
 
     // set of all characters that are touching this
@@ -19,9 +23,15 @@ abstract class ABoundary {
      * @param boundaryWidth width of line
      */
     ABoundary(int startXPoint, int startYPoint, int x2Offset, int y2Offset, int boundaryWidth) {
-        this.pos = new PVector(startXPoint, startYPoint);
-        this.x2Offset = x2Offset;
-        this.y2Offset = y2Offset;
+        
+        this.startPoint = new PVector(
+            Math.min(startXPoint, startXPoint + x2Offset), 
+            Math.min(startYPoint, startYPoint + y2Offset));
+
+        this.endPoint = new PVector(
+            Math.max(startXPoint, startXPoint + x2Offset), 
+            Math.max(startYPoint, startYPoint + y2Offset));
+
         this.boundaryWidth = boundaryWidth;
 
         this.charactersTouchingThis = new HashSet<ACharacter>();
@@ -33,7 +43,7 @@ abstract class ABoundary {
     void show() {
         stroke(0);
         strokeWeight(this.boundaryWidth);
-        line(this.pos.x, this.pos.y, this.pos.x + this.x2Offset, this.pos.y + this.y2Offset);
+        line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
     }
 
 }
