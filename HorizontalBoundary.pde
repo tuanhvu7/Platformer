@@ -3,10 +3,6 @@
  */
 public class HorizontalBoundary extends ABoundary implements IBoundary {
 
-    // set of all characters that are touching this
-    // used when this.isTopSideBoundary is true for tracking airborne characters
-    protected Set<ACharacter> charactersTouchingThis;
-
     // true means character cannot go through top side of boundary
     // false means character cannot go through bottom side of boundary
     private boolean isTopSideBoundary;
@@ -17,8 +13,6 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth, boolean isTopSideBoundary) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth);
         this.isTopSideBoundary = isTopSideBoundary;
-
-        this.charactersTouchingThis = new HashSet<ACharacter>();
     }
 
     /**
@@ -41,7 +35,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
     void draw() {
         this.show();
         if(contactWithCharacter(global_player)) {
-            if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) {
+            if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
                 global_player.numberOfHorizontalBoundaryContacts++;
                 this.charactersTouchingThis.add(global_player);
             }

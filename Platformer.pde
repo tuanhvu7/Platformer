@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 PVector global_gravity;
+PVector global_wall_slide_acceleration;
 Player global_player;
 
 void settings() {
@@ -15,6 +16,7 @@ void setup() {
 
     background(Constants.SCREEN_BACKGROUND);
     global_gravity = new PVector(0, Constants.GRAVITY);
+    global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
     global_player = new Player(width / 2, 0, 16, 16);
 
     // HorizontalBoundary floor = new HorizontalBoundary(width / 2, height / 2, 100, 1, true);
@@ -29,8 +31,8 @@ void setup() {
     HorizontalBoundary floor = new HorizontalBoundary(0, height - 100, width - 100, 1, true);
     registerMethod("draw", floor);
 
-    // VerticalBoundary wall = new VerticalBoundary(width / 2, 0, height - 100, 1);
-    VerticalBoundary wall = new VerticalBoundary(width / 2, height-100, -200, 1);
+    VerticalBoundary wall = new VerticalBoundary(width / 2, 0, height - 100, 1);
+    // VerticalBoundary wall = new VerticalBoundary(width / 2, height-100, -200, 1);
     registerMethod("draw", wall);
 
     registerMethod("draw", global_player);

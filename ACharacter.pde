@@ -66,20 +66,14 @@ abstract class ACharacter {
     }
 
     /**
-     * handle contact with horizontal boundary
+     * handle contact with vertical boundary
      */
     void handleContactWithVerticalBoundary(float boundaryXPoint) {
-        this.vel.x = 0;
-        if(this.pos.x > boundaryXPoint) {   // left boundary
-            this.pos.x = boundaryXPoint + this.width / 2;
-        } else {    // right boundary
-            this.pos.x = boundaryXPoint - this.width / 2;
-        }
-        
+        this.vel.x = -this.vel.x; // move in oposite horizontal direction
     }
 
     /**
-     * handle arial
+     * handle arial physics
      */
     void handleInAir() {
         this.pos.add(this.vel);

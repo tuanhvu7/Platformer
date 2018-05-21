@@ -30,7 +30,17 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
     void draw() {
         this.show();
         if(contactWithCharacter(global_player)) {
+            if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
+                global_player.isTouchingVerticalBoundary = true;
+                this.charactersTouchingThis.add(global_player);
+            }
             global_player.handleContactWithVerticalBoundary(this.startPoint.x);
+            
+        } else {
+            if(this.charactersTouchingThis.contains(global_player)) {
+                global_player.isTouchingVerticalBoundary = false;
+                this.charactersTouchingThis.remove(global_player);
+            }
         }
     }
 

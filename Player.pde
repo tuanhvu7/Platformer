@@ -3,14 +3,15 @@
  */
 public class Player extends ACharacter {
 
-    // number of vertical boundaries this is touching;
-    protected int numberOfVerticalBoundaryContacts;
+    // true means this is touching vertical boundary
+    private boolean isTouchingVerticalBoundary;
 
     /**
      * Set player properties
      */
     Player(int x, int y, int width, int height) {
         super(x, y, width, height);
+        this.isTouchingVerticalBoundary = false;
     }
     
     /**
@@ -60,15 +61,40 @@ public class Player extends ACharacter {
             this.vel.x = 0;
         }
 
-        if(isJumping && numberOfHorizontalBoundaryContacts > 0) {    // jumping so set vertical velocity
-            this.vel.y = -Constants.MAIN_CHARACTER_JUMP_HEIGHT;
+        if(this.isJumping) {
+            if(numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
+                this.vel.y = -Constants.MAIN_CHARACTER_JUMP_HEIGHT;
+            } else {   // in air
+                this.handleInAir();
+            }
 
-        } else if(numberOfHorizontalBoundaryContacts == 0) { // in air so gravity act
-            this.handleInAir();
+        } else {
+            if(this.isTouchingVerticalBoundary) {   // touching wall
+                this.handleOnWall();
+            } else if(numberOfHorizontalBoundaryContacts == 0) {    // in air
+                this.handleInAir();
+            }
         }
 
         this.pos.add(this.vel);
         
         this.show();
+    }
+
+    /**
+     * handle contact with vertical boundary
+     */
+    void handleContactWithVerticalBoundary(float boundaryXPoint) {
+        this.vel.x = 0;
+        if(this.pos.x > boundaryXPoint) {   // left boundary
+            this.pos.x = boundaryXPoint + this.width / 2;
+        } else {    // right boundary
+            this.pos.x = boundaryXPoint - this.width / 2;
+        }  
+    }
+
+    private void handleOnWall() {
+        this.pos.add(this.vel);
+        this.vel.y = Math.min(this.vel.y + global_wall_slide_acceleration.y, Constants.MAX_VERTICAL_VELOCITY);
     }
 }
