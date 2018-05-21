@@ -2,6 +2,6 @@
  * states required methods for boundaries
  */
 interface IBoundary {
-    boolean collisionWithCharacter(ACharacter character);
+    boolean contactWithCharacter(ACharacter character);
     void draw();
 }

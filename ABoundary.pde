@@ -11,9 +11,6 @@ abstract class ABoundary {
     // width of boundary
     protected int boundaryWidth;
 
-    // set of all characters that are touching this
-    protected Set<ACharacter> charactersTouchingThis;
-
     /**
      * Set boundary properties
      * @param startXPoint starting x coordinate
@@ -33,8 +30,6 @@ abstract class ABoundary {
             Math.max(startYPoint, startYPoint + y2Offset));
 
         this.boundaryWidth = boundaryWidth;
-
-        this.charactersTouchingThis = new HashSet<ACharacter>();
     }
 
     /**

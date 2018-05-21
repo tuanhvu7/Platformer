@@ -3,6 +3,9 @@
  */
 public class Player extends ACharacter {
 
+    // number of vertical boundaries this is touching;
+    protected int numberOfVerticalBoundaryContacts;
+
     /**
      * Set player properties
      */
@@ -57,10 +60,10 @@ public class Player extends ACharacter {
             this.vel.x = 0;
         }
 
-        if(isJumping && numberOfBoundaryCollision > 0) {    // jumping so set vertical velocity
+        if(isJumping && numberOfHorizontalBoundaryContacts > 0) {    // jumping so set vertical velocity
             this.vel.y = -Constants.MAIN_CHARACTER_JUMP_HEIGHT;
 
-        } else if(numberOfBoundaryCollision == 0) { // in air so gravity act
+        } else if(numberOfHorizontalBoundaryContacts == 0) { // in air so gravity act
             this.handleInAir();
         }
 

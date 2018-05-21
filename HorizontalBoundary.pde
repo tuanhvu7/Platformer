@@ -3,6 +3,10 @@
  */
 public class HorizontalBoundary extends ABoundary implements IBoundary {
 
+    // set of all characters that are touching this
+    // used when this.isTopSideBoundary is true for tracking airborne characters
+    protected Set<ACharacter> charactersTouchingThis;
+
     // true means character cannot go through top side of boundary
     // false means character cannot go through bottom side of boundary
     private boolean isTopSideBoundary;
@@ -13,16 +17,18 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth, boolean isTopSideBoundary) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth);
         this.isTopSideBoundary = isTopSideBoundary;
+
+        this.charactersTouchingThis = new HashSet<ACharacter>();
     }
 
     /**
      * return true if collide with given character
      */
-    boolean collisionWithCharacter(ACharacter character) {
-        if(character.pos.x > this.startPoint.x - (character.width / 2)
-            && character.pos.x < this.endPoint.x + (character.width / 2)
-            && character.pos.y <= this.startPoint.y + (character.height / 2)
-            && character.pos.y >= this.startPoint.y - (character.height / 2)) {
+    boolean contactWithCharacter(ACharacter character) {
+        if(character.pos.x > this.startPoint.x - (character.width / 2)          // > lower x boundary
+            && character.pos.x < this.endPoint.x + (character.width / 2)        // < upper x boundary
+            && character.pos.y <= this.startPoint.y + (character.height / 2)    // contact bottom of character
+            && character.pos.y >= this.startPoint.y - (character.height / 2)) { // contact top of character
             return true;
         } else {
             return false;
@@ -30,21 +36,22 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
     }
 
     /**
-     * runs continuously. checks and handles collision between characters
+     * runs continuously. checks and handles contact between this and characters
      */
     void draw() {
         this.show();
-        if(collisionWithCharacter(global_player)) {
-            if(!this.charactersTouchingThis.contains(global_player)) {
-                global_player.numberOfBoundaryCollision++;
+        if(contactWithCharacter(global_player)) {
+            if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) {
+                global_player.numberOfHorizontalBoundaryContacts++;
                 this.charactersTouchingThis.add(global_player);
             }
-            global_player.handleCollisionWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+            global_player.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+
         } else {
-            if(this.charactersTouchingThis.contains(global_player)) {
-                global_player.numberOfBoundaryCollision--;
+            if(isTopSideBoundary && this.charactersTouchingThis.contains(global_player)) {
+                global_player.numberOfHorizontalBoundaryContacts--;
                 this.charactersTouchingThis.remove(global_player);
             }
-        }
+        }   
     }
 }

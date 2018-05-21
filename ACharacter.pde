@@ -16,9 +16,8 @@ abstract class ACharacter {
     protected boolean isMovingRight;
     protected boolean isJumping;
 
-    // number of boundaries this is touching;
-    // touching 0 mean this is in air
-    protected int numberOfBoundaryCollision;
+    // number of horizontal boundaries this is touching;
+    protected int numberOfHorizontalBoundaryContacts;
 
     /**
      * set character properties
@@ -33,7 +32,7 @@ abstract class ACharacter {
         this.isMovingRight = false;
         this.isJumping = false;
 
-        this.numberOfBoundaryCollision = 0;
+        this.numberOfHorizontalBoundaryContacts = 0;
     }
 
     /**
@@ -54,23 +53,26 @@ abstract class ACharacter {
     }
 
     /**
-     * handle collision with horizontal boundary
+     * handle contact with horizontal boundary
      */
-    void handleCollisionWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
-        if(isTopSideBoundary) {
+    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
+        if(isTopSideBoundary) { // floor-like object
             this.vel.y = 0;
             this.pos.y = boundaryYPoint - this.height / 2;
-        } else {
+        } else {    // ceiling-like object
             this.vel.y = 1;
             this.pos.add(this.vel);
         }
     }
 
-    void handleCollisionWithVerticalBoundary(float boundaryXPoint) {
+    /**
+     * handle contact with horizontal boundary
+     */
+    void handleContactWithVerticalBoundary(float boundaryXPoint) {
         this.vel.x = 0;
-        if(this.pos.x > boundaryXPoint) {
+        if(this.pos.x > boundaryXPoint) {   // left boundary
             this.pos.x = boundaryXPoint + this.width / 2;
-        } else {
+        } else {    // right boundary
             this.pos.x = boundaryXPoint - this.width / 2;
         }
         

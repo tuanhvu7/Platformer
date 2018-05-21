@@ -13,11 +13,11 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
     /**
      * return true if collide with given character
      */
-    boolean collisionWithCharacter(ACharacter character) {
-        if(character.pos.x >= this.startPoint.x - (character.width / 2)
-            && character.pos.x <= this.startPoint.x + (character.width / 2)
-            && character.pos.y > this.startPoint.y - (character.height / 2)
-            && character.pos.y < this.endPoint.y + (character.height / 2)) {
+    boolean contactWithCharacter(ACharacter character) {
+        if(character.pos.x >= this.startPoint.x - (character.width / 2)         // contact right of character
+            && character.pos.x <= this.startPoint.x + (character.width / 2)     // contact left of character
+            && character.pos.y > this.startPoint.y - (character.height / 2)     // > lower y boundary
+            && character.pos.y < this.endPoint.y + (character.height / 2)) {    // < upper y boundary
             return true;
         } else {
             return false;
@@ -25,21 +25,12 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
     }
 
     /**
-     * runs continuously. checks and handles collision between characters
+     * runs continuously. checks and handles contact between this and characters
      */
     void draw() {
         this.show();
-        if(collisionWithCharacter(global_player)) {
-            if(!this.charactersTouchingThis.contains(global_player)) {
-                global_player.numberOfBoundaryCollision++;
-                this.charactersTouchingThis.add(global_player);
-            }
-            global_player.handleCollisionWithVerticalBoundary(this.startPoint.x);
-        } else {
-            if(this.charactersTouchingThis.contains(global_player)) {
-                global_player.numberOfBoundaryCollision--;
-                this.charactersTouchingThis.remove(global_player);
-            }
+        if(contactWithCharacter(global_player)) {
+            global_player.handleContactWithVerticalBoundary(this.startPoint.x);
         }
     }
 
