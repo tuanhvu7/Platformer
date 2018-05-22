@@ -52,10 +52,10 @@ public class Player extends ACharacter {
     void draw() {
 
         if(this.isMovingLeft) {
-            this.vel.x = -Constants.MAIN_CHARACTER_RUN_SPEED;
+            this.vel.x = -Constants.PLAYER_RUN_SPEED;
         }
         if(this.isMovingRight) {
-            this.vel.x = Constants.MAIN_CHARACTER_RUN_SPEED;
+            this.vel.x = Constants.PLAYER_RUN_SPEED;
         }
         if(!this.isMovingLeft && !this.isMovingRight) {
             this.vel.x = 0;
@@ -63,16 +63,18 @@ public class Player extends ACharacter {
 
         if(this.isJumping) {
             if(numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
-                this.vel.y = -Constants.MAIN_CHARACTER_JUMP_HEIGHT;
-            } else {   // in air
-                this.handleInAir();
+                this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
+            } else {
+                this.vel.y = 
+                Math.min(
+                    this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
+                    Constants.MAX_VERTICAL_VELOCITY);
             }
-
         } else {
             if(this.isTouchingVerticalBoundary) {   // touching wall
-                this.handleOnWall();
+                this.handleOnWallPhysics();
             } else if(numberOfHorizontalBoundaryContacts == 0) {    // in air
-                this.handleInAir();
+                this.handleInAirPhysics();
             }
         }
 
@@ -93,8 +95,10 @@ public class Player extends ACharacter {
         }  
     }
 
-    private void handleOnWall() {
-        this.pos.add(this.vel);
+    /**
+     * handle wall sliding physics
+     */
+    private void handleOnWallPhysics() {
         this.vel.y = Math.min(this.vel.y + global_wall_slide_acceleration.y, Constants.MAX_VERTICAL_VELOCITY);
     }
 }

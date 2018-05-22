@@ -75,8 +75,7 @@ abstract class ACharacter {
     /**
      * handle arial physics
      */
-    void handleInAir() {
-        this.pos.add(this.vel);
+    void handleInAirPhysics() {
         this.vel.y = Math.min(this.vel.y + global_gravity.y, Constants.MAX_VERTICAL_VELOCITY);
     }
 
