@@ -1,7 +1,7 @@
 /**
  * player controllable character in game
  */
-public class Player extends ACharacter {
+public class Player extends ACharacter implements ICharacter {
 
     // true means this is touching vertical boundary
     private boolean isTouchingVerticalBoundary;
@@ -62,7 +62,7 @@ public class Player extends ACharacter {
         }
 
         if(this.isJumping) {
-            if(numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
+            if(this.numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
                 this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
             } else {
                 this.vel.y = 
@@ -73,13 +73,14 @@ public class Player extends ACharacter {
         } else {
             if(this.isTouchingVerticalBoundary) {   // touching wall
                 this.handleOnWallPhysics();
-            } else if(numberOfHorizontalBoundaryContacts == 0) {    // in air
+            } else if(this.numberOfHorizontalBoundaryContacts == 0) {    // in air
                 this.handleInAirPhysics();
             }
         }
 
         this.pos.add(this.vel);
         
+        fill(Constants.PLAYER_COLOR);
         this.show();
     }
 

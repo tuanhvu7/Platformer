@@ -34,18 +34,21 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
      */
     void draw() {
         this.show();
-        if(contactWithCharacter(global_player)) {
-            if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
-                global_player.numberOfHorizontalBoundaryContacts++;
-                this.charactersTouchingThis.add(global_player);
-            }
-            global_player.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
 
-        } else {
-            if(isTopSideBoundary && this.charactersTouchingThis.contains(global_player)) {
-                global_player.numberOfHorizontalBoundaryContacts--;
-                this.charactersTouchingThis.remove(global_player);
+        for(ACharacter curCharacter : charactersList) {
+            if(this.contactWithCharacter(curCharacter)) {
+                if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
+                    curCharacter.numberOfHorizontalBoundaryContacts++;
+                    this.charactersTouchingThis.add(curCharacter);
+                }
+                curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+
+            } else {
+                if(this.isTopSideBoundary && this.charactersTouchingThis.contains(curCharacter)) {
+                    curCharacter.numberOfHorizontalBoundaryContacts--;
+                    this.charactersTouchingThis.remove(curCharacter);
+                }
             }
-        }   
+        }
     }
 }

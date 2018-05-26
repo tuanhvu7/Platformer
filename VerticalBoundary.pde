@@ -29,17 +29,25 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
      */
     void draw() {
         this.show();
-        if(contactWithCharacter(global_player)) {
-            if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
-                global_player.isTouchingVerticalBoundary = true;
-                this.charactersTouchingThis.add(global_player);
-            }
-            global_player.handleContactWithVerticalBoundary(this.startPoint.x);
-            
-        } else {
-            if(this.charactersTouchingThis.contains(global_player)) {
-                global_player.isTouchingVerticalBoundary = false;
-                this.charactersTouchingThis.remove(global_player);
+
+        for(ACharacter curCharacter : charactersList) {
+
+            if(this.contactWithCharacter(curCharacter)) {
+                if(!this.charactersTouchingThis.contains(curCharacter)) {  // new collision detected
+                    if(curCharacter instanceof Player) {    // handle wall jump mechanic only for player
+                        ((Player) curCharacter).isTouchingVerticalBoundary = true;
+                        this.charactersTouchingThis.add(curCharacter);
+                    }
+                }
+                curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);
+                
+            } else {
+                if(this.charactersTouchingThis.contains(curCharacter)) {
+                    if(curCharacter instanceof Player) {    // handle wall jump mechanic only for player
+                        ((Player) curCharacter).isTouchingVerticalBoundary = false;
+                        this.charactersTouchingThis.remove(curCharacter);
+                    }
+                }
             }
         }
     }

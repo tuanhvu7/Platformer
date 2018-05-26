@@ -17,4 +17,12 @@ class Constants {
     /*** player config ***/
     private static final int PLAYER_RUN_SPEED = 3;
     private static final int PLAYER_JUMP_HEIGHT = 12;
+    private static final int PLAYER_COLOR = #FFFFFF;
+    private static final int PLAYER_RADIUS = 60;
+
+    /*** enemy config **/
+    private static final float ENEMY_RUN_SPEED = 2.5;
+    private static final int ENEMY_COLOR = #FF0000;
+    private static final int REGULAR_ENEMY_RADIUS = 60;
+
 }

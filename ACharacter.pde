@@ -47,7 +47,6 @@ abstract class ACharacter {
      * draw circle character
      */
     void show() {
-        fill(255, 0, 0);
         strokeWeight(0);
         ellipse(this.pos.x, this.pos.y, this.width, this.height);
     }
