@@ -48,18 +48,16 @@ public class Enemy extends ACharacter implements ICharacter {
    * runs continuously. handles enemy movement and physics
    */
   void draw() {
-    if(this.isActive) {
-
       // check collision with player
       double collisionAngle = this.collisionWithPlayer();
       if(collisionAngle >= 0) {
         if(collisionAngle >= Math.toRadians(Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE)
             && this.pos.y > global_player.pos.y) {  // player is above this
           
-          this.isActive = false;
+          this.removeFromGame();
         
         } else {
-          global_player.isActive = false; // TODO: Encapsulate
+          global_player.removeFromGame();
         }
       }
 
@@ -75,7 +73,6 @@ public class Enemy extends ACharacter implements ICharacter {
         this.show();
       }
 
-    }
   }
 
 }

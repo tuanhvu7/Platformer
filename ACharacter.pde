@@ -77,4 +77,11 @@ abstract class ACharacter {
         this.vel.y = Math.min(this.vel.y + global_gravity.y, Constants.MAX_VERTICAL_VELOCITY);
     }
 
+    /**
+     * remove this from game
+     */
+    void removeFromGame() {
+        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+    }
+
 }

@@ -50,8 +50,6 @@ public class Player extends ACharacter implements ICharacter {
      * runs continuously. handles player movement and physics
      */
     void draw() {
-        if(this.isActive) {
-
             if(this.isMovingLeft) {
                 this.vel.x = -Constants.PLAYER_RUN_SPEED;
             }
@@ -84,9 +82,7 @@ public class Player extends ACharacter implements ICharacter {
             this.pos.add(this.vel);
             
             fill(Constants.PLAYER_COLOR);
-            this.show();
-            
-        }
+            this.show(); 
     }
 
     /**
