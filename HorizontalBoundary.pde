@@ -51,14 +51,14 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
         // boundary collision for player
         if(contactWithCharacter(global_player)) {
             if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
-                global_player.numberOfHorizontalBoundaryContacts++;
+                global_player.numberOfHorizontalBoundaryContacts++; // TODO: encapsulate
                 this.charactersTouchingThis.add(global_player);
             }
             global_player.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
 
         } else {
             if(isTopSideBoundary && this.charactersTouchingThis.contains(global_player)) {
-                global_player.numberOfHorizontalBoundaryContacts--;
+                global_player.numberOfHorizontalBoundaryContacts--; // TODO: encapsulate
                 this.charactersTouchingThis.remove(global_player);
             }
         }  
@@ -67,14 +67,14 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
         for(ACharacter curCharacter : global_characters_list) {
             if(this.contactWithCharacter(curCharacter)) {
                 if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
-                    curCharacter.numberOfHorizontalBoundaryContacts++;
+                    curCharacter.numberOfHorizontalBoundaryContacts++;  // TODO: encapsulate
                     this.charactersTouchingThis.add(curCharacter);
                 }
                 curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
 
             } else {
                 if(this.isTopSideBoundary && this.charactersTouchingThis.contains(curCharacter)) {
-                    curCharacter.numberOfHorizontalBoundaryContacts--;
+                    curCharacter.numberOfHorizontalBoundaryContacts--;  // TODO: encapsulate
                     this.charactersTouchingThis.remove(curCharacter);
                 }
             }

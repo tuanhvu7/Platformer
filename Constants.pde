@@ -14,6 +14,10 @@ class Constants {
     private static final float VARIABLE_JUMP_GRAVITY_MULTIPLIER = 0.55;
     private static final float MAX_VERTICAL_VELOCITY = 15;
 
+    // minimun angle (degrees) of collision between player and enemy
+    // for player to kill enemy
+    private static final int MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE = 45;
+
     /*** player config ***/
     private static final int PLAYER_RUN_SPEED = 3;
     private static final int PLAYER_JUMP_HEIGHT = 12;

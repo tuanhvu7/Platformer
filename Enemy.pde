@@ -9,9 +9,6 @@ public class Enemy extends ACharacter implements ICharacter {
   // true means visible by player
   boolean isVisible;
 
-  // active means still in game (boundary and player collision detection)
-  boolean isActive;
-
   /**
    * Set player properties
    */
@@ -25,24 +22,59 @@ public class Enemy extends ACharacter implements ICharacter {
   }
 
   /**
-   * return if this collides with player
+   * return angle of collision between this and player;
+   * range of collision angles (in degrees): [0, 90]
+   * negative angle means no collision
    */
-  // boolean collisionWithPlayer() {
-  //   int xDifference = this.pos.x - 
-  // }
+  double collisionWithPlayer() {
+    float xDifference = Math.abs(this.pos.x - global_player.pos.x);   // TODO: encapsulate
+    float yDifference =  Math.abs(this.pos.y - global_player.pos.y);  // TODO: encapsulate
+
+    // distance between player and this must be sum of their radii for collision
+    float distanceNeededForCollision = (this.diameter / 2) + (global_player.diameter / 2);  // TODO: encapsulate
+
+    // pythagorean theorem
+    boolean isAtCollisionDistance = 
+      Math.sqrt(Math.pow(xDifference, 2) +  Math.pow(yDifference, 2)) <= distanceNeededForCollision;
+
+    if(isAtCollisionDistance) {
+      return Math.atan2(yDifference, xDifference); 
+    } else {
+      return -1.0;
+    }
+  }
 
   /**
    * runs continuously. handles enemy movement and physics
    */
   void draw() {
-    if(this.numberOfHorizontalBoundaryContacts == 0 && !this.isFlying) {
-      this.handleInAirPhysics();
-    }
-    this.pos.add(this.vel);
+    if(this.isActive) {
 
-    if(this.isVisible) {
-      fill(Constants.ENEMY_COLOR);
-      this.show();
+      // check collision with player
+      double collisionAngle = this.collisionWithPlayer();
+      if(collisionAngle >= 0) {
+        if(collisionAngle >= Math.toRadians(Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE)
+            && this.pos.y > global_player.pos.y) {  // player is above this
+          
+          this.isActive = false;
+        
+        } else {
+          global_player.isActive = false; // TODO: Encapsulate
+        }
+      }
+
+      // check collision with boundary
+      if(this.numberOfHorizontalBoundaryContacts == 0 && !this.isFlying) {
+        this.handleInAirPhysics();
+      }
+
+      this.pos.add(this.vel);
+
+      if(this.isVisible) {
+        fill(Constants.ENEMY_COLOR);
+        this.show();
+      }
+
     }
   }
 

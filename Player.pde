@@ -50,40 +50,43 @@ public class Player extends ACharacter implements ICharacter {
      * runs continuously. handles player movement and physics
      */
     void draw() {
+        if(this.isActive) {
 
-        if(this.isMovingLeft) {
-            this.vel.x = -Constants.PLAYER_RUN_SPEED;
-        }
-        if(this.isMovingRight) {
-            this.vel.x = Constants.PLAYER_RUN_SPEED;
-        }
-        if(!this.isMovingLeft && !this.isMovingRight) {
-            this.vel.x = 0;
-        }
-
-        if(this.isJumping) {    // jump button pressed/held
-            if(this.numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
-                this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
-            } else {
-                // for jumpin higher the longer jump button is held
-                this.vel.y = 
-                Math.min(
-                    this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
-                    Constants.MAX_VERTICAL_VELOCITY);
+            if(this.isMovingLeft) {
+                this.vel.x = -Constants.PLAYER_RUN_SPEED;
+            }
+            if(this.isMovingRight) {
+                this.vel.x = Constants.PLAYER_RUN_SPEED;
+            }
+            if(!this.isMovingLeft && !this.isMovingRight) {
+                this.vel.x = 0;
             }
 
-        } else {    // jump button not pressed
-            if(this.isTouchingVerticalBoundary) {   // touching wall
-                this.handleOnWallPhysics();
-            } else if(this.numberOfHorizontalBoundaryContacts == 0) {    // in air
-                this.handleInAirPhysics();
-            }
-        }
+            if(this.isJumping) {    // jump button pressed/held
+                if(this.numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
+                    this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
+                } else {
+                    // for jumpin higher the longer jump button is held
+                    this.vel.y = 
+                    Math.min(
+                        this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
+                        Constants.MAX_VERTICAL_VELOCITY);
+                }
 
-        this.pos.add(this.vel);
-        
-        fill(Constants.PLAYER_COLOR);
-        this.show();
+            } else {    // jump button not pressed
+                if(this.isTouchingVerticalBoundary) {   // touching wall
+                    this.handleOnWallPhysics();
+                } else if(this.numberOfHorizontalBoundaryContacts == 0) {    // in air
+                    this.handleInAirPhysics();
+                }
+            }
+
+            this.pos.add(this.vel);
+            
+            fill(Constants.PLAYER_COLOR);
+            this.show();
+            
+        }
     }
 
     /**

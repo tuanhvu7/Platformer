@@ -33,14 +33,14 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
         // boundary collision for player
         if(contactWithCharacter(global_player)) {
             if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
-                global_player.isTouchingVerticalBoundary = true;
+                global_player.isTouchingVerticalBoundary = true;    // TODO: encapsulate
                 this.charactersTouchingThis.add(global_player);
             }
             global_player.handleContactWithVerticalBoundary(this.startPoint.x);
             
         } else {
             if(this.charactersTouchingThis.contains(global_player)) {
-                global_player.isTouchingVerticalBoundary = false;
+                global_player.isTouchingVerticalBoundary = false;   // TODO: encapsulate
                 this.charactersTouchingThis.remove(global_player);
             }
         }

@@ -2,7 +2,7 @@
  * Common for circular characters
  */
 abstract class ACharacter {
-    // position vector of character (x, y)
+    // position vector of center of character (x, y)
     protected PVector pos;
     // velocity vector of character (x, y)
     protected PVector vel;
@@ -18,6 +18,9 @@ abstract class ACharacter {
     // number of horizontal boundaries this is touching;
     protected int numberOfHorizontalBoundaryContacts;
 
+    // true means still in game (boundary and player collision detection)
+    boolean isActive;
+
     /**
      * set character properties
      */
@@ -26,19 +29,13 @@ abstract class ACharacter {
         this.vel = new PVector();
         this.diameter = diameter;
 
+        this.isActive = true;
+
         this.isMovingLeft = false;
         this.isMovingRight = false;
         this.isJumping = false;
 
         this.numberOfHorizontalBoundaryContacts = 0;
-    }
-
-    /**
-     * set position of character
-     */
-    void setPos(PVector newPos) {
-        this.pos = newPos;
-        this.vel.y += global_gravity.y;
     }
 
     /**
