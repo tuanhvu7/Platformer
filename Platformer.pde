@@ -58,6 +58,15 @@ void setup() {
     VerticalBoundary leftWall = new VerticalBoundary(0, 0, height - 100, 1);
     registerMethod("draw", leftWall);
 
+    // HorizontalBoundary testPlat = new HorizontalBoundary(width / 2, height / 2, 100, 1, true);
+    // registerMethod("draw", testPlat);
+    // HorizontalBoundary testPlat2 = new HorizontalBoundary(width / 2, height / 4, 100, 1, true);
+    // registerMethod("draw", testPlat2);
+    // HorizontalBoundary testPlat3 = new HorizontalBoundary(width / 2, height / 6, 100, 1, false);
+    // registerMethod("draw", testPlat3);
+    // HorizontalBoundary testPlat4 = new HorizontalBoundary(width / 2, height / 8, 100, 1, true);
+    // registerMethod("draw", testPlat4);
+
     // VerticalBoundary middleWall = new VerticalBoundary(width / 2, height / 2, height / 2 - 100, 1);
     // registerMethod("draw", middleWall);
 }

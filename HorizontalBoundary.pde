@@ -20,41 +20,26 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
      */
     boolean contactWithCharacter(ACharacter character) {
 
-        if(this.isTopSideBoundary) {
+        // if(this.isTopSideBoundary) {
+        //     return 
+        //         character.pos.x > this.startPoint.x - (character.diameter / 2)      // > lower x boundary
+        //         && character.pos.x < this.endPoint.x + (character.diameter / 2)     // < upper x boundary
+        //         && character.pos.y < this.startPoint.y                              // center of character above boundary
+        //         && character.pos.y + (character.diameter / 2) >= this.startPoint.y; // bottom of character 'touching' boundary
 
-            if(character.pos.x > this.startPoint.x - (character.diameter / 2)           // > lower x boundary
-                && character.pos.x < this.endPoint.x + (character.diameter / 2)         // < upper x boundary
-                && character.pos.y < this.startPoint.y                                  // center of circle above boundary
-                && character.pos.y + (character.diameter / 2) >= this.startPoint.y) {   // bottom of circle 'touching' boundary
-                
-                return true;
-
-            } else {
-                return false;
-            }
-
-        } else {    // bottom-side boundary
-
-            if(character.pos.x > this.startPoint.x - (character.diameter / 2)           // > lower x boundary
-                && character.pos.x < this.endPoint.x + (character.diameter / 2)         // < upper x boundary
-                && character.pos.y > this.startPoint.y                                  // center of circle below boundary
-                && character.pos.y - (character.diameter / 2) <= this.startPoint.y) {   // top of circle 'touching' boundary
-                
-                return true;
-
-            } else {
-                return false;
-            }
-        }
-
-        // if(character.pos.x > this.startPoint.x - (character.diameter / 2)          // > lower x boundary
-        //     && character.pos.x < this.endPoint.x + (character.diameter / 2)        // < upper x boundary
-        //     && character.pos.y - (character.diameter / 2) <= this.startPoint.y     // contact top of character
-        //     && character.pos.y + (character.diameter / 2) >= this.startPoint.y) {   // contact bottom of character
-        //     return true;
-        // } else {
-        //     return false;
+        // } else {    // bottom-side boundary
+        //     return 
+        //         character.pos.x > this.startPoint.x - (character.diameter / 2)      // > lower x boundary
+        //         && character.pos.x < this.endPoint.x + (character.diameter / 2)     // < upper x boundary
+        //         && character.pos.y > this.startPoint.y                              // center of character below boundary
+        //         && character.pos.y - (character.diameter / 2) <= this.startPoint.y; // top of character 'touching' boundary
         // }
+
+        return 
+            character.pos.x > this.startPoint.x - (character.diameter / 2)      // > lower x boundary
+            && character.pos.x < this.endPoint.x + (character.diameter / 2)     // < upper x boundary
+            && character.pos.y - (character.diameter / 2) <= this.startPoint.y  // check contact top of character
+            && character.pos.y + (character.diameter / 2) >= this.startPoint.y; // check contact bottom of character
     }
 
     /**

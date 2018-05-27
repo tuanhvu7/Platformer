@@ -54,10 +54,12 @@ abstract class ACharacter {
      */
     void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
         if(isTopSideBoundary) { // floor-like boundary
-            this.vel.y = 0;
-            this.pos.y = boundaryYPoint - this.diameter / 2;
+            if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
+                this.vel.y = 0;
+                this.pos.y = boundaryYPoint - this.diameter / 2;
+            }
         } else {    // ceiling-like boundary
-            if(this.vel.y < 0) {    // boundary only act like ceiling if this is contacting from below boundary
+            if(this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
                 this.vel.y = 1;
                 this.pos.add(this.vel);
             }
