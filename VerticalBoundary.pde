@@ -14,10 +14,10 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
      * return true if collide with given character
      */
     boolean contactWithCharacter(ACharacter character) {
-        if(character.pos.x >= this.startPoint.x - (character.width / 2)         // contact right of character
-            && character.pos.x <= this.startPoint.x + (character.width / 2)     // contact left of character
-            && character.pos.y > this.startPoint.y - (character.height / 2)     // > lower y boundary
-            && character.pos.y < this.endPoint.y + (character.height / 2)) {    // < upper y boundary
+        if(character.pos.x  + (character.diameter / 2) >= this.startPoint.x         // contact right of character
+            && character.pos.x - (character.diameter / 2) <= this.startPoint.x      // contact left of character
+            && character.pos.y > this.startPoint.y - (character.diameter / 2)       // > lower y boundary
+            && character.pos.y < this.endPoint.y + (character.diameter / 2)) {      // < upper y boundary
             return true;
         } else {
             return false;
@@ -30,24 +30,25 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
     void draw() {
         this.show();
 
-        for(ACharacter curCharacter : charactersList) {
+        // boundary collision for player
+        if(contactWithCharacter(global_player)) {
+            if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
+                global_player.isTouchingVerticalBoundary = true;
+                this.charactersTouchingThis.add(global_player);
+            }
+            global_player.handleContactWithVerticalBoundary(this.startPoint.x);
+            
+        } else {
+            if(this.charactersTouchingThis.contains(global_player)) {
+                global_player.isTouchingVerticalBoundary = false;
+                this.charactersTouchingThis.remove(global_player);
+            }
+        }
 
+        // boundary collision for non-player characters
+        for(ACharacter curCharacter : global_characters_list) {
             if(this.contactWithCharacter(curCharacter)) {
-                if(!this.charactersTouchingThis.contains(curCharacter)) {  // new collision detected
-                    if(curCharacter instanceof Player) {    // handle wall jump mechanic only for player
-                        ((Player) curCharacter).isTouchingVerticalBoundary = true;
-                        this.charactersTouchingThis.add(curCharacter);
-                    }
-                }
-                curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);
-                
-            } else {
-                if(this.charactersTouchingThis.contains(curCharacter)) {
-                    if(curCharacter instanceof Player) {    // handle wall jump mechanic only for player
-                        ((Player) curCharacter).isTouchingVerticalBoundary = false;
-                        this.charactersTouchingThis.remove(curCharacter);
-                    }
-                }
+                curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
             }
         }
     }

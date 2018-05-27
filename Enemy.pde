@@ -15,15 +15,21 @@ public class Enemy extends ACharacter implements ICharacter {
   /**
    * Set player properties
    */
-  Enemy(int x, int y, int width, int height, boolean isFlying, boolean isInvulnerable, boolean isVisible) {
-      super(x, y, width, height);
+  Enemy(int x, int y, int diameter, boolean isFlying, boolean isInvulnerable, boolean isVisible) {
+      super(x, y, diameter);
       this.vel.x = -Constants.ENEMY_RUN_SPEED;
       
       this.isFlying = isFlying;
       this.isInvulnerable = isInvulnerable;
       this.isVisible = isVisible;
-
   }
+
+  /**
+   * return if this collides with player
+   */
+  // boolean collisionWithPlayer() {
+  //   int xDifference = this.pos.x - 
+  // }
 
   /**
    * runs continuously. handles enemy movement and physics

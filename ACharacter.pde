@@ -7,9 +7,8 @@ abstract class ACharacter {
     // velocity vector of character (x, y)
     protected PVector vel;
     
-    // character width and height
-    protected int width;
-    protected int height;
+    // character diameter
+    protected int diameter;
 
     // character movement states
     protected boolean isMovingLeft;
@@ -22,11 +21,10 @@ abstract class ACharacter {
     /**
      * set character properties
      */
-    ACharacter(int x, int y, int width, int height) {
+    ACharacter(int x, int y, int diameter) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
-        this.width = width;
-        this.height = height;
+        this.diameter = diameter;
 
         this.isMovingLeft = false;
         this.isMovingRight = false;
@@ -48,19 +46,21 @@ abstract class ACharacter {
      */
     void show() {
         strokeWeight(0);
-        ellipse(this.pos.x, this.pos.y, this.width, this.height);
+        ellipse(this.pos.x, this.pos.y, this.diameter, this.diameter);
     }
 
     /**
      * handle contact with horizontal boundary
      */
     void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
-        if(isTopSideBoundary) { // floor-like object
+        if(isTopSideBoundary) { // floor-like boundary
             this.vel.y = 0;
-            this.pos.y = boundaryYPoint - this.height / 2;
-        } else {    // ceiling-like object
-            this.vel.y = 1;
-            this.pos.add(this.vel);
+            this.pos.y = boundaryYPoint - this.diameter / 2;
+        } else {    // ceiling-like boundary
+            if(this.vel.y < 0) {    // boundary only act like ceiling if this is contacting from below boundary
+                this.vel.y = 1;
+                this.pos.add(this.vel);
+            }
         }
     }
 

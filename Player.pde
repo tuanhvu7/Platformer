@@ -9,8 +9,8 @@ public class Player extends ACharacter implements ICharacter {
     /**
      * Set player properties
      */
-    Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
+    Player(int x, int y, int diameter) {
+        super(x, y, diameter);
         this.isTouchingVerticalBoundary = false;
     }
     
@@ -61,16 +61,18 @@ public class Player extends ACharacter implements ICharacter {
             this.vel.x = 0;
         }
 
-        if(this.isJumping) {
+        if(this.isJumping) {    // jump button pressed/held
             if(this.numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
                 this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
             } else {
+                // for jumpin higher the longer jump button is held
                 this.vel.y = 
                 Math.min(
                     this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
                     Constants.MAX_VERTICAL_VELOCITY);
             }
-        } else {
+
+        } else {    // jump button not pressed
             if(this.isTouchingVerticalBoundary) {   // touching wall
                 this.handleOnWallPhysics();
             } else if(this.numberOfHorizontalBoundaryContacts == 0) {    // in air
@@ -90,9 +92,9 @@ public class Player extends ACharacter implements ICharacter {
     void handleContactWithVerticalBoundary(float boundaryXPoint) {
         this.vel.x = 0;
         if(this.pos.x > boundaryXPoint) {   // left boundary
-            this.pos.x = boundaryXPoint + this.width / 2;
+            this.pos.x = boundaryXPoint + this.diameter / 2;
         } else {    // right boundary
-            this.pos.x = boundaryXPoint - this.width / 2;
+            this.pos.x = boundaryXPoint - this.diameter / 2;
         }  
     }
 

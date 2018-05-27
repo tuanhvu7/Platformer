@@ -19,14 +19,42 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
      * return true if collide with given character
      */
     boolean contactWithCharacter(ACharacter character) {
-        if(character.pos.x > this.startPoint.x - (character.width / 2)          // > lower x boundary
-            && character.pos.x < this.endPoint.x + (character.width / 2)        // < upper x boundary
-            && character.pos.y <= this.startPoint.y + (character.height / 2)    // contact bottom of character
-            && character.pos.y >= this.startPoint.y - (character.height / 2)) { // contact top of character
-            return true;
-        } else {
-            return false;
+
+        if(this.isTopSideBoundary) {
+
+            if(character.pos.x > this.startPoint.x - (character.diameter / 2)           // > lower x boundary
+                && character.pos.x < this.endPoint.x + (character.diameter / 2)         // < upper x boundary
+                && character.pos.y < this.startPoint.y                                  // center of circle above boundary
+                && character.pos.y + (character.diameter / 2) >= this.startPoint.y) {   // bottom of circle 'touching' boundary
+                
+                return true;
+
+            } else {
+                return false;
+            }
+
+        } else {    // bottom-side boundary
+
+            if(character.pos.x > this.startPoint.x - (character.diameter / 2)           // > lower x boundary
+                && character.pos.x < this.endPoint.x + (character.diameter / 2)         // < upper x boundary
+                && character.pos.y > this.startPoint.y                                  // center of circle below boundary
+                && character.pos.y - (character.diameter / 2) <= this.startPoint.y) {   // top of circle 'touching' boundary
+                
+                return true;
+
+            } else {
+                return false;
+            }
         }
+
+        // if(character.pos.x > this.startPoint.x - (character.diameter / 2)          // > lower x boundary
+        //     && character.pos.x < this.endPoint.x + (character.diameter / 2)        // < upper x boundary
+        //     && character.pos.y - (character.diameter / 2) <= this.startPoint.y     // contact top of character
+        //     && character.pos.y + (character.diameter / 2) >= this.startPoint.y) {   // contact bottom of character
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 
     /**
@@ -35,7 +63,23 @@ public class HorizontalBoundary extends ABoundary implements IBoundary {
     void draw() {
         this.show();
 
-        for(ACharacter curCharacter : charactersList) {
+        // boundary collision for player
+        if(contactWithCharacter(global_player)) {
+            if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
+                global_player.numberOfHorizontalBoundaryContacts++;
+                this.charactersTouchingThis.add(global_player);
+            }
+            global_player.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+
+        } else {
+            if(isTopSideBoundary && this.charactersTouchingThis.contains(global_player)) {
+                global_player.numberOfHorizontalBoundaryContacts--;
+                this.charactersTouchingThis.remove(global_player);
+            }
+        }  
+
+        // boundary collision for non-player characters
+        for(ACharacter curCharacter : global_characters_list) {
             if(this.contactWithCharacter(curCharacter)) {
                 if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
                     curCharacter.numberOfHorizontalBoundaryContacts++;
