@@ -52,10 +52,11 @@ public class Enemy extends ACharacter implements ICharacter {
       double collisionAngle = this.collisionWithPlayer();
       if(collisionAngle >= 0) {
         if(collisionAngle >= Math.toRadians(Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE)
-            && this.pos.y > global_player.pos.y) {  // player is above this
+            && this.pos.y > global_player.pos.y) {  // player is above this // TODO: encapsulate
           
           this.removeFromGame();
-        
+          global_player.handleJumpKillEnemyPhysics();
+          
         } else {
           global_player.removeFromGame();
         }

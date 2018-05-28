@@ -103,4 +103,11 @@ public class Player extends ACharacter implements ICharacter {
     private void handleOnWallPhysics() {
         this.vel.y = Math.min(this.vel.y + global_wall_slide_acceleration.y, Constants.MAX_VERTICAL_VELOCITY);
     }
+
+    /**
+     * handle jump on enemy physics
+     */
+    private void handleJumpKillEnemyPhysics() {
+        this.vel.y = -Constants.PLAYER_JUMP_KILL_ENEMY_HOP_HEIGHT;
+    }
 }

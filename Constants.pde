@@ -32,6 +32,7 @@ class Constants {
     /*** player config ***/
     private static final int PLAYER_RUN_SPEED = 3;
     private static final int PLAYER_JUMP_HEIGHT = 12;
+    private static final int PLAYER_JUMP_KILL_ENEMY_HOP_HEIGHT = 7;
     private static final int PLAYER_COLOR = #000000;
     private static final int PLAYER_DIAMETER = 60;
 
