@@ -1,4 +1,4 @@
-public class Enemy extends ACharacter implements ICharacter {
+public class Enemy extends ACharacter implements IDrawable {
 
   // true means flying enemy (not affected by gravity)
   boolean isFlying;
@@ -56,7 +56,7 @@ public class Enemy extends ACharacter implements ICharacter {
           
           this.removeFromGame();
           global_player.handleJumpKillEnemyPhysics();
-          
+
         } else {
           global_player.removeFromGame();
         }

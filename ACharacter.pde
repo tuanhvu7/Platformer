@@ -2,9 +2,9 @@
  * Common for circular characters
  */
 abstract class ACharacter {
-    // position vector of center of character (x, y)
+    // (x, y) coordinates of center of character (x, y)
     protected PVector pos;
-    // velocity vector of character (x, y)
+    // (x, y) velocity of character (x, y)
     protected PVector vel;
     
     // character diameter

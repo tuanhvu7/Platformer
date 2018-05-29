@@ -1,13 +1,24 @@
 /**
- * vertical line boundaries
+ * vertical line boundaries; walls
  */
-public class VerticalBoundary extends ABoundary implements IBoundary {
+public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable {
+
+    /**
+     * Set boundary properties;
+     * sets boundary to be active for all characters and visible
+     */
+    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth) {
+        super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
+                true, true, true);
+    }
 
     /**
      * Set boundary properties
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth) {
-        super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth);
+    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth,
+                        boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers) {
+        super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
+                isVisible, isActiveToPlayer, isActiveToNonPlayers);
     }
 
     /**
@@ -30,25 +41,29 @@ public class VerticalBoundary extends ABoundary implements IBoundary {
     void draw() {
         this.show();
 
-        // boundary collision for player
-        if(contactWithCharacter(global_player)) {
-            if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
-                global_player.isTouchingVerticalBoundary = true;    // TODO: encapsulate
-                this.charactersTouchingThis.add(global_player);
-            }
-            global_player.handleContactWithVerticalBoundary(this.startPoint.x);
-            
-        } else {
-            if(this.charactersTouchingThis.contains(global_player)) {
-                global_player.isTouchingVerticalBoundary = false;   // TODO: encapsulate
-                this.charactersTouchingThis.remove(global_player);
+        if(this.isActiveToPlayer) {
+            // boundary collision for player
+            if(contactWithCharacter(global_player)) {
+                if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
+                    global_player.isTouchingVerticalBoundary = true;    // TODO: encapsulate
+                    this.charactersTouchingThis.add(global_player);
+                }
+                global_player.handleContactWithVerticalBoundary(this.startPoint.x);
+                
+            } else {
+                if(this.charactersTouchingThis.contains(global_player)) {
+                    global_player.isTouchingVerticalBoundary = false;   // TODO: encapsulate
+                    this.charactersTouchingThis.remove(global_player);
+                }
             }
         }
 
-        // boundary collision for non-player characters
-        for(ACharacter curCharacter : global_characters_list) {
-            if(this.contactWithCharacter(curCharacter)) {
-                curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
+        if(this.isActiveToNonPlayers) {
+            // boundary collision for non-player characters
+            for(ACharacter curCharacter : global_characters_list) {
+                if(this.contactWithCharacter(curCharacter)) {
+                    curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
+                }
             }
         }
     }

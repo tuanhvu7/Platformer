@@ -42,6 +42,9 @@ class Constants {
     private static final int ENEMY_COLOR = #FF0000;
     private static final int REGULAR_ENEMY_DIAMETER = 60;
 
+    /*** boundary and block config ***/
+    private static final int BOUNDARY_COLOR = #000000;
+
 
     /*** assets path ***/
     private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";

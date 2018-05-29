@@ -1,7 +1,7 @@
 /**
  * player controllable character in game
  */
-public class Player extends ACharacter implements ICharacter {
+public class Player extends ACharacter implements IDrawable {
 
     // true means this is touching vertical boundary
     private boolean isTouchingVerticalBoundary;
