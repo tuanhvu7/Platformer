@@ -61,7 +61,7 @@ public class Player extends ACharacter implements IDrawable {
             }
 
             if(this.isJumping) {    // jump button pressed/held
-                if(this.numberOfHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
+                if(this.numberOfTopHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
                     this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
                 } else {
                     // for jumpin higher the longer jump button is held
@@ -74,7 +74,7 @@ public class Player extends ACharacter implements IDrawable {
             } else {    // jump button not pressed
                 if(this.isTouchingVerticalBoundary) {   // touching wall
                     this.handleOnWallPhysics();
-                } else if(this.numberOfHorizontalBoundaryContacts == 0) {    // in air
+                } else if(this.numberOfTopHorizontalBoundaryContacts == 0) {    // in air
                     this.handleInAirPhysics();
                 }
             }

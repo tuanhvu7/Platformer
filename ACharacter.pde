@@ -15,10 +15,10 @@ abstract class ACharacter {
     protected boolean isMovingRight;
     protected boolean isJumping;
 
-    // number of horizontal boundaries this is touching;
-    protected int numberOfHorizontalBoundaryContacts;
+    // number of top horizontal boundaries (floor-like boundaries) this is touching;
+    protected int numberOfTopHorizontalBoundaryContacts;
 
-    // true means still in game (boundary and player collision detection)
+    // true means still in game (boundary and character collision detection)
     boolean isActive;
 
     /**
@@ -35,7 +35,7 @@ abstract class ACharacter {
         this.isMovingRight = false;
         this.isJumping = false;
 
-        this.numberOfHorizontalBoundaryContacts = 0;
+        this.numberOfTopHorizontalBoundaryContacts = 0;
     }
 
     /**
@@ -78,9 +78,10 @@ abstract class ACharacter {
     }
 
     /**
-     * remove this from game
+     * deactivate and remove this from game
      */
     void removeFromGame() {
+        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 

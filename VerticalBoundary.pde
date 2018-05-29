@@ -41,7 +41,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer) {
+        if(this.isActiveToPlayer && global_player.isActive) {   // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(global_player)) {
                 if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
@@ -61,7 +61,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
             for(ACharacter curCharacter : global_characters_list) {
-                if(this.contactWithCharacter(curCharacter)) {
+                if(curCharacter.isActive && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
                 }
             }

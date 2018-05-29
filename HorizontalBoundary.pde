@@ -63,18 +63,18 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer) {
+        if(this.isActiveToPlayer && global_player.isActive) {   // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(global_player)) {
                 if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
-                    global_player.numberOfHorizontalBoundaryContacts++; // TODO: encapsulate
+                    global_player.numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate
                     this.charactersTouchingThis.add(global_player);
                 }
                 global_player.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
 
             } else {
                 if(isTopSideBoundary && this.charactersTouchingThis.contains(global_player)) {
-                    global_player.numberOfHorizontalBoundaryContacts--; // TODO: encapsulate
+                    global_player.numberOfTopHorizontalBoundaryContacts--; // TODO: encapsulate
                     this.charactersTouchingThis.remove(global_player);
                 }
             }
@@ -83,17 +83,19 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
             for(ACharacter curCharacter : global_characters_list) {
-                if(this.contactWithCharacter(curCharacter)) {
-                    if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
-                        curCharacter.numberOfHorizontalBoundaryContacts++;  // TODO: encapsulate
-                        this.charactersTouchingThis.add(curCharacter);
-                    }
-                    curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+                if(curCharacter.isActive) {         // TODO: encapsulate
+                    if(this.contactWithCharacter(curCharacter)) {
+                        if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
+                            curCharacter.numberOfTopHorizontalBoundaryContacts++;  // TODO: encapsulate
+                            this.charactersTouchingThis.add(curCharacter);
+                        }
+                        curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
 
-                } else {
-                    if(this.isTopSideBoundary && this.charactersTouchingThis.contains(curCharacter)) {
-                        curCharacter.numberOfHorizontalBoundaryContacts--;  // TODO: encapsulate
-                        this.charactersTouchingThis.remove(curCharacter);
+                    } else {
+                        if(this.isTopSideBoundary && this.charactersTouchingThis.contains(curCharacter)) {  // curCharacter no longer colliding with this
+                            curCharacter.numberOfTopHorizontalBoundaryContacts--;  // TODO: encapsulate
+                            this.charactersTouchingThis.remove(curCharacter);
+                        }
                     }
                 }
             }

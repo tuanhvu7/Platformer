@@ -4,7 +4,6 @@
 abstract class ABoundary {
     // start point (smaller x and smaller y) coordinate for boundary
     protected PVector startPoint;
-    
     // end piont (larger x and larger y) coordinate for boundary
     protected PVector endPoint;
 
@@ -25,21 +24,23 @@ abstract class ABoundary {
 
     /**
      * Set boundary properties
-     * @param startXPoint starting x coordinate
-     * @param startYPoint starting y coordinate
-     * @param x2Offset difference between starting and ending x coordinates (x2 - x1)
-     * @param y2Offset difference between starting and ending y coordinates (y2 - y1)
+     * @param x1Point first x coordinate
+     * @param y1Point first y coordinate
+     * @param x2Offset difference between first and second x coordinates (x2 - x1)
+     * @param y2Offset difference between first and second y coordinates (y2 - y1)
      */
-    ABoundary(int startXPoint, int startYPoint, int x2Offset, int y2Offset, int boundaryLineThickness,
+    ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
                 boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers) {
         
+        // set start points to be smaller of given values
         this.startPoint = new PVector(
-            Math.min(startXPoint, startXPoint + x2Offset), 
-            Math.min(startYPoint, startYPoint + y2Offset));
+            Math.min(x1Point, x1Point + x2Offset), 
+            Math.min(y1Point, y1Point + y2Offset));
 
+        // set end points to be larger of given values
         this.endPoint = new PVector(
-            Math.max(startXPoint, startXPoint + x2Offset), 
-            Math.max(startYPoint, startYPoint + y2Offset));
+            Math.max(x1Point, x1Point + x2Offset), 
+            Math.max(y1Point, y1Point + y2Offset));
 
         this.boundaryLineThickness = boundaryLineThickness;
 
