@@ -22,6 +22,9 @@ abstract class ABoundary {
     // set of all characters that are touching this
     protected Set<ACharacter> charactersTouchingThis;
 
+    // true means still in game (character collision detection)
+    protected boolean isInGame;
+
     /**
      * Set boundary properties
      * @param x1Point first x coordinate
@@ -30,7 +33,7 @@ abstract class ABoundary {
      * @param y2Offset difference between first and second y coordinates (y2 - y1)
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
-                boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers) {
+                boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, boolean isInGame) {
         
         // set start points to be smaller of given values
         this.startPoint = new PVector(
@@ -49,6 +52,12 @@ abstract class ABoundary {
         this.isActiveToNonPlayers = isActiveToNonPlayers;
 
         this.charactersTouchingThis = new HashSet<ACharacter>();
+
+        this.isInGame = isInGame;
+
+        if(this.isInGame) {
+            registerMethod("draw", this);
+        }
     }
 
     /**
@@ -60,6 +69,22 @@ abstract class ABoundary {
             strokeWeight(this.boundaryLineThickness);
             line(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
         }
+    }
+
+    /**
+     * active and add this to game
+     */
+    void addToGame() {
+        this.isInGame = true;
+        registerMethod("draw", this); // connect this draw() from main draw()
+    }
+
+    /**
+     * deactivate and remove this from game
+     */
+    void removeFromGame() {
+        this.isInGame = false;
+        unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
 }

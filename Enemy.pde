@@ -12,8 +12,8 @@ public class Enemy extends ACharacter implements IDrawable {
   /**
    * Set player properties
    */
-  Enemy(int x, int y, int diameter, boolean isFlying, boolean isInvulnerable, boolean isVisible) {
-      super(x, y, diameter);
+  Enemy(int x, int y, int diameter, boolean isFlying, boolean isInvulnerable, boolean isVisible, boolean isInGame) {
+      super(x, y, diameter, isInGame);
       this.vel.x = -Constants.ENEMY_RUN_SPEED;
       
       this.isFlying = isFlying;

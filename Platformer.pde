@@ -43,43 +43,28 @@ void setup() {
     global_gravity = new PVector(0, Constants.GRAVITY);
     global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
 
-    global_player = new Player(200, 0, Constants.PLAYER_DIAMETER); 
-    registerMethod("draw", global_player);
-    registerMethod("keyEvent", global_player);
+    global_player = new Player(200, 0, Constants.PLAYER_DIAMETER, true); 
 
-    Enemy enemyOne = new Enemy(Constants.LEVEL_WIDTH - 500, 0, Constants.REGULAR_ENEMY_DIAMETER, false, false, true);
-    registerMethod("draw", enemyOne);
+    Enemy enemyOne = new Enemy(Constants.LEVEL_WIDTH - 500, 0, Constants.REGULAR_ENEMY_DIAMETER, false, false, true, true);
     global_characters_list.add(enemyOne);
 
-    HorizontalBoundary platform = new HorizontalBoundary(0, height - 200, 100, 1, true);
-    registerMethod("draw", platform);
-    HorizontalBoundary platform2 = new HorizontalBoundary(100, height - 400, 100, 1, true);
-    registerMethod("draw", platform2);
-    HorizontalBoundary platform3 = new HorizontalBoundary(200, height - 600, 100, 1, false);
-    registerMethod("draw", platform3);
-    HorizontalBoundary platform4 = new HorizontalBoundary(100, height - 800, 100, 1, true);
-    registerMethod("draw", platform4);
+    HorizontalBoundary platform = new HorizontalBoundary(0, height - 200, 100, 1, true, true);
+    HorizontalBoundary platform2 = new HorizontalBoundary(100, height - 400, 100, 1, true, true);
+    HorizontalBoundary platform3 = new HorizontalBoundary(200, height - 600, 100, 1, false, true);
+    HorizontalBoundary platform4 = new HorizontalBoundary(100, height - 800, 100, 1, true, true);
 
-    HorizontalBoundary floor = new HorizontalBoundary(0, height - 100, Constants.LEVEL_WIDTH, 1, true);
-    registerMethod("draw", floor);
+    HorizontalBoundary floor = new HorizontalBoundary(0, height - 100, Constants.LEVEL_WIDTH, 1, true, true);
 
-    VerticalBoundary leftWall = new VerticalBoundary(0, 0, height - 100, 1);
-    registerMethod("draw", leftWall);
+    VerticalBoundary leftWall = new VerticalBoundary(0, 0, height - 100, 1, true);
 
-    VerticalBoundary rightWall = new VerticalBoundary(Constants.LEVEL_WIDTH, 0, height - 100, 1);
-    registerMethod("draw", rightWall);
+    VerticalBoundary rightWall = new VerticalBoundary(Constants.LEVEL_WIDTH, 0, height - 100, 1, true);
 
-    // HorizontalBoundary testPlat = new HorizontalBoundary(width / 2, height / 2, 100, 1, true);
-    // registerMethod("draw", testPlat);
-    // HorizontalBoundary testPlat2 = new HorizontalBoundary(width / 2, height / 4, 100, 1, true);
-    // registerMethod("draw", testPlat2);
-    // HorizontalBoundary testPlat3 = new HorizontalBoundary(width / 2, height / 6, 100, 1, false);
-    // registerMethod("draw", testPlat3);
-    // HorizontalBoundary testPlat4 = new HorizontalBoundary(width / 2, height / 8, 100, 1, true);
-    // registerMethod("draw", testPlat4);
+    // HorizontalBoundary testPlat = new HorizontalBoundary(width / 2, height / 2, 100, 1, true, true);
+    // HorizontalBoundary testPlat2 = new HorizontalBoundary(width / 2, height / 4, 100, 1, true, true);
+    // HorizontalBoundary testPlat3 = new HorizontalBoundary(width / 2, height / 6, 100, 1, false, true);
+    // HorizontalBoundary testPlat4 = new HorizontalBoundary(width / 2, height / 8, 100, 1, true, true);
 
     // VerticalBoundary middleWall = new VerticalBoundary(width / 2, height / 2, height / 2 - 100, 1);
-    // registerMethod("draw", middleWall);
 }
 
 /**

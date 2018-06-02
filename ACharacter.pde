@@ -19,23 +19,29 @@ abstract class ACharacter {
     protected int numberOfTopHorizontalBoundaryContacts;
 
     // true means still in game (boundary and character collision detection)
-    boolean isActive;
+    protected boolean isInGame;
 
     /**
      * set character properties
      */
-    ACharacter(int x, int y, int diameter) {
+    ACharacter(int x, int y, int diameter, boolean isInGame) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
         this.diameter = diameter;
 
-        this.isActive = true;
+        this.isInGame = true;
 
         this.isMovingLeft = false;
         this.isMovingRight = false;
         this.isJumping = false;
 
         this.numberOfTopHorizontalBoundaryContacts = 0;
+
+        this.isInGame = isInGame;
+
+        if(this.isInGame) {
+            registerMethod("draw", this);
+        }
     }
 
     /**
@@ -77,11 +83,20 @@ abstract class ACharacter {
         this.vel.y = Math.min(this.vel.y + global_gravity.y, Constants.MAX_VERTICAL_VELOCITY);
     }
 
+
+    /**
+     * active and add this to game
+     */
+    void addToGame() {
+        this.isInGame = true;
+        registerMethod("draw", this); // connect this draw() from main draw()
+    }
+
     /**
      * deactivate and remove this from game
      */
     void removeFromGame() {
-        this.isActive = false;
+        this.isInGame = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 

@@ -11,9 +11,10 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * Set boundary properties;
      * sets boundary to be active for all characters and visible
      */
-    HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth, boolean isTopSideBoundary) {
+    HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth, 
+                        boolean isTopSideBoundary, boolean isInGame) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth,
-                true, true, true);
+                true, true, true, isInGame);
         
         this.isTopSideBoundary = isTopSideBoundary;
     }
@@ -23,9 +24,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth, 
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, 
-                        boolean isTopSideBoundary) {
+                        boolean isTopSideBoundary, boolean isInGame) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth,
-                isVisible, isActiveToPlayer, isActiveToNonPlayers);
+                isVisible, isActiveToPlayer, isActiveToNonPlayers, isInGame);
         
         this.isTopSideBoundary = isTopSideBoundary;
     }
@@ -63,7 +64,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer && global_player.isActive) {   // TODO: encapsulate
+        if(this.isActiveToPlayer && global_player.isInGame) {   // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(global_player)) {
                 if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
@@ -83,7 +84,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
             for(ACharacter curCharacter : global_characters_list) {
-                if(curCharacter.isActive) {         // TODO: encapsulate
+                if(curCharacter.isInGame) {         // TODO: encapsulate
                     if(this.contactWithCharacter(curCharacter)) {
                         if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
                             curCharacter.numberOfTopHorizontalBoundaryContacts++;  // TODO: encapsulate
