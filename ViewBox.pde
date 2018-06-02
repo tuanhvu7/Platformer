@@ -17,6 +17,7 @@ public class ViewBox {
     ViewBox(int startXPos, int startYPos) {
         this.pos = new PVector(startXPos, startYPos);
         this.vel = new PVector(0, 0);
+        registerMethod("draw", this);
     }
 
     /**
@@ -46,6 +47,16 @@ public class ViewBox {
         }
 
         this.pos.add(this.vel);
+        
+        // move viewbox if necessary
+        translate(-this.pos.x, -0);
+    }
+
+    /**
+     * deactivate and remove this from game
+     */
+    void removeFromGame() {
+        unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
     /**

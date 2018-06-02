@@ -19,8 +19,6 @@ Player global_player;
 // list of non-player characters
 Set<ACharacter> global_characters_list;
 
-// viewbox
-ViewBox global_view_box;
 
 /**
  * setup canvas size with variable values
@@ -35,8 +33,7 @@ void settings() {
  */
 void setup() {
 
-    global_view_box = new ViewBox(0, 0);
-    registerMethod("draw", global_view_box);
+    ViewBox viewBox = new ViewBox(0, 0);
 
     global_characters_list = new HashSet<ACharacter>();
 
@@ -93,6 +90,4 @@ void draw() {
         levelWidthLeftToDraw -= widthToDraw;
     }
 
-    // move viewbox if necessary
-    translate(-this.global_view_box.pos.x, -0);
 }
