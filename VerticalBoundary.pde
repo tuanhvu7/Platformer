@@ -7,9 +7,10 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * Set boundary properties;
      * sets boundary to be active for all characters and visible
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth, boolean isInGame) {
+    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth, 
+                        boolean isInGame, int levelNumber) {
         super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                true, true, true, isInGame);
+                true, true, true, isInGame, levelNumber);
     }
 
     /**
@@ -17,9 +18,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, 
-                        boolean isInGame) {
+                        boolean isInGame, int levelNumber) {
         super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                isVisible, isActiveToPlayer, isActiveToNonPlayers, isInGame);
+                isVisible, isActiveToPlayer, isActiveToNonPlayers, isInGame, levelNumber);
     }
 
     /**
@@ -61,7 +62,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
 
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
-            for(ACharacter curCharacter : global_characters_list) {
+            for( ACharacter curCharacter : global_levels_list.get(this.levelNumber).charactersList ) {
                 if(curCharacter.isInGame && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
                 }

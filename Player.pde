@@ -25,24 +25,24 @@ public class Player extends ACharacter implements IDrawable {
         if(keyEvent.getAction() == KeyEvent.PRESS) {
             char keyPressed = keyEvent.getKey();
 
-            if (keyPressed == 'a') {   //left
+            if(keyPressed == 'a') {   //left
                 this.isMovingLeft = true;
             }
-            if (keyPressed == 'd') {   //right
+            if(keyPressed == 'd') {   //right
                 this.isMovingRight = true;
             }
-            if (keyPressed == 'w') {
+            if(keyPressed == 'w') {
                 this.isJumping = true;
             }
 
         } else if(keyEvent.getAction() == KeyEvent.RELEASE) {
-            if (key == 'a') {       //left
+            if(key == 'a') {       //left
                 this.isMovingLeft = false;
             }
-            if (key == 'd') {       //right
+            if(key == 'd') {       //right
                  this.isMovingRight = false;
             }
-            if (key == 'w') {
+            if(key == 'w') {
                 this.isJumping = false;
             }
         }

@@ -25,6 +25,10 @@ abstract class ABoundary {
     // true means still in game (character collision detection)
     protected boolean isInGame;
 
+    // indicated level that this is in
+    // levelNumber = 0 means this is in level at 0th index of global_levels_list
+    protected int levelNumber;
+
     /**
      * Set boundary properties
      * @param x1Point first x coordinate
@@ -33,7 +37,8 @@ abstract class ABoundary {
      * @param y2Offset difference between first and second y coordinates (y2 - y1)
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
-                boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, boolean isInGame) {
+                boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,
+                boolean isInGame, int levelNumber) {
         
         // set start points to be smaller of given values
         this.startPoint = new PVector(

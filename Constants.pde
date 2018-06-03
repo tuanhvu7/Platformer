@@ -26,7 +26,7 @@ class Constants {
 
     // minimun angle (degrees) of collision between player and enemy
     // for player to kill enemy
-    private static final int MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE = 20;
+    private static final double MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE = 20.0;
 
 
     /*** player config ***/
@@ -41,6 +41,7 @@ class Constants {
     private static final float ENEMY_RUN_SPEED = 2.5;
     private static final int ENEMY_COLOR = #FF0000;
     private static final int REGULAR_ENEMY_DIAMETER = 60;
+    private static final int BIG_ENEMY_DIAMETER = 500;
 
     /*** boundary and block config ***/
     private static final int BOUNDARY_COLOR = #000000;
