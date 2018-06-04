@@ -6,8 +6,11 @@ abstract class ALevel {
     // true means this is loaded
     protected boolean isLevelLoaded;
 
-    // (levelNumber - 1) is index of this in global_levels_list
-    protected int levelNumber;
+    // index of this in global_levels_list
+    protected int levelIndex;
+
+    // player-controllable character
+    protected Player player;
 
     // list of all non-playable characters in level
     protected Set<ACharacter> charactersList;
@@ -16,11 +19,9 @@ abstract class ALevel {
      * sets level properties
      */
     ALevel(boolean isLevelLoaded, int levelNumber) {
-        this.levelNumber = levelNumber - 1;
+        this.levelIndex = levelNumber - 1; // means level 1 is in index 0 of global_levels_list
         if(isLevelLoaded) {
             this.loadLevel();
-        } else {
-            this.closeLevel();
         }
     }
 
@@ -43,6 +44,27 @@ abstract class ALevel {
    /**
     * runs continuously
     */
-    void draw() { }
+    void draw() {
+        // draw background image horizontally until level width is filled
+        int levelWidthLeftToDraw = global_levels_width_array[this.levelIndex];
+        int numberHorizontalBackgroundIterations = 
+            (int) Math.ceil( (double) global_levels_width_array[this.levelIndex] / backgroundImage.width);
+        
+        for(int i = 0; i < numberHorizontalBackgroundIterations; i++) {
+            int widthToDraw = 
+            Math.min(
+                backgroundImage.width, 
+                levelWidthLeftToDraw);
+            
+            image(
+                backgroundImage, 
+                i * backgroundImage.width, 
+                0, 
+                widthToDraw, 
+                backgroundImage.height);
+
+            levelWidthLeftToDraw -= widthToDraw;
+        }
+    }
 
 }

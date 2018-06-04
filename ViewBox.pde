@@ -1,30 +1,39 @@
 /**
  * viewbox that keeps track of screen position to display character;
- * to be used in translate(x, y) in main draw()
+ * to be used in translate(x, y) in draw()
  */
-public class ViewBox {
+public class ViewBox implements IDrawable {
     
     // top-left (x, y) coordinates of viewbox position
-    PVector pos;
+    private PVector pos;
 
     // velocity of viewbox
-    PVector vel;
+    private PVector vel;
 
+    // 0 means this is in level at 0th index of global_levels_list
+    private int levelIndex;
+
+    // true means display this and have this move according to player position
+    private boolean isInActiveLevel;
 
     /**
      * set viewbox properties
      */
-    ViewBox(int startXPos, int startYPos) {
+    ViewBox(int startXPos, int startYPos, int levelIndex, boolean isInActiveLevel) {
         this.pos = new PVector(startXPos, startYPos);
         this.vel = new PVector(0, 0);
-        registerMethod("draw", this);
+        this.levelIndex = levelIndex;
+        this.isInActiveLevel = isInActiveLevel;
+        if(this.isInActiveLevel) {
+            registerMethod("draw", this);
+        }
     }
 
     /**
      * runs continuously. handles viewbox position
      */
     void draw() {
-        if(global_player.isMovingLeft) {    // TODO: encapsulate
+        if(getPlayerAtLevelIndex(this.levelIndex).isMovingLeft) {    // TODO: encapsulate
             if(this.pos.x > 0       // left edge of viewbox not at left edge of level
                 && this.playerAtViewBoxBoundary(true)) {
                 
@@ -33,8 +42,8 @@ public class ViewBox {
                 this.vel.x = 0;
             }
         }
-        if(global_player.isMovingRight) {   // TODO: encapsulate
-            if(this.pos.x < Constants.LEVEL_WIDTH - width   // right edge of viewbox not at right edge of level
+        if(getPlayerAtLevelIndex(this.levelIndex).isMovingRight) {   // TODO: encapsulate
+            if(this.pos.x < global_levels_width_array[this.levelIndex] - width   // right edge of viewbox not at right edge of level
                 && this.playerAtViewBoxBoundary(false)) {
                 
                 this.vel.x = Constants.PLAYER_RUN_SPEED;
@@ -42,7 +51,7 @@ public class ViewBox {
                 this.vel.x = 0;
             }
         }
-        if(!global_player.isMovingLeft && !global_player.isMovingRight) {   // TODO: encapsulate
+        if(!getPlayerAtLevelIndex(this.levelIndex).isMovingLeft && !getPlayerAtLevelIndex(this.levelIndex).isMovingRight) {   // TODO: encapsulate
             this.vel.x = 0;
         }
 
@@ -53,9 +62,18 @@ public class ViewBox {
     }
 
     /**
+     * activate and add this to game
+     */
+    void addToGame() {
+        this.isInActiveLevel = true;
+        registerMethod("draw", this); // connect this draw() from main draw()
+    }
+
+    /**
      * deactivate and remove this from game
      */
     void removeFromGame() {
+        this.isInActiveLevel = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
@@ -64,9 +82,9 @@ public class ViewBox {
      */
     private boolean playerAtViewBoxBoundary(boolean isLowerBoundary) {
         if(isLowerBoundary) {
-            return global_player.pos.x <= this.pos.x + Constants.VIEWBOX_BOUNDARY * width;  // TODO: encapsulate
+            return getPlayerAtLevelIndex(this.levelIndex).pos.x <= this.pos.x + Constants.VIEWBOX_BOUNDARY * width;  // TODO: encapsulate
         } else {
-            return global_player.pos.x >= this.pos.x + (1.00 - Constants.VIEWBOX_BOUNDARY) * width; // TODO: encapsulate
+            return getPlayerAtLevelIndex(this.levelIndex).pos.x >= this.pos.x + (1.00 - Constants.VIEWBOX_BOUNDARY) * width; // TODO: encapsulate
         }
     }
 

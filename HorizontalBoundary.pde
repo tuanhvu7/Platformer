@@ -12,9 +12,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * sets boundary to be active for all characters and visible
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth,
-                        boolean isTopSideBoundary, boolean isInGame, int levelNumber) {
+                        boolean isTopSideBoundary, boolean isInActiveLevel, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth,
-            true, true, true, isInGame, levelNumber);
+            true, true, true, isInActiveLevel, levelIndex);
 
         this.isTopSideBoundary = isTopSideBoundary;
     }
@@ -24,9 +24,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,
-                        boolean isTopSideBoundary, boolean isInGame, int levelNumber) {
+                        boolean isTopSideBoundary, boolean isInActiveLevel, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth,
-            isVisible, isActiveToPlayer, isActiveToNonPlayers, isInGame, levelNumber);
+            isVisible, isActiveToPlayer, isActiveToNonPlayers, isInActiveLevel, levelIndex);
 
         this.isTopSideBoundary = isTopSideBoundary;
     }
@@ -64,27 +64,27 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer && global_player.isInGame) { // TODO: encapsulate
+        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isInActiveLevel) { // TODO: encapsulate
             // boundary collision for player
-            if(contactWithCharacter(global_player)) {
-                if(isTopSideBoundary && !this.charactersTouchingThis.contains(global_player)) { // new collision detected
-                    global_player.numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate
-                    this.charactersTouchingThis.add(global_player);
+            if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {  // TODO: encapsulate
+                if(isTopSideBoundary && !this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) { // new collision detected
+                    getPlayerAtLevelIndex(this.levelIndex).numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate
+                    this.charactersTouchingThis.add(getPlayerAtLevelIndex(this.levelIndex));
                 }
-                global_player.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+                getPlayerAtLevelIndex(this.levelIndex).handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
 
             } else {
-                if(isTopSideBoundary && this.charactersTouchingThis.contains(global_player)) {
-                    global_player.numberOfTopHorizontalBoundaryContacts--; // TODO: encapsulate
-                    this.charactersTouchingThis.remove(global_player);
+                if(isTopSideBoundary && this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {
+                    getPlayerAtLevelIndex(this.levelIndex).numberOfTopHorizontalBoundaryContacts--; // TODO: encapsulate
+                    this.charactersTouchingThis.remove(getPlayerAtLevelIndex(this.levelIndex));
                 }
             }
         }
 
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
-            for(ACharacter curCharacter: global_levels_list.get(this.levelNumber).charactersList) { // TODO: encapsulate
-                if(curCharacter.isInGame) { // TODO: encapsulate
+            for(ACharacter curCharacter: getCharactersListAtLevelIndex(this.levelIndex)) { // TODO: encapsulate
+                if(curCharacter.isInActiveLevel) { // TODO: encapsulate
                     if(this.contactWithCharacter(curCharacter)) {
                         if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
                             curCharacter.numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate

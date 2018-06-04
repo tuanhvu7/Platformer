@@ -9,10 +9,10 @@ public class Player extends ACharacter implements IDrawable {
     /**
      * Set player properties
      */
-    Player(int x, int y, int diameter, boolean isInGame) {
-        super(x, y, diameter, isInGame);
+    Player(int x, int y, int diameter, boolean isInActiveLevel) {
+        super(x, y, diameter, isInActiveLevel);
         this.isTouchingVerticalBoundary = false;
-        if(this.isInGame) {
+        if(this.isInActiveLevel) {
             registerMethod("keyEvent", this);
         }
     }
@@ -119,7 +119,7 @@ public class Player extends ACharacter implements IDrawable {
      * active and add this to game
      */
     void addToGame() {
-        this.isInGame = true;
+        this.isInActiveLevel = true;
         registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
         registerMethod("draw", this); // connect this draw() from main draw()
     }
@@ -128,7 +128,7 @@ public class Player extends ACharacter implements IDrawable {
      * deactivate and remove this from game
      */
     void removeFromGame() {
-        this.isInGame = false;
+        this.isInActiveLevel = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
         unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
     }

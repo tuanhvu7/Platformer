@@ -18,18 +18,18 @@ abstract class ACharacter {
     // number of top horizontal boundaries (floor-like boundaries) this is touching;
     protected int numberOfTopHorizontalBoundaryContacts;
 
-    // true means still in game (boundary and character collision detection)
-    protected boolean isInGame;
+    // true means in level that is active (boundary and character collision detection)
+    protected boolean isInActiveLevel;
 
     /**
      * set character properties
      */
-    ACharacter(int x, int y, int diameter, boolean isInGame) {
+    ACharacter(int x, int y, int diameter, boolean isInActiveLevel) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
         this.diameter = diameter;
 
-        this.isInGame = true;
+        this.isInActiveLevel = true;
 
         this.isMovingLeft = false;
         this.isMovingRight = false;
@@ -37,9 +37,9 @@ abstract class ACharacter {
 
         this.numberOfTopHorizontalBoundaryContacts = 0;
 
-        this.isInGame = isInGame;
+        this.isInActiveLevel = isInActiveLevel;
 
-        if(this.isInGame) {
+        if(this.isInActiveLevel) {
             registerMethod("draw", this);
         }
     }
@@ -88,7 +88,7 @@ abstract class ACharacter {
      * active and add this to game
      */
     void addToGame() {
-        this.isInGame = true;
+        this.isInActiveLevel = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
@@ -96,7 +96,7 @@ abstract class ACharacter {
      * deactivate and remove this from game
      */
     void removeFromGame() {
-        this.isInGame = false;
+        this.isInActiveLevel = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 

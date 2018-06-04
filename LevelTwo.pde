@@ -1,12 +1,12 @@
 /**
- * Level one
+ * Level two
  */
-public class LevelOne extends ALevel implements IDrawable {
+public class LevelTwo extends ALevel implements IDrawable {
 
     /**
      * sets level properties, boundaries, and characters
      */
-    LevelOne(boolean isLevelLoaded, int levelNumber) {
+    LevelTwo(boolean isLevelLoaded, int levelNumber) {
         super(isLevelLoaded, levelNumber);
 
         ViewBox viewBox = new ViewBox(0, 0, this.levelIndex, this.isLevelLoaded);
@@ -18,10 +18,10 @@ public class LevelOne extends ALevel implements IDrawable {
 
         this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded); 
 
-        charactersList.add( new Enemy(
+        charactersList.add(new Enemy(
             global_levels_width_array[this.levelIndex] - 500,
             0,
-            Constants.BIG_ENEMY_DIAMETER,
+            Constants.REGULAR_ENEMY_DIAMETER,
             false,
             false,
             true,
@@ -29,9 +29,9 @@ public class LevelOne extends ALevel implements IDrawable {
             this.isLevelLoaded)
         );
 
-        HorizontalBoundary platform = new HorizontalBoundary(
-            0,
-            height - 200,
+        HorizontalBoundary testPlat = new HorizontalBoundary(
+            width / 2,
+            height / 2,
             100,
             1,
             true,
@@ -39,18 +39,19 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         );
 
-        HorizontalBoundary platform2 = new HorizontalBoundary(
-            100,
-            height - 400,
+        HorizontalBoundary testPlat2 = new HorizontalBoundary(
+            width / 2,
+            height / 4,
             100,
             1,
             true,
             this.isLevelLoaded,
             this.levelIndex
         );
-        HorizontalBoundary platform3 = new HorizontalBoundary(
-            200,
-            height - 600,
+            
+        HorizontalBoundary testPlat3 = new HorizontalBoundary(
+            width / 2,
+            height / 6,
             100,
             1,
             false,
@@ -58,9 +59,9 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         );
 
-        HorizontalBoundary platform4 = new HorizontalBoundary(
-            100,
-            height - 800,
+        HorizontalBoundary testPlat4 = new HorizontalBoundary(
+            width / 2,
+            height / 8,
             100,
             1,
             true,
@@ -78,7 +79,8 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         );
 
-        VerticalBoundary leftWall = new VerticalBoundary(0,
+        VerticalBoundary leftWall = new VerticalBoundary(
+            0,
             0,
             height - 100,
             1,
@@ -86,13 +88,16 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         );
 
-        VerticalBoundary rightWall = new VerticalBoundary(global_levels_width_array[this.levelIndex],
+        VerticalBoundary rightWall = new VerticalBoundary(
+            global_levels_width_array[this.levelIndex],
             0,
             height - 100,
             1,
             this.isLevelLoaded,
             this.levelIndex
         );
+
+        // VerticalBoundary middleWall = new VerticalBoundary(width / 2, height / 2, height / 2 - 100, 1, this.isLevelLoaded, this.levelIndex);
     }
 
 }

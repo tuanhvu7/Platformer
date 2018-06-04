@@ -12,10 +12,6 @@ class Constants {
     // Example: 0.25 means viewbox follow player if player goes past upper and lower 25% screen size
     private static final double VIEWBOX_BOUNDARY = 0.25;
 
-    /*** level config ***/
-    private static final int LEVEL_WIDTH = 1500; // 5632
-    private static final int LEVEL_HEIGHT = 900;
-
     /*** velocity and acceleration physics ***/
     private static final float GRAVITY = 0.4;
     // gravity multiplier for jumping higher when holding jump button

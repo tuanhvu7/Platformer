@@ -8,9 +8,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * sets boundary to be active for all characters and visible
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth, 
-                        boolean isInGame, int levelNumber) {
+                        boolean isInActiveLevel, int levelIndex) {
         super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                true, true, true, isInGame, levelNumber);
+                true, true, true, isInActiveLevel, levelIndex);
     }
 
     /**
@@ -18,9 +18,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, 
-                        boolean isInGame, int levelNumber) {
+                        boolean isInActiveLevel, int levelIndex) {
         super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                isVisible, isActiveToPlayer, isActiveToNonPlayers, isInGame, levelNumber);
+                isVisible, isActiveToPlayer, isActiveToNonPlayers, isInActiveLevel, levelIndex);
     }
 
     /**
@@ -43,27 +43,27 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer && global_player.isInGame) {   // TODO: encapsulate
+        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isInActiveLevel) {   // TODO: encapsulate
             // boundary collision for player
-            if(contactWithCharacter(global_player)) {
-                if(!this.charactersTouchingThis.contains(global_player)) {  // new collision detected
-                    global_player.isTouchingVerticalBoundary = true;    // TODO: encapsulate
-                    this.charactersTouchingThis.add(global_player);
+            if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {
+                if(!this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {  // new collision detected
+                    getPlayerAtLevelIndex(this.levelIndex).isTouchingVerticalBoundary = true;    // TODO: encapsulate
+                    this.charactersTouchingThis.add(getPlayerAtLevelIndex(this.levelIndex));
                 }
-                global_player.handleContactWithVerticalBoundary(this.startPoint.x);
+                getPlayerAtLevelIndex(this.levelIndex).handleContactWithVerticalBoundary(this.startPoint.x);
                 
             } else {
-                if(this.charactersTouchingThis.contains(global_player)) {
-                    global_player.isTouchingVerticalBoundary = false;   // TODO: encapsulate
-                    this.charactersTouchingThis.remove(global_player);
+                if(this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {
+                    getPlayerAtLevelIndex(this.levelIndex).isTouchingVerticalBoundary = false;   // TODO: encapsulate
+                    this.charactersTouchingThis.remove(getPlayerAtLevelIndex(this.levelIndex));
                 }
             }
         }
 
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
-            for( ACharacter curCharacter : global_levels_list.get(this.levelNumber).charactersList ) {
-                if(curCharacter.isInGame && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
+            for( ACharacter curCharacter : getCharactersListAtLevelIndex(this.levelIndex) ) {
+                if(curCharacter.isInActiveLevel && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
                 }
             }

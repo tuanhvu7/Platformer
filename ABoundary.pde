@@ -22,12 +22,11 @@ abstract class ABoundary {
     // set of all characters that are touching this
     protected Set<ACharacter> charactersTouchingThis;
 
-    // true means still in game (character collision detection)
-    protected boolean isInGame;
+    // true means in level that is active (character collision detection)
+    protected boolean isInActiveLevel;
 
-    // indicated level that this is in
-    // levelNumber = 0 means this is in level at 0th index of global_levels_list
-    protected int levelNumber;
+    // 0 means this is in level at 0th index of global_levels_list
+    protected int levelIndex;
 
     /**
      * Set boundary properties
@@ -38,7 +37,7 @@ abstract class ABoundary {
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
                 boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,
-                boolean isInGame, int levelNumber) {
+                boolean isInActiveLevel, int levelIndex) {
         
         // set start points to be smaller of given values
         this.startPoint = new PVector(
@@ -58,9 +57,11 @@ abstract class ABoundary {
 
         this.charactersTouchingThis = new HashSet<ACharacter>();
 
-        this.isInGame = isInGame;
+        this.isInActiveLevel = isInActiveLevel;
 
-        if(this.isInGame) {
+        this.levelIndex = levelIndex;
+
+        if(this.isInActiveLevel) {
             registerMethod("draw", this);
         }
     }
@@ -80,7 +81,7 @@ abstract class ABoundary {
      * active and add this to game
      */
     void addToGame() {
-        this.isInGame = true;
+        this.isInActiveLevel = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
@@ -88,7 +89,7 @@ abstract class ABoundary {
      * deactivate and remove this from game
      */
     void removeFromGame() {
-        this.isInGame = false;
+        this.isInActiveLevel = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 

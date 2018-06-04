@@ -1,5 +1,8 @@
 public class Enemy extends ACharacter implements IDrawable {
 
+    // 0 means this is in level at 0th index of global_levels_list
+    protected int levelIndex;
+
     // true means flying enemy (not affected by gravity)
     private boolean isFlying;
 
@@ -12,13 +15,17 @@ public class Enemy extends ACharacter implements IDrawable {
     /**
      * Set player properties
      */
-    Enemy(int x, int y, int diameter, boolean isFlying, boolean isInvulnerable, boolean isVisible, boolean isInGame) {
-        super(x, y, diameter, isInGame);
+    Enemy(int x, int y, int diameter,
+            boolean isFlying, boolean isInvulnerable, boolean isVisible,
+            int levelIndex, boolean isInActiveLevel) {
+        super(x, y, diameter, isInActiveLevel);
         this.vel.x = -Constants.ENEMY_RUN_SPEED;
 
         this.isFlying = isFlying;
         this.isInvulnerable = isInvulnerable;
         this.isVisible = isVisible;
+
+        this.levelIndex = levelIndex;
     }
 
     /**
@@ -27,11 +34,11 @@ public class Enemy extends ACharacter implements IDrawable {
      * negative angle means no collision
      */
     double collisionWithPlayer() {
-        float xDifference = Math.abs(this.pos.x - global_player.pos.x); // TODO: encapsulate
-        float yDifference = Math.abs(this.pos.y - global_player.pos.y); // TODO: encapsulate
+        float xDifference = Math.abs(this.pos.x - getPlayerAtLevelIndex(this.levelIndex).pos.x); // TODO: encapsulate
+        float yDifference = Math.abs(this.pos.y - getPlayerAtLevelIndex(this.levelIndex).pos.y); // TODO: encapsulate
 
         // distance between player and this must be sum of their radii for collision
-        float distanceNeededForCollision = (this.diameter / 2) + (global_player.diameter / 2); // TODO: encapsulate
+        float distanceNeededForCollision = (this.diameter / 2) + (getPlayerAtLevelIndex(this.levelIndex).diameter / 2); // TODO: encapsulate
 
         // pythagorean theorem
         boolean isAtCollisionDistance =
@@ -49,21 +56,21 @@ public class Enemy extends ACharacter implements IDrawable {
      */
     void draw() {
         // check collision with player
-        if(global_player.isInGame) {   // TODO: encapsulate
+        if(getPlayerAtLevelIndex(this.levelIndex).isInActiveLevel) {   // TODO: encapsulate
             double collisionAngle = this.collisionWithPlayer();
             if(collisionAngle >= 0) {
                 println("coll angle: " + Math.toDegrees(collisionAngle));
                 println("min angle: " + Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE);
                 if(Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE 
-                    && this.pos.y > global_player.pos.y) { // player is above this // TODO: encapsulate
+                    && this.pos.y > getPlayerAtLevelIndex(this.levelIndex).pos.y) { // player is above this // TODO: encapsulate
 
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
                     this.removeFromGame();
-                    global_player.handleJumpKillEnemyPhysics();
+                    getPlayerAtLevelIndex(this.levelIndex).handleJumpKillEnemyPhysics();
 
                 } else {
                     println("killed player: " + Math.toDegrees(collisionAngle));
-                    global_player.removeFromGame();
+                    getPlayerAtLevelIndex(this.levelIndex).removeFromGame();
                 }
             }
         }

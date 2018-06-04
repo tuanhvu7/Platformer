@@ -15,11 +15,20 @@ PVector global_wall_slide_acceleration;
 // background image
 PImage backgroundImage;
 
-// player controllable character
-Player global_player;
-
 // list of levels
 List<ALevel> global_levels_list;
+
+// widths of all levels
+final int[] global_levels_width_array = {
+    1500,    // 5632 level one
+    1000
+};
+
+// heights of all levels
+final int[] global_levels_height_array = {
+    900,    // level one
+    900
+};
 
 
 /**
@@ -36,32 +45,24 @@ void settings() {
  */
 void setup() { 
     global_levels_list.add(new LevelOne(true, 1));
+    global_levels_list.add(new LevelTwo(false, 2));
 }
 
 /**
  * runs continuously
  */
-void draw() {
+void draw() { }
 
-    // draw background image horizontally until level width is filled
-    int levelWidthLeftToDraw = Constants.LEVEL_WIDTH;
-    int numberHorizontalBackgroundIterations = 
-        (int) Math.ceil( (double) Constants.LEVEL_WIDTH / backgroundImage.width);
-    
-    for(int i = 0; i < numberHorizontalBackgroundIterations; i++) {
-        int widthToDraw = 
-        Math.min(
-            backgroundImage.width, 
-            levelWidthLeftToDraw);
-        
-        image(
-            backgroundImage, 
-            i * backgroundImage.width, 
-            0, 
-            widthToDraw, 
-            backgroundImage.height);
+/**
+ * return player of level at given index in global_levels_list
+ */
+private Player getPlayerAtLevelIndex(int levelIndex) {
+    return global_levels_list.get(levelIndex).player;   // TODO: encapsulate
+}
 
-        levelWidthLeftToDraw -= widthToDraw;
-    }
-
+/**
+ * return non-player characters of level at given index in global_levels_list
+ */
+private Set<ACharacter> getCharactersListAtLevelIndex(int levelIndex) {
+    return global_levels_list.get(levelIndex).charactersList;   // TODO: encapsulate
 }
