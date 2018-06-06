@@ -13,10 +13,9 @@ public class LevelTwo extends ALevel implements IDrawable {
 
         charactersList = new HashSet<ACharacter>();
 
-        global_gravity = new PVector(0, Constants.GRAVITY);
-        global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded);
 
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded); 
+        loopSong();
 
         charactersList.add(new Enemy(
             global_levels_width_array[this.levelIndex] - 500,

@@ -8,15 +8,19 @@ public class LevelOne extends ALevel implements IDrawable {
      */
     LevelOne(boolean isLevelLoaded, int levelNumber) {
         super(isLevelLoaded, levelNumber);
+    }
 
-        ViewBox viewBox = new ViewBox(0, 0, this.levelIndex, this.isLevelLoaded);
+    /**
+     * setup level
+     */
+    void setUpLevel() {
+        this.makeActive();
 
-        charactersList = new HashSet<ACharacter>();
+        this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isLevelLoaded);
 
-        global_gravity = new PVector(0, Constants.GRAVITY);
-        global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded);
 
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded); 
+        loopSong();
 
         charactersList.add( new Enemy(
             global_levels_width_array[this.levelIndex] - 500,
@@ -29,7 +33,7 @@ public class LevelOne extends ALevel implements IDrawable {
             this.isLevelLoaded)
         );
 
-        HorizontalBoundary platform = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             0,
             height - 200,
             100,
@@ -37,9 +41,9 @@ public class LevelOne extends ALevel implements IDrawable {
             true,
             this.isLevelLoaded,
             this.levelIndex
-        );
+        ));
 
-        HorizontalBoundary platform2 = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             100,
             height - 400,
             100,
@@ -47,8 +51,9 @@ public class LevelOne extends ALevel implements IDrawable {
             true,
             this.isLevelLoaded,
             this.levelIndex
-        );
-        HorizontalBoundary platform3 = new HorizontalBoundary(
+        ));
+
+        this.boundariesList.add(new HorizontalBoundary(
             200,
             height - 600,
             100,
@@ -56,9 +61,9 @@ public class LevelOne extends ALevel implements IDrawable {
             false,
             this.isLevelLoaded,
             this.levelIndex
-        );
+        ));
 
-        HorizontalBoundary platform4 = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             100,
             height - 800,
             100,
@@ -66,9 +71,10 @@ public class LevelOne extends ALevel implements IDrawable {
             true,
             this.isLevelLoaded,
             this.levelIndex
-        );
+        ));
 
-        HorizontalBoundary floor = new HorizontalBoundary(
+        // stage floor
+        this.boundariesList.add(new HorizontalBoundary(
             0,
             height - 100,
             global_levels_width_array[this.levelIndex],
@@ -76,23 +82,44 @@ public class LevelOne extends ALevel implements IDrawable {
             true,
             this.isLevelLoaded,
             this.levelIndex
-        );
+        ));
 
-        VerticalBoundary leftWall = new VerticalBoundary(0,
+        // stage right and left walls
+        this.boundariesList.add(new VerticalBoundary(
+            0,
             0,
             height - 100,
             1,
             this.isLevelLoaded,
             this.levelIndex
-        );
+        ));
 
-        VerticalBoundary rightWall = new VerticalBoundary(global_levels_width_array[this.levelIndex],
+        this.boundariesList.add(new VerticalBoundary(
+            global_levels_width_array[this.levelIndex],
             0,
             height - 100,
             1,
             this.isLevelLoaded,
             this.levelIndex
-        );
+        ));
+    }
+
+    /**
+     * deactiviate level
+     */
+    void deactivateLevel() {
+        this.player.makeNotActive();
+        this.viewBox.makeNotActive();
+
+        for(ACharacter curCharacter : this.charactersList) {
+            curCharacter.makeNotActive();
+        }
+
+        for(ABoundary curBoundary : this.boundariesList) {
+            curBoundary.makeNotActive();
+        }
+        
+        this.makeNotActive();
     }
 
 }

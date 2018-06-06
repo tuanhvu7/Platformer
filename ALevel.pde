@@ -12,31 +12,48 @@ abstract class ALevel {
     // player-controllable character
     protected Player player;
 
-    // list of all non-playable characters in level
+    // level viewbox
+    protected ViewBox viewBox;
+
+    // set of all non-playable characters in level
     protected Set<ACharacter> charactersList;
+
+    // set of all boundaries in level
+    protected Set<ABoundary> boundariesList;
 
     /**
      * sets level properties
      */
     ALevel(boolean isLevelLoaded, int levelNumber) {
+
+        this.charactersList = new HashSet<ACharacter>();
+        this.boundariesList = new HashSet<ABoundary>();
+
         this.levelIndex = levelNumber - 1; // means level 1 is in index 0 of global_levels_list
-        if(isLevelLoaded) {
-            this.loadLevel();
-        }
     }
 
    /**
-    * load level
+    * setup level
     */
-    void loadLevel() {
+    void setUpLevel() { }
+
+   /**
+    * deactiviate level
+    */
+    void deactivateLevel() { }
+
+   /**
+    * register draw() for level
+    */
+    void makeActive() {
         this.isLevelLoaded = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
    /**
-    * close level
+    * unregister draw() for level
     */
-    void closeLevel() {
+    void makeNotActive() {
         this.isLevelLoaded = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }

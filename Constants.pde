@@ -45,5 +45,7 @@ class Constants {
 
     /*** assets path ***/
     private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
+    private static final String LEVEL_SONG_NAME = "ugandan-knuckles-song-mono.mp3"; 
+    private static final String PLAYER_DEATH_SONG_NAME = "ugandan-knuckles-song-end.mp3"; 
 
 }

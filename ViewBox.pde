@@ -14,18 +14,18 @@ public class ViewBox implements IDrawable {
     private int levelIndex;
 
     // true means display this and have this move according to player position
-    private boolean isInActiveLevel;
+    private boolean isActive;
 
     /**
      * set viewbox properties
      */
-    ViewBox(int startXPos, int startYPos, int levelIndex, boolean isInActiveLevel) {
+    ViewBox(int startXPos, int startYPos, int levelIndex, boolean isActive) {
         this.pos = new PVector(startXPos, startYPos);
         this.vel = new PVector(0, 0);
         this.levelIndex = levelIndex;
-        this.isInActiveLevel = isInActiveLevel;
-        if(this.isInActiveLevel) {
-            registerMethod("draw", this);
+        this.isActive = isActive;
+        if(isActive) {
+            this.makeActive();
         }
     }
 
@@ -64,16 +64,16 @@ public class ViewBox implements IDrawable {
     /**
      * activate and add this to game
      */
-    void addToGame() {
-        this.isInActiveLevel = true;
+    void makeActive() {
+        this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
     /**
      * deactivate and remove this from game
      */
-    void removeFromGame() {
-        this.isInActiveLevel = false;
+    void makeNotActive() {
+        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 

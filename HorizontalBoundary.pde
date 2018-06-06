@@ -12,9 +12,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * sets boundary to be active for all characters and visible
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth,
-                        boolean isTopSideBoundary, boolean isInActiveLevel, int levelIndex) {
+                        boolean isTopSideBoundary, boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth,
-            true, true, true, isInActiveLevel, levelIndex);
+            true, true, true, isActive, levelIndex);
 
         this.isTopSideBoundary = isTopSideBoundary;
     }
@@ -24,9 +24,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,
-                        boolean isTopSideBoundary, boolean isInActiveLevel, int levelIndex) {
+                        boolean isTopSideBoundary, boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryWidth,
-            isVisible, isActiveToPlayer, isActiveToNonPlayers, isInActiveLevel, levelIndex);
+            isVisible, isActiveToPlayer, isActiveToNonPlayers, isActive, levelIndex);
 
         this.isTopSideBoundary = isTopSideBoundary;
     }
@@ -64,7 +64,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isInActiveLevel) { // TODO: encapsulate
+        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) { // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {  // TODO: encapsulate
                 if(isTopSideBoundary && !this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) { // new collision detected
@@ -84,7 +84,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
             for(ACharacter curCharacter: getCharactersListAtLevelIndex(this.levelIndex)) { // TODO: encapsulate
-                if(curCharacter.isInActiveLevel) { // TODO: encapsulate
+                if(curCharacter.isActive) { // TODO: encapsulate
                     if(this.contactWithCharacter(curCharacter)) {
                         if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
                             curCharacter.numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate

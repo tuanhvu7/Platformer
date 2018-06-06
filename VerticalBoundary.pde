@@ -8,9 +8,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * sets boundary to be active for all characters and visible
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth, 
-                        boolean isInActiveLevel, int levelIndex) {
+                        boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                true, true, true, isInActiveLevel, levelIndex);
+                true, true, true, isActive, levelIndex);
     }
 
     /**
@@ -18,9 +18,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, 
-                        boolean isInActiveLevel, int levelIndex) {
+                        boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                isVisible, isActiveToPlayer, isActiveToNonPlayers, isInActiveLevel, levelIndex);
+                isVisible, isActiveToPlayer, isActiveToNonPlayers, isActive, levelIndex);
     }
 
     /**
@@ -43,7 +43,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isInActiveLevel) {   // TODO: encapsulate
+        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {
                 if(!this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {  // new collision detected
@@ -63,7 +63,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
         if(this.isActiveToNonPlayers) {
             // boundary collision for non-player characters
             for( ACharacter curCharacter : getCharactersListAtLevelIndex(this.levelIndex) ) {
-                if(curCharacter.isInActiveLevel && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
+                if(curCharacter.isActive && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
                 }
             }

@@ -17,8 +17,8 @@ public class Enemy extends ACharacter implements IDrawable {
      */
     Enemy(int x, int y, int diameter,
             boolean isFlying, boolean isInvulnerable, boolean isVisible,
-            int levelIndex, boolean isInActiveLevel) {
-        super(x, y, diameter, isInActiveLevel);
+            int levelIndex, boolean isActive) {
+        super(x, y, diameter, isActive);
         this.vel.x = -Constants.ENEMY_RUN_SPEED;
 
         this.isFlying = isFlying;
@@ -56,7 +56,7 @@ public class Enemy extends ACharacter implements IDrawable {
      */
     void draw() {
         // check collision with player
-        if(getPlayerAtLevelIndex(this.levelIndex).isInActiveLevel) {   // TODO: encapsulate
+        if(getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
             double collisionAngle = this.collisionWithPlayer();
             if(collisionAngle >= 0) {
                 println("coll angle: " + Math.toDegrees(collisionAngle));
@@ -65,12 +65,12 @@ public class Enemy extends ACharacter implements IDrawable {
                     && this.pos.y > getPlayerAtLevelIndex(this.levelIndex).pos.y) { // player is above this // TODO: encapsulate
 
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
-                    this.removeFromGame();
+                    this.makeNotActive();
                     getPlayerAtLevelIndex(this.levelIndex).handleJumpKillEnemyPhysics();
 
                 } else {
                     println("killed player: " + Math.toDegrees(collisionAngle));
-                    getPlayerAtLevelIndex(this.levelIndex).removeFromGame();
+                    resetLevel();
                 }
             }
         }

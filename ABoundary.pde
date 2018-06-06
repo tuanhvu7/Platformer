@@ -22,8 +22,8 @@ abstract class ABoundary {
     // set of all characters that are touching this
     protected Set<ACharacter> charactersTouchingThis;
 
-    // true means in level that is active (character collision detection)
-    protected boolean isInActiveLevel;
+    // true means this is active (character collision detection)
+    protected boolean isActive;
 
     // 0 means this is in level at 0th index of global_levels_list
     protected int levelIndex;
@@ -37,7 +37,7 @@ abstract class ABoundary {
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
                 boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,
-                boolean isInActiveLevel, int levelIndex) {
+                boolean isActive, int levelIndex) {
         
         // set start points to be smaller of given values
         this.startPoint = new PVector(
@@ -57,12 +57,10 @@ abstract class ABoundary {
 
         this.charactersTouchingThis = new HashSet<ACharacter>();
 
-        this.isInActiveLevel = isInActiveLevel;
-
         this.levelIndex = levelIndex;
-
-        if(this.isInActiveLevel) {
-            registerMethod("draw", this);
+        
+        if(isActive) {
+            this.makeActive();
         }
     }
 
@@ -80,16 +78,16 @@ abstract class ABoundary {
     /**
      * active and add this to game
      */
-    void addToGame() {
-        this.isInActiveLevel = true;
+    void makeActive() {
+        this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
     /**
      * deactivate and remove this from game
      */
-    void removeFromGame() {
-        this.isInActiveLevel = false;
+    void makeNotActive() {
+        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
