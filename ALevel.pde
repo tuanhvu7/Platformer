@@ -33,14 +33,33 @@ abstract class ALevel {
     }
 
    /**
-    * setup level
+    * setup level; to override in level classes
     */
     void setUpLevel() { }
 
-   /**
-    * deactiviate level
-    */
-    void deactivateLevel() { }
+    /**
+     * deactiviate player
+     */
+    void deactivatePlayer() {
+        this.player.makeNotActive();
+    }
+
+    /**
+     * deactiviate level
+     */
+    void deactivateLevel() {
+        this.viewBox.makeNotActive();
+
+        for(ACharacter curCharacter : this.charactersList) {
+            curCharacter.makeNotActive();
+        }
+
+        for(ABoundary curBoundary : this.boundariesList) {
+            curBoundary.makeNotActive();
+        }
+        
+        this.makeNotActive();
+    }
 
    /**
     * register draw() for level

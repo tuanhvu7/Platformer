@@ -104,22 +104,4 @@ public class LevelOne extends ALevel implements IDrawable {
         ));
     }
 
-    /**
-     * deactiviate level
-     */
-    void deactivateLevel() {
-        this.player.makeNotActive();
-        this.viewBox.makeNotActive();
-
-        for(ACharacter curCharacter : this.charactersList) {
-            curCharacter.makeNotActive();
-        }
-
-        for(ABoundary curBoundary : this.boundariesList) {
-            curBoundary.makeNotActive();
-        }
-        
-        this.makeNotActive();
-    }
-
 }

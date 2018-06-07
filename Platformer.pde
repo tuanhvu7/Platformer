@@ -78,13 +78,24 @@ void resetLevel() {
     stopLevelSong();
     loadPlayerDeathSong();
     playSong();
-    loadLevelSong();
 
-    global_levels_list.get(0).get().deactivateLevel();
-    global_levels_list.clear();
-    System.gc();
-    global_levels_list.add(new WeakReference(new LevelOne(true, 1)));
-    global_levels_list.get(0).get().setUpLevel();
+    // to reset level after player death song finishes without freezing game
+    new Thread( new Runnable() {
+        public void run()  {
+            try  { 
+                global_levels_list.get(0).get().player.makeNotActive(); // TODO: encapsulate
+                Thread.sleep( global_song_player.getMetaData().length() );  // wait for player death song duration
+            }
+            catch (InterruptedException ie)  { }
+            
+            loadLevelSong();
+
+            global_levels_list.get(0).get().deactivateLevel();
+            global_levels_list.set(0, new WeakReference(new LevelOne(true, 1)));
+            global_levels_list.get(0).get().setUpLevel();
+        }
+    } ).start();
+
 }
 
 /**
