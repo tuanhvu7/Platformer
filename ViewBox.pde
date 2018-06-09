@@ -17,7 +17,7 @@ public class ViewBox implements IDrawable {
     private boolean isActive;
 
     /**
-     * set viewbox properties
+     * set properties of this
      */
     ViewBox(int startXPos, int startYPos, int levelIndex, boolean isActive) {
         this.pos = new PVector(startXPos, startYPos);

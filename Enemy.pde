@@ -13,7 +13,7 @@ public class Enemy extends ACharacter implements IDrawable {
     private boolean isVisible;
 
     /**
-     * Set player properties
+     * set properties of this
      */
     Enemy(int x, int y, int diameter,
             boolean isFlying, boolean isInvulnerable, boolean isVisible,

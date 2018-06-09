@@ -29,7 +29,7 @@ abstract class ABoundary {
     protected int levelIndex;
 
     /**
-     * Set boundary properties
+     * set properties of this
      * @param x1Point first x coordinate
      * @param y1Point first y coordinate
      * @param x2Offset difference between first and second x coordinates (x2 - x1)

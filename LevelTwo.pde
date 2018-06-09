@@ -4,16 +4,22 @@
 public class LevelTwo extends ALevel implements IDrawable {
 
     /**
-     * sets level properties, boundaries, and characters
+     * sets properties, boundaries, and characters of this
      */
-    LevelTwo(boolean isLevelLoaded, int levelNumber) {
-        super(isLevelLoaded, levelNumber);
+    LevelTwo(boolean isActive, int levelNumber) {
+        super(isActive, levelNumber);
+    }
 
-        ViewBox viewBox = new ViewBox(0, 0, this.levelIndex, this.isLevelLoaded);
+    /**
+     * setup and activate level
+     */
+    void setUpActivateLevel() {
+        // make this active
+        this.isActive = true;
+        registerMethod("draw", this); // connect this draw() from main draw()
 
-        charactersList = new HashSet<ACharacter>();
-
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded);
+        this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
         loopSong();
 
@@ -25,78 +31,89 @@ public class LevelTwo extends ALevel implements IDrawable {
             false,
             true,
             this.levelIndex,
-            this.isLevelLoaded)
+            this.isActive)
         );
 
-        HorizontalBoundary testPlat = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             width / 2,
             height / 2,
             100,
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
 
-        HorizontalBoundary testPlat2 = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             width / 2,
             height / 4,
             100,
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
             
-        HorizontalBoundary testPlat3 = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             width / 2,
             height / 6,
             100,
             1,
             false,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
 
-        HorizontalBoundary testPlat4 = new HorizontalBoundary(
+        this.boundariesList.add(new HorizontalBoundary(
             width / 2,
             height / 8,
             100,
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
 
-        HorizontalBoundary floor = new HorizontalBoundary(
+
+        // stage floor
+        this.boundariesList.add(new HorizontalBoundary(
             0,
             height - 100,
             global_levels_width_array[this.levelIndex],
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
 
-        VerticalBoundary leftWall = new VerticalBoundary(
+
+        // stage right and left walls
+        this.boundariesList.add(new VerticalBoundary(
             0,
             0,
             height - 100,
             1,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
 
-        VerticalBoundary rightWall = new VerticalBoundary(
+        this.boundariesList.add(new VerticalBoundary(
             global_levels_width_array[this.levelIndex],
             0,
             height - 100,
             1,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
-        );
+        ));
 
-        // VerticalBoundary middleWall = new VerticalBoundary(width / 2, height / 2, height / 2 - 100, 1, this.isLevelLoaded, this.levelIndex);
+        this.boundariesList.add(new VerticalBoundary(
+            width / 2,
+            height / 2,
+            height / 2 - 100,
+            1,
+            this.isActive,
+            this.levelIndex
+        ));
     }
 
 }

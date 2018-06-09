@@ -4,8 +4,8 @@
 public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable {
 
     /**
-     * Set boundary properties;
-     * sets boundary to be active for all characters and visible
+     * set properties of this;
+     * sets this to be active for all characters and visible
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth, 
                         boolean isActive, int levelIndex) {
@@ -14,7 +14,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     }
 
     /**
-     * Set boundary properties
+     * set properties of this
      */
     VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, 

@@ -3,6 +3,13 @@
  */
 class Constants {
 
+    /*** level panel config ***/
+    private static final int TEXT_SIZE = 24;
+    private static final int LEVEL_PANEL_HEIGHT = 200;
+    private static final int LEVEL_PANEL_WIDTH = 200;
+    private static final int LEVEL_PANEL_COLOR = #00FF00;
+
+
     /*** screen config ***/
     private static final int SCREEN_BACKGROUND = #7EC0EE;
     private static final int SCREEN_HEIGHT = 900;
@@ -11,6 +18,7 @@ class Constants {
     // viewbox will move to follow player if player goes past this screen size boundary
     // Example: 0.25 means viewbox follow player if player goes past upper and lower 25% screen size
     private static final double VIEWBOX_BOUNDARY = 0.25;
+
 
     /*** velocity and acceleration physics ***/
     private static final float GRAVITY = 0.4;
@@ -38,6 +46,7 @@ class Constants {
     private static final int ENEMY_COLOR = #FF0000;
     private static final int REGULAR_ENEMY_DIAMETER = 60;
     private static final int BIG_ENEMY_DIAMETER = 500;
+
 
     /*** boundary and block config ***/
     private static final int BOUNDARY_COLOR = #000000;

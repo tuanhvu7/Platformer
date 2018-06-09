@@ -22,7 +22,7 @@ abstract class ACharacter {
     protected boolean isActive;
 
     /**
-     * set character properties
+     * set properties of this
      */
     ACharacter(int x, int y, int diameter, boolean isActive) {
         this.pos = new PVector(x, y);

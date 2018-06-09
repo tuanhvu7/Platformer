@@ -4,21 +4,22 @@
 public class LevelOne extends ALevel implements IDrawable {
 
     /**
-     * sets level properties, boundaries, and characters
+     * sets properties, boundaries, and characters of this
      */
-    LevelOne(boolean isLevelLoaded, int levelNumber) {
-        super(isLevelLoaded, levelNumber);
+    LevelOne(boolean isActive, int levelNumber) {
+        super(isActive, levelNumber);
     }
 
     /**
-     * setup level
+     * setup and activate level
      */
-    void setUpLevel() {
-        this.makeActive();
+    void setUpActivateLevel() {
+        // make this active
+        this.isActive = true;
+        registerMethod("draw", this); // connect this draw() from main draw()
 
-        this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isLevelLoaded);
-
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isLevelLoaded);
+        this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
         loopSong();
 
@@ -30,7 +31,7 @@ public class LevelOne extends ALevel implements IDrawable {
             false,
             true,
             this.levelIndex,
-            this.isLevelLoaded)
+            this.isActive)
         );
 
         this.boundariesList.add(new HorizontalBoundary(
@@ -39,7 +40,7 @@ public class LevelOne extends ALevel implements IDrawable {
             100,
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
 
@@ -49,7 +50,7 @@ public class LevelOne extends ALevel implements IDrawable {
             100,
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
 
@@ -59,7 +60,7 @@ public class LevelOne extends ALevel implements IDrawable {
             100,
             1,
             false,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
 
@@ -69,7 +70,7 @@ public class LevelOne extends ALevel implements IDrawable {
             100,
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
 
@@ -80,7 +81,7 @@ public class LevelOne extends ALevel implements IDrawable {
             global_levels_width_array[this.levelIndex],
             1,
             true,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
 
@@ -90,7 +91,7 @@ public class LevelOne extends ALevel implements IDrawable {
             0,
             height - 100,
             1,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
 
@@ -99,7 +100,7 @@ public class LevelOne extends ALevel implements IDrawable {
             0,
             height - 100,
             1,
-            this.isLevelLoaded,
+            this.isActive,
             this.levelIndex
         ));
     }

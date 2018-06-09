@@ -8,8 +8,8 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     private boolean isTopSideBoundary;
 
     /**
-     * Set boundary properties;
-     * sets boundary to be active for all characters and visible
+     * set properties of this;
+     * sets this to be active for all characters and visible
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth,
                         boolean isTopSideBoundary, boolean isActive, int levelIndex) {
@@ -20,7 +20,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     }
 
     /**
-     * Set boundary properties
+     * set properties of this
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryWidth,
                         boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,

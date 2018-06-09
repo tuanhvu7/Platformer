@@ -7,7 +7,7 @@ public class Player extends ACharacter implements IDrawable {
     private boolean isTouchingVerticalBoundary;
 
     /**
-     * Set player properties
+     * set properties of this
      */
     Player(int x, int y, int diameter, boolean isActive) {
         super(x, y, diameter, isActive);

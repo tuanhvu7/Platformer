@@ -3,8 +3,8 @@
  */
 abstract class ALevel {
 
-    // true means this is loaded
-    protected boolean isLevelLoaded;
+    // true means this is active
+    protected boolean isActive;
 
     // index of this in global_levels_list
     protected int levelIndex;
@@ -22,30 +22,27 @@ abstract class ALevel {
     protected Set<ABoundary> boundariesList;
 
     /**
-     * sets level properties
+     * sets this's properties
      */
-    ALevel(boolean isLevelLoaded, int levelNumber) {
+    ALevel(boolean isActive, int levelNumber) {
 
         this.charactersList = new HashSet<ACharacter>();
         this.boundariesList = new HashSet<ABoundary>();
 
-        this.levelIndex = levelNumber - 1; // means level 1 is in index 0 of global_levels_list
+        this.levelIndex = levelNumber; // means level 1 is in index 1 of global_levels_list
+
+        if(isActive) {
+            this.setUpActivateLevel();
+        }
     }
 
    /**
-    * setup level; to override in level classes
+    * setup and activate this; to override in level classes
     */
-    void setUpLevel() { }
+    void setUpActivateLevel() { }
 
     /**
-     * deactiviate player
-     */
-    void deactivatePlayer() {
-        this.player.makeNotActive();
-    }
-
-    /**
-     * deactiviate level
+     * deactiviate this
      */
     void deactivateLevel() {
         this.viewBox.makeNotActive();
@@ -58,46 +55,40 @@ abstract class ALevel {
             curBoundary.makeNotActive();
         }
         
-        this.makeNotActive();
-    }
-
-   /**
-    * register draw() for level
-    */
-    void makeActive() {
-        this.isLevelLoaded = true;
-        registerMethod("draw", this); // connect this draw() from main draw()
-    }
-
-   /**
-    * unregister draw() for level
-    */
-    void makeNotActive() {
-        this.isLevelLoaded = false;
+        // make this not active
+        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
+    /**
+     * deactiviate player;
+     * for removing player while letting game run during player death handling
+     */
+    void deactivatePlayer() {
+        this.player.makeNotActive();
+    }
+
    /**
-    * runs continuously
+    * runs continuously; draws background of this
     */
     void draw() {
         // draw background image horizontally until level width is filled
         int levelWidthLeftToDraw = global_levels_width_array[this.levelIndex];
         int numberHorizontalBackgroundIterations = 
-            (int) Math.ceil( (double) global_levels_width_array[this.levelIndex] / backgroundImage.width);
+            (int) Math.ceil( (double) global_levels_width_array[this.levelIndex] / global_background_image.width);
         
         for(int i = 0; i < numberHorizontalBackgroundIterations; i++) {
             int widthToDraw = 
             Math.min(
-                backgroundImage.width, 
+                global_background_image.width, 
                 levelWidthLeftToDraw);
             
             image(
-                backgroundImage, 
-                i * backgroundImage.width, 
+                global_background_image, 
+                i * global_background_image.width, 
                 0, 
                 widthToDraw, 
-                backgroundImage.height);
+                global_background_image.height);
 
             levelWidthLeftToDraw -= widthToDraw;
         }
