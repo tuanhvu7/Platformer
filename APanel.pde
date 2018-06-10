@@ -1,7 +1,7 @@
 /**
- * Common properties of panels
+ * Common for panels
  */
-public class LevelPanel implements IDrawable{
+abstract class APanel implements IDrawable {
 
     int leftX;
     int rightX;
@@ -12,8 +12,7 @@ public class LevelPanel implements IDrawable{
     int width;
     int height;
 
-    // level associated with this
-    int panelLevel;
+    String panelText;
 
     // true means is displayed and clickable
     boolean isActive;
@@ -21,8 +20,8 @@ public class LevelPanel implements IDrawable{
     /**
      * set properties of this
      */
-    LevelPanel(int panelLevel, int leftX, int topY, int width, int height, boolean isActive) {
-        this.panelLevel = panelLevel;
+    APanel(String panelText, int leftX, int topY, int width, int height, boolean isActive) {
+        this.panelText = panelText;
         this.width = width;
         this.height = height;
 
@@ -56,7 +55,7 @@ public class LevelPanel implements IDrawable{
     }
 
     /**
-     * runs continuously.; draws rectangle panel using its properties
+     * runs continuously; draws rectangle panel using this properties
      */
     void draw() {
         fill(Constants.LEVEL_PANEL_COLOR);
@@ -65,12 +64,11 @@ public class LevelPanel implements IDrawable{
         fill(0);
         textAlign(CENTER, CENTER);
         textSize(Constants.TEXT_SIZE);
-        // text(this.panelLevel, this.leftX, this.topY, this.width, this.height);
-        text(this.panelLevel, this.leftX, this.topY);
+        text(this.panelText + "", this.leftX, this.topY, this.width, this.height);
     }
 
     /**
-     * Execute appropriate method (executeWhenClicked) when this panel is clicked
+     * Execute appropriate method (executeWhenClicked) when this is clicked
      */
     void mouseEvent(MouseEvent event) {
         if(event.getAction() == MouseEvent.CLICK) {
@@ -81,13 +79,9 @@ public class LevelPanel implements IDrawable{
     }
 
     /**
-     * to execute when this panel is clicked
+     * to execute when this panel is clicked; to override in extended classes
      */
-    void executeWhenClicked() {
-        global_level_select_menu.deactivateLevelSelectMenu();
-        global_current_active_level = panelLevel;
-        global_levels_list.get(global_current_active_level).get().setUpActivateLevel();
-    }
+    void executeWhenClicked() { }
 
    /**
     * return if mouse position inside this panel

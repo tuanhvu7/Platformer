@@ -21,8 +21,14 @@ abstract class ALevel {
     // set of all boundaries in level
     protected Set<ABoundary> boundariesList;
 
+    // pause menu for level
+    private PauseMenu pauseMenu;
+
+    // true means level is paused and menu appears
+    protected boolean isPaused;
+
     /**
-     * sets this's properties
+     * sets properties of this
      */
     ALevel(boolean isActive, int levelNumber) {
 
@@ -30,14 +36,24 @@ abstract class ALevel {
         this.boundariesList = new HashSet<ABoundary>();
 
         this.levelIndex = levelNumber; // means level 1 is in index 1 of global_levels_list
+        this.isPaused = false;
 
         if(isActive) {
             this.setUpActivateLevel();
         }
     }
 
+    /**
+     * active and add this to game
+     */
+    protected void makeActive() {
+        this.isActive = true;
+        registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
+        registerMethod("draw", this); // connect this draw() from main draw()
+    }
+
    /**
-    * setup and activate this; to override in level classes
+    * setup and activate this; to override in extended classes
     */
     void setUpActivateLevel() { }
 
@@ -57,6 +73,7 @@ abstract class ALevel {
         
         // make this not active
         this.isActive = false;
+        unregisterMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
@@ -66,6 +83,13 @@ abstract class ALevel {
      */
     void deactivatePlayer() {
         this.player.makeNotActive();
+    }
+
+    /**
+     * close pause menu
+     */
+    void closePauseMenu() {
+        this.pauseMenu.deactivateMenu();
     }
 
    /**
@@ -94,4 +118,32 @@ abstract class ALevel {
         }
     }
 
+        
+    /**
+     * handle character keypress controls
+     */
+    void keyEvent(KeyEvent keyEvent) {
+        if(this.player.isActive) {  // only allow pause if player is active // TODO: encapsulate
+            // press 'p' for pause
+            if(keyEvent.getAction() == KeyEvent.PRESS) {
+                char keyPressed = keyEvent.getKey();
+
+                if(keyPressed == 'p') {   // pause
+                    this.isPaused = !this.isPaused;
+
+                    if(this.isPaused) {
+                        stopSong();
+                        noLoop();
+                        this.pauseMenu = new PauseMenu(true);
+
+                    } else {
+                        loopSong();
+                        loop();
+                        this.closePauseMenu();
+                    }
+                }
+
+            }   
+        }
+    }
 }

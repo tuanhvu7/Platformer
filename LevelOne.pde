@@ -11,12 +11,10 @@ public class LevelOne extends ALevel implements IDrawable {
     }
 
     /**
-     * setup and activate level
+     * setup and activate this
      */
     void setUpActivateLevel() {
-        // make this active
-        this.isActive = true;
-        registerMethod("draw", this); // connect this draw() from main draw()
+        this.makeActive();
 
         this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
         this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);

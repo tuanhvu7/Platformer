@@ -1,12 +1,12 @@
 /**
- * menu to select level to play;
+ * pause menu
  */
-public class LevelSelectMenu extends AMenu  implements IDrawable {
+public class PauseMenu extends AMenu implements IDrawable {
 
     /**
      * set properties of this
      */
-    LevelSelectMenu(boolean isActive) {
+    PauseMenu(boolean isActive) {
         super(isActive);
     }
 
@@ -18,8 +18,8 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
         
-        this.panelsList.add(new LevelSelectMenuPanel(
-            1,
+        this.panelsList.add(new PauseMenuPanel(
+            PauseMenuButtonType.Continue,
             100,
             100,
             Constants.LEVEL_PANEL_HEIGHT,
@@ -27,8 +27,8 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
             this.isActive
         ));
 
-        this.panelsList.add(new LevelSelectMenuPanel(
-            2,
+        this.panelsList.add(new PauseMenuPanel(
+            PauseMenuButtonType.Quit,
             400,
             100,
             Constants.LEVEL_PANEL_HEIGHT,
@@ -48,5 +48,4 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
             global_background_image.width, 
             global_background_image.height);
     }
-
 }

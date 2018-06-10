@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 
 import ddf.minim.Minim;
 import ddf.minim.AudioPlayer;
@@ -29,7 +29,7 @@ AudioPlayer global_song_player;
 LevelSelectMenu global_level_select_menu;
 
 // list of levels
-List< WeakReference<ALevel> > global_levels_list;
+List< SoftReference<ALevel> > global_levels_list;
 
 // stores currently active level
 int global_current_active_level;
@@ -53,7 +53,7 @@ final int[] global_levels_height_array = {
  */
 void settings() {
     global_background_image = loadImage(Constants.BACKGROUND_IMAGE_NAME);
-    global_levels_list = new ArrayList< WeakReference<ALevel> >();
+    global_levels_list = new ArrayList< SoftReference<ALevel> >();
 
     global_gravity = new PVector(0, Constants.GRAVITY);
     global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
@@ -73,9 +73,9 @@ void setup() {
 
     global_level_select_menu = new LevelSelectMenu(true);
 
-    global_levels_list.add(new WeakReference(null)); // no level zero
-    global_levels_list.add(new WeakReference(new LevelOne(false, 1)));
-    global_levels_list.add(new WeakReference(new LevelTwo(false, 2)));
+    global_levels_list.add(new SoftReference(null)); // no level zero
+    global_levels_list.add(new SoftReference(new LevelOne(false, 1)));
+    global_levels_list.add(new SoftReference(new LevelTwo(false, 2)));
 }
 
 /**
@@ -94,7 +94,7 @@ private void resetLevel() {
     // to reset level after player death song finishes without freezing game
     new Thread( new Runnable() {
         public void run()  {
-            try  { 
+            try  {
                 global_levels_list.get(global_current_active_level).get().player.makeNotActive(); // TODO: encapsulate
                 Thread.sleep( global_song_player.getMetaData().length() );  // wait for player death song duration
             }
