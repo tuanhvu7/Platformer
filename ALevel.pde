@@ -134,9 +134,12 @@ abstract class ALevel {
                     if(this.isPaused) {
                         stopSong();
                         noLoop();
-                        this.pauseMenu = new PauseMenu(true);
+                        this.pauseMenu = new PauseMenu(
+                            (int) this.viewBox.pos.x, // TODO: encapsulate
+                            true);
 
                     } else {
+                        loadLevelSong();
                         loopSong();
                         loop();
                         this.closePauseMenu();

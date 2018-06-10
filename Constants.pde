@@ -5,9 +5,9 @@ class Constants {
 
     /*** level panel config ***/
     private static final int TEXT_SIZE = 24;
-    private static final int LEVEL_PANEL_HEIGHT = 200;
-    private static final int LEVEL_PANEL_WIDTH = 200;
-    private static final int LEVEL_PANEL_COLOR = #00FF00;
+    private static final int PANEL_HEIGHT = 200;
+    private static final int PANEL_WIDTH = 200;
+    private static final int PANEL_COLOR = #00FF00;
 
 
     /*** screen config ***/

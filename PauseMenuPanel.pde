@@ -3,14 +3,20 @@
  */
 public class PauseMenuPanel extends APanel implements IDrawable {
 
+    // horizontal offset of this due to viewbox
+    int horizontalOffset;
+
     // panel type
     PauseMenuButtonType panelType;
 
     /**
      * set properties of this
      */
-    PauseMenuPanel(PauseMenuButtonType panelType, int leftX, int topY, int width, int height, boolean isActive) {
+    PauseMenuPanel(PauseMenuButtonType panelType,
+                    int leftX, int topY, int width, int height,
+                    int horizontalOffset, boolean isActive) {
         super(panelType.name(), leftX, topY, width, height, isActive);
+        this.horizontalOffset = horizontalOffset;
         this.panelType = panelType;
     }
 
@@ -21,8 +27,8 @@ public class PauseMenuPanel extends APanel implements IDrawable {
         if(panelType == PauseMenuButtonType.Continue) {
             loadLevelSong();
             loopSong();
-            global_levels_list.get(global_current_active_level).get().closePauseMenu();
             global_levels_list.get(global_current_active_level).get().isPaused = false; // TODO: encapsulate
+            global_levels_list.get(global_current_active_level).get().closePauseMenu();
         
         } else {
             global_levels_list.get(global_current_active_level).get().isPaused = false; // TODO: encapsulate
@@ -33,6 +39,16 @@ public class PauseMenuPanel extends APanel implements IDrawable {
         }
 
         loop();
+    }
+
+   /**
+    * return if mouse position inside this panel
+    */
+    protected boolean isMouseIn() {
+        return  mouseX > this.leftX - horizontalOffset &&   // subtract offset since mouseX is unaffected by viewbox
+                mouseX < this.rightX - horizontalOffset &&  // subtract offset since mouseX is unaffected by viewbox
+                mouseY > this.topY &&
+                mouseY < this.bottomY;
     }
 
 }

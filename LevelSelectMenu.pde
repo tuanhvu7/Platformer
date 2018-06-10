@@ -22,8 +22,8 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
             1,
             100,
             100,
-            Constants.LEVEL_PANEL_HEIGHT,
-            Constants.LEVEL_PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
+            Constants.PANEL_WIDTH,
             this.isActive
         ));
 
@@ -31,8 +31,8 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
             2,
             400,
             100,
-            Constants.LEVEL_PANEL_HEIGHT,
-            Constants.LEVEL_PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
+            Constants.PANEL_WIDTH,
             this.isActive
         ));
     }

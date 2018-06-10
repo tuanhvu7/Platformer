@@ -6,8 +6,8 @@ public class PauseMenu extends AMenu implements IDrawable {
     /**
      * set properties of this
      */
-    PauseMenu(boolean isActive) {
-        super(isActive);
+    PauseMenu(int horizontalOffset, boolean isActive) {
+        super(horizontalOffset, isActive);
     }
 
     /**
@@ -20,19 +20,21 @@ public class PauseMenu extends AMenu implements IDrawable {
         
         this.panelsList.add(new PauseMenuPanel(
             PauseMenuButtonType.Continue,
+            100 + this.horizontalOffset,    // add offset to account for viewbox
             100,
-            100,
-            Constants.LEVEL_PANEL_HEIGHT,
-            Constants.LEVEL_PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
+            Constants.PANEL_WIDTH,
+            this.horizontalOffset,
             this.isActive
         ));
 
         this.panelsList.add(new PauseMenuPanel(
             PauseMenuButtonType.Quit,
-            400,
+            400 + this.horizontalOffset,    // add offset to account for viewbox
             100,
-            Constants.LEVEL_PANEL_HEIGHT,
-            Constants.LEVEL_PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
+            Constants.PANEL_WIDTH,
+            this.horizontalOffset,
             this.isActive
         ));
     }
@@ -43,7 +45,7 @@ public class PauseMenu extends AMenu implements IDrawable {
     void draw() {
         image(
             global_background_image, 
-            0, 
+            0 + this.horizontalOffset,  // add offset to account for viewbox 
             0, 
             global_background_image.width, 
             global_background_image.height);

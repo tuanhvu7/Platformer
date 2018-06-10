@@ -3,19 +3,19 @@
  */
 abstract class APanel implements IDrawable {
 
-    int leftX;
-    int rightX;
+    protected int leftX;
+    protected int rightX;
 
-    int topY;
-    int bottomY;
+    protected int topY;
+    protected int bottomY;
 
-    int width;
-    int height;
+    protected int width;
+    protected int height;
 
-    String panelText;
+    protected String panelText;
 
     // true means is displayed and clickable
-    boolean isActive;
+    protected boolean isActive;
 
     /**
      * set properties of this
@@ -58,7 +58,7 @@ abstract class APanel implements IDrawable {
      * runs continuously; draws rectangle panel using this properties
      */
     void draw() {
-        fill(Constants.LEVEL_PANEL_COLOR);
+        fill(Constants.PANEL_COLOR);
         rect(this.leftX, this.topY, this.width, this.height);
 
         fill(0);
@@ -86,7 +86,7 @@ abstract class APanel implements IDrawable {
    /**
     * return if mouse position inside this panel
     */
-    private boolean isMouseIn() {
+    protected boolean isMouseIn() {
         return  mouseX > this.leftX && 
                 mouseX < this.rightX &&
                 mouseY > this.topY &&
