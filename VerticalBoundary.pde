@@ -5,22 +5,32 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
 
     /**
      * set properties of this;
-     * sets this to be active for all characters and visible
+     * sets this to affect all characters and be visible
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth, 
+    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryLineThickness, 
                         boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
+        super(startXPoint, startyPoint, 0, y2Offset, boundaryLineThickness,
                 true, true, true, isActive, levelIndex);
     }
 
     /**
      * set properties of this
+     * sets this to affect all characters
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryWidth,
-                        boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers, 
+    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryLineThickness,
+                        boolean isVisible, boolean isActive, int levelIndex) {
+        super(startXPoint, startyPoint, 0, y2Offset, boundaryLineThickness,
+                isVisible, true, true, isActive, levelIndex);
+    }
+
+    /**
+     * set properties of this
+     */
+    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryLineThickness,
+                        boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers, 
                         boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, 0, y2Offset, boundaryWidth,
-                isVisible, isActiveToPlayer, isActiveToNonPlayers, isActive, levelIndex);
+        super(startXPoint, startyPoint, 0, y2Offset, boundaryLineThickness,
+                isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
     }
 
     /**
@@ -43,7 +53,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     void draw() {
         this.show();
 
-        if(this.isActiveToPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
+        if(this.doesAffectPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {
                 if(!this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {  // new collision detected
@@ -60,7 +70,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
             }
         }
 
-        if(this.isActiveToNonPlayers) {
+        if(this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
             for( ACharacter curCharacter : getCharactersListAtLevelIndex(this.levelIndex) ) {
                 if(curCharacter.isActive && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate

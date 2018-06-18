@@ -36,7 +36,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             width / 2,
             height / 2,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -46,7 +46,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             width / 2,
             height / 4,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -56,7 +56,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             width / 2,
             height / 6,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             false,
             this.isActive,
             this.levelIndex
@@ -66,7 +66,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             width / 2,
             height / 8,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -78,7 +78,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             0,
             height - 100,
             global_levels_width_array[this.levelIndex],
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -90,7 +90,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             0,
             0,
             height - 100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
         ));
@@ -99,7 +99,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             global_levels_width_array[this.levelIndex],
             0,
             height - 100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
         ));
@@ -108,7 +108,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             width / 2,
             height / 2,
             height / 2 - 100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
         ));

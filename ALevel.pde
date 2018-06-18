@@ -21,6 +21,9 @@ abstract class ALevel {
     // set of all boundaries in level
     protected Set<ABoundary> boundariesList;
 
+    // set of all blocks in level
+    protected Set<Block> blocksList;
+
     // pause menu for level
     private PauseMenu pauseMenu;
 
@@ -34,6 +37,7 @@ abstract class ALevel {
 
         this.charactersList = new HashSet<ACharacter>();
         this.boundariesList = new HashSet<ABoundary>();
+        this.blocksList = new HashSet<Block>();
 
         this.levelIndex = levelNumber; // means level 1 is in index 1 of global_levels_list
         this.isPaused = false;
@@ -70,6 +74,14 @@ abstract class ALevel {
         for(ABoundary curBoundary : this.boundariesList) {
             curBoundary.makeNotActive();
         }
+
+        for(Block curBlock : this.blocksList) {
+            curBlock.makeNotActive();
+        }
+
+        this.charactersList = new HashSet<ACharacter>();
+        this.boundariesList = new HashSet<ABoundary>();
+        this.blocksList = new HashSet<Block>();
         
         // make this not active
         this.isActive = false;

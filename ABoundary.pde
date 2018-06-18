@@ -14,10 +14,10 @@ abstract class ABoundary {
     protected boolean isVisible;
 
     // true means check and handle collision between this and player characters
-    protected boolean isActiveToPlayer;
+    protected boolean doesAffectPlayer;
 
     // true means check and handle collision between this and non-player characters
-    protected boolean isActiveToNonPlayers;
+    protected boolean doesAffectNonPlayers;
 
     // set of all characters that are touching this
     protected Set<ACharacter> charactersTouchingThis;
@@ -36,7 +36,7 @@ abstract class ABoundary {
      * @param y2Offset difference between first and second y coordinates (y2 - y1)
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
-                boolean isVisible, boolean isActiveToPlayer, boolean isActiveToNonPlayers,
+                boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
                 boolean isActive, int levelIndex) {
         
         // set start points to be smaller of given values
@@ -52,8 +52,8 @@ abstract class ABoundary {
         this.boundaryLineThickness = boundaryLineThickness;
 
         this.isVisible = isVisible;
-        this.isActiveToPlayer = isActiveToPlayer;
-        this.isActiveToNonPlayers = isActiveToNonPlayers;
+        this.doesAffectPlayer = doesAffectPlayer;
+        this.doesAffectNonPlayers = doesAffectNonPlayers;
 
         this.charactersTouchingThis = new HashSet<ACharacter>();
 

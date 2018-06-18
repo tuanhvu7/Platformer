@@ -1,3 +1,6 @@
+/**
+ * enemy
+ */
 public class Enemy extends ACharacter implements IDrawable {
 
     // 0 means this is in level at 0th index of global_levels_list

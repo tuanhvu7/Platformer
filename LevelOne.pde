@@ -21,22 +21,22 @@ public class LevelOne extends ALevel implements IDrawable {
 
         loopSong();
 
-        charactersList.add( new Enemy(
-            global_levels_width_array[this.levelIndex] - 500,
-            0,
-            Constants.BIG_ENEMY_DIAMETER,
-            false,
-            false,
-            true,
-            this.levelIndex,
-            this.isActive)
-        );
+        // charactersList.add( new Enemy(
+        //     global_levels_width_array[this.levelIndex] - 500,
+        //     0,
+        //     Constants.BIG_ENEMY_DIAMETER,
+        //     false,
+        //     false,
+        //     true,
+        //     this.levelIndex,
+        //     this.isActive)
+        // );
 
         this.boundariesList.add(new HorizontalBoundary(
             0,
             height - 200,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -46,7 +46,7 @@ public class LevelOne extends ALevel implements IDrawable {
             100,
             height - 400,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -56,7 +56,7 @@ public class LevelOne extends ALevel implements IDrawable {
             200,
             height - 600,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             false,
             this.isActive,
             this.levelIndex
@@ -66,8 +66,18 @@ public class LevelOne extends ALevel implements IDrawable {
             100,
             height - 800,
             100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
+            this.isActive,
+            this.levelIndex
+        ));
+
+        this.blocksList.add(new Block(
+            global_levels_width_array[this.levelIndex] / 2 - 300,
+            height - 300,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
         ));
@@ -77,7 +87,7 @@ public class LevelOne extends ALevel implements IDrawable {
             0,
             height - 100,
             global_levels_width_array[this.levelIndex],
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive,
             this.levelIndex
@@ -88,7 +98,7 @@ public class LevelOne extends ALevel implements IDrawable {
             0,
             0,
             height - 100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
         ));
@@ -97,7 +107,7 @@ public class LevelOne extends ALevel implements IDrawable {
             global_levels_width_array[this.levelIndex],
             0,
             height - 100,
-            1,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
         ));
