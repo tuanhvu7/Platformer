@@ -6,12 +6,16 @@ public class Player extends ACharacter implements IDrawable {
     // true means this is touching vertical boundary
     private boolean isTouchingVerticalBoundary;
 
+    // number of bottom horizontal boundaries (ceiling-like boundaries) this is touching;
+    protected int numberOfBottomHorizontalBoundaryContacts;
+
     /**
      * set properties of this
      */
     Player(int x, int y, int diameter, boolean isActive) {
         super(x, y, diameter, isActive);
         this.isTouchingVerticalBoundary = false;
+        this.numberOfTopHorizontalBoundaryContacts = 0;
     }
     
     /**
@@ -61,7 +65,9 @@ public class Player extends ACharacter implements IDrawable {
         }
 
         if(this.isJumping) {    // jump button pressed/held
-            if(this.numberOfTopHorizontalBoundaryContacts > 0 || this.isTouchingVerticalBoundary) { // able to jump
+            if( this.numberOfTopHorizontalBoundaryContacts > 0 || 
+                (this.isTouchingVerticalBoundary && this.numberOfBottomHorizontalBoundaryContacts == 0) )
+            { // able to jump
                 this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
             } else {
                 // for jumpin higher the longer jump button is held
@@ -86,15 +92,38 @@ public class Player extends ACharacter implements IDrawable {
     }
 
     /**
+     * handle contact with horizontal boundary
+     */
+    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
+        // // for Block mechanics; only handle if no contact with ceiling-like boundary
+        if(!this.isTouchingVerticalBoundary) {
+            if(isTopSideBoundary) { // floor-like boundary
+                if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
+                    this.vel.y = 0;
+                    this.pos.y = boundaryYPoint - this.diameter / 2;
+                }
+            } else {    // ceiling-like boundary
+                if(this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
+                    this.vel.y = 1;
+                    this.pos.add(this.vel);
+                }
+            }
+        }
+    }
+
+    /**
      * handle contact with vertical boundary
      */
     void handleContactWithVerticalBoundary(float boundaryXPoint) {
-        this.vel.x = 0;
-        if(this.pos.x > boundaryXPoint) {   // left boundary
-            this.pos.x = boundaryXPoint + this.diameter / 2;
-        } else {    // right boundary
-            this.pos.x = boundaryXPoint - this.diameter / 2;
-        }  
+         // for Block mechanics; only handle if no contact with ceiling-like boundary
+        if(this.numberOfBottomHorizontalBoundaryContacts == 0) {
+            this.vel.x = 0;
+            if(this.pos.x > boundaryXPoint) {   // left boundary
+                this.pos.x = boundaryXPoint + this.diameter / 2; // prevent this from going through boundary
+            } else {    // right boundary
+                this.pos.x = boundaryXPoint - this.diameter / 2; // prevent this from going through boundary
+            }  
+        }
     }
 
     /**

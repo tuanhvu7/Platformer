@@ -21,10 +21,10 @@ public class LevelTwo extends ALevel implements IDrawable {
 
         loopSong();
 
-        charactersList.add(new Enemy(
+        charactersList.add( new Enemy(
             global_levels_width_array[this.levelIndex] - 500,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
+            Constants.BIG_ENEMY_DIAMETER,
             false,
             false,
             true,

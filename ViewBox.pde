@@ -51,7 +51,9 @@ public class ViewBox implements IDrawable {
                 this.vel.x = 0;
             }
         }
-        if(!getPlayerAtLevelIndex(this.levelIndex).isMovingLeft && !getPlayerAtLevelIndex(this.levelIndex).isMovingRight) {   // TODO: encapsulate
+        if(!getPlayerAtLevelIndex(this.levelIndex).isMovingLeft && 
+            !getPlayerAtLevelIndex(this.levelIndex).isMovingRight)
+        {   // TODO: encapsulate
             this.vel.x = 0;
         }
 

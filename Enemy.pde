@@ -65,8 +65,8 @@ public class Enemy extends ACharacter implements IDrawable {
                 println("coll angle: " + Math.toDegrees(collisionAngle));
                 println("min angle: " + Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE);
                 if(Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE 
-                    && this.pos.y > getPlayerAtLevelIndex(this.levelIndex).pos.y) { // player is above this // TODO: encapsulate
-
+                    && this.pos.y > getPlayerAtLevelIndex(this.levelIndex).pos.y)  // player is above this // TODO: encapsulate
+                {
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
                     this.makeNotActive();
                     getPlayerAtLevelIndex(this.levelIndex).handleJumpKillEnemyPhysics();

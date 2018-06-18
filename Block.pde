@@ -38,9 +38,9 @@ public class Block implements IDrawable {
         this.levelIndex = levelIndex;
 
         this.topBoundary = new HorizontalBoundary(
-            leftX + 1,
+            leftX,
             topY,
-            width - 1,
+            width,
             blockLineThickness,
             true,
             true,
@@ -49,9 +49,9 @@ public class Block implements IDrawable {
         );
 
         this.bottomBoundary = new HorizontalBoundary(
-            leftX + 1,
+            leftX,
             topY + height,
-            width - 1,
+            width,
             blockLineThickness,
             true,
             false,
@@ -61,8 +61,8 @@ public class Block implements IDrawable {
 
         this.leftBoundary = new VerticalBoundary(
             leftX,
-            topY,
-            height,
+            topY + 1,
+            height - 1,
             blockLineThickness,
             true,
             false,  // initially not active, to activate based on isActive
@@ -71,8 +71,8 @@ public class Block implements IDrawable {
 
         this.rightBoundary = new VerticalBoundary(
             leftX + width,
-            topY,
-            height,
+            topY + 1,
+            height - 1,
             blockLineThickness,
             true,
             false,  // initially not active, to activate based on isActive
@@ -158,13 +158,13 @@ public class Block implements IDrawable {
         if( this.isActive && 
             !this.isVisible && 
             getPlayerAtLevelIndex(this.levelIndex).isActive &&  // TODO: encapsulate
-            this.bottomBoundary.contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex)) ) {
+            this.bottomBoundary.contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex)) ) 
+        {
 
             this.isVisible = true;
             this.topBoundary.makeActive();
             this.topBoundary.isVisible = true;  // TODO: encapsulate
             
-            this.bottomBoundary.makeActive();
             this.bottomBoundary.isVisible = true;  // TODO: encapsulate
 
             this.leftBoundary.makeActive();
@@ -191,11 +191,11 @@ public class Block implements IDrawable {
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
 
-        this.leftBoundary.makeActive();
+        this.bottomBoundary.makeActive();
         
         if(this.isVisible) {
             this.topBoundary.makeActive();
-            this.bottomBoundary.makeActive();
+            this.leftBoundary.makeActive();
             this.rightBoundary.makeActive();
         }
     }

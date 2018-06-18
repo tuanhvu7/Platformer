@@ -37,10 +37,11 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * return true if collide with given character
      */
     boolean contactWithCharacter(ACharacter character) {
-        if(character.pos.x  + (character.diameter / 2) >= this.startPoint.x         // contact right of character
+        if( character.pos.x  + (character.diameter / 2) >= this.startPoint.x         // contact right of character
             && character.pos.x - (character.diameter / 2) <= this.startPoint.x      // contact left of character
             && character.pos.y > this.startPoint.y - (character.diameter / 2)       // > lower y boundary
-            && character.pos.y < this.endPoint.y + (character.diameter / 2)) {      // < upper y boundary
+            && character.pos.y < this.endPoint.y + (character.diameter / 2) )         // < upper y boundary
+        {      
             return true;
         } else {
             return false;
@@ -55,14 +56,14 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
 
         if(this.doesAffectPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
             // boundary collision for player
-            if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {
+            if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {  // this has contact with non-player
                 if(!this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {  // new collision detected
                     getPlayerAtLevelIndex(this.levelIndex).isTouchingVerticalBoundary = true;    // TODO: encapsulate
                     this.charactersTouchingThis.add(getPlayerAtLevelIndex(this.levelIndex));
                 }
                 getPlayerAtLevelIndex(this.levelIndex).handleContactWithVerticalBoundary(this.startPoint.x);
                 
-            } else {
+            } else {    // this DOES NOT have contact with non-player
                 if(this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {
                     getPlayerAtLevelIndex(this.levelIndex).isTouchingVerticalBoundary = false;   // TODO: encapsulate
                     this.charactersTouchingThis.remove(getPlayerAtLevelIndex(this.levelIndex));
