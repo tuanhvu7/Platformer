@@ -79,9 +79,9 @@ abstract class ALevel {
             curBlock.makeNotActive();
         }
 
-        this.charactersList = new HashSet<ACharacter>();
-        this.boundariesList = new HashSet<ABoundary>();
-        this.blocksList = new HashSet<Block>();
+        this.charactersList.clear();
+        this.boundariesList.clear();
+        this.blocksList.clear();
         
         // make this not active
         this.isActive = false;

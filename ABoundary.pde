@@ -79,6 +79,7 @@ abstract class ABoundary {
      * active and add this to game
      */
     void makeActive() {
+        this.charactersTouchingThis.clear();
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }

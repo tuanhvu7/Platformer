@@ -49,6 +49,7 @@ abstract class AMenu {
             curPanel.makeNotActive();
         }
         
+        this.panelsList.clear();
         // make this not active
         this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
