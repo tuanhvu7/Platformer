@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.ref.SoftReference;
 
-import ddf.minim.Minim;
-import ddf.minim.AudioPlayer;
-import ddf.minim.AudioInput;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+import javafx.embed.swing.JFXPanel;
 
 // gravity that affects characters
 PVector global_gravity;
@@ -20,12 +21,17 @@ PVector global_wall_slide_acceleration;
 // background image
 PImage global_background_image;
 
-// for loading song files
-Minim global_minim;
+// level song
+Media global_level_song;
+// player for level song
+MediaPlayer global_level_song_player;
 
-// song for level
-AudioPlayer global_song_player;
+// player death song
+Media global_player_death_song;
+// player for level song
+MediaPlayer global_player_death_song_player;
 
+// level select menu
 LevelSelectMenu global_level_select_menu;
 
 // list of levels
@@ -58,8 +64,12 @@ void settings() {
     global_gravity = new PVector(0, Constants.GRAVITY);
     global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
     
-    global_minim = new Minim(this);
-    global_song_player = global_minim.loadFile(dataPath(Constants.LEVEL_SONG_NAME));
+    new JFXPanel(); // initialize JavaFx toolkit
+    global_level_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
+    global_player_death_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
+    
+    global_level_song_player = new MediaPlayer(global_level_song);
+    global_player_death_song_player = new MediaPlayer(global_player_death_song);
 
     global_current_active_level = 0;
 
@@ -88,20 +98,17 @@ void draw() { }
  */
 private void resetLevel() {
     stopSong();
-    loadPlayerDeathSong();
-    playSong();
+    playSong(false);
 
     // to reset level after player death song finishes without freezing game
     new Thread( new Runnable() {
         public void run()  {
             try  {
                 global_levels_list.get(global_current_active_level).get().player.makeNotActive(); // TODO: encapsulate
-                Thread.sleep( global_song_player.getMetaData().length() );  // wait for player death song duration
+                Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for player death song duration
             }
             catch (InterruptedException ie)  { }
             
-            loadLevelSong();
-
             global_levels_list.get(global_current_active_level).get().deactivateLevel();
             global_levels_list.get(global_current_active_level).get().setUpActivateLevel();
         }
@@ -125,35 +132,48 @@ private Set<ACharacter> getCharactersListAtLevelIndex(int levelIndex) {
 
 /**
  * loop song
+ * true isLevelSong - level song
+ * false isLevelSong - player death song
  */
-private void loopSong() {
-    global_song_player.loop();
+private void loopSong(boolean isLevelSong) {
+    if(isLevelSong) {
+        global_level_song_player.setCycleCount(Integer.MAX_VALUE);
+        global_level_song_player.play();
+    } else {
+        global_player_death_song_player.setCycleCount(Integer.MAX_VALUE);
+        global_player_death_song_player.play();  
+    }
 }
 
 /**
  * play song
+ * true isLevelSong - level song
+ * false isLevelSong - player death song
  */
-private void playSong() {
-    global_song_player.play();
-}
-
-/**
- * load death song
- */
-private void loadLevelSong() {
-    global_song_player = global_minim.loadFile(dataPath(Constants.LEVEL_SONG_NAME));
-}
-
-/**
- * load death song
- */
-private void loadPlayerDeathSong() {
-    global_song_player = global_minim.loadFile(dataPath(Constants.PLAYER_DEATH_SONG_NAME));
+private void playSong(boolean isLevelSong) {
+    if(isLevelSong) {
+        global_level_song_player.setCycleCount(1);
+        global_level_song_player.play();
+    } else {
+        global_player_death_song_player.setCycleCount(1);
+        global_player_death_song_player.play();  
+    }
 }
 
 /**
  * stop song
  */
 private void stopSong() {
-    global_song_player.close();
+    global_level_song_player.stop();
+    global_player_death_song_player.stop();
+}
+
+/**
+ * convert given string to valid uri path and return result
+ */
+private String convertPathToValidUri(String path) {
+    return path
+        .replace(" ", "%20")            // space is illegal character
+        .replace("\\", "/")             // back-slash illegal character
+        .replace("C:/", "file:///C:/"); // prevent unsupported protocol c
 }

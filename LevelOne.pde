@@ -19,7 +19,7 @@ public class LevelOne extends ALevel implements IDrawable {
         this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
         this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
-        loopSong();
+        loopSong(true);
 
         charactersList.add(new Enemy(
             global_levels_width_array[this.levelIndex] - 500,

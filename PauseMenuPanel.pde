@@ -25,8 +25,7 @@ public class PauseMenuPanel extends APanel implements IDrawable {
      */
     void executeWhenClicked() {
         if(panelType == PauseMenuButtonType.Continue) {
-            loadLevelSong();
-            loopSong();
+            loopSong(true);
             global_levels_list.get(global_current_active_level).get().isPaused = false; // TODO: encapsulate
             global_levels_list.get(global_current_active_level).get().closePauseMenu();
         

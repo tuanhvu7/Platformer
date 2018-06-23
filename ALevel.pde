@@ -151,8 +151,7 @@ abstract class ALevel {
                             true);
 
                     } else {
-                        loadLevelSong();
-                        loopSong();
+                        loopSong(true);
                         loop();
                         this.closePauseMenu();
                     }
