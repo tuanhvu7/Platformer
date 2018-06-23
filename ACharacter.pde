@@ -15,8 +15,8 @@ abstract class ACharacter {
     protected boolean isMovingRight;
     protected boolean isJumping;
 
-    // number of top horizontal boundaries (floor-like boundaries) this is touching;
-    protected int numberOfTopHorizontalBoundaryContacts;
+    // number of floor-like boundaries this is touching;
+    protected int numberOfFloorBoundaryContacts;
 
     // true means this is active (boundary and character collision detection)
     protected boolean isActive;
@@ -35,7 +35,7 @@ abstract class ACharacter {
         this.isMovingRight = false;
         this.isJumping = false;
 
-        this.numberOfTopHorizontalBoundaryContacts = 0;
+        this.numberOfFloorBoundaryContacts = 0;
 
         if(isActive) {
             this.makeActive();
@@ -53,8 +53,8 @@ abstract class ACharacter {
     /**
      * handle contact with horizontal boundary
      */
-    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
-        if(isTopSideBoundary) { // floor-like boundary
+    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isFloorBoundary) {
+        if(isFloorBoundary) { // floor-like boundary
             if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
                 this.vel.y = 0;
                 this.pos.y = boundaryYPoint - this.diameter / 2;

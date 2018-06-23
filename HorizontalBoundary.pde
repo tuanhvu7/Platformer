@@ -5,18 +5,18 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
 
     // true means character cannot go through top side of boundary
     // false means character cannot go through bottom side of boundary
-    private boolean isTopSideBoundary;
+    private boolean isFloorBoundary;
 
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                        boolean isTopSideBoundary, boolean isActive, int levelIndex) {
+                        boolean isFloorBoundary, boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryLineThickness,
             true, true, true, isActive, levelIndex);
 
-        this.isTopSideBoundary = isTopSideBoundary;
+        this.isFloorBoundary = isFloorBoundary;
     }
 
     /**
@@ -24,12 +24,12 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * sets this to affect all characters
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                        boolean isVisible, boolean isTopSideBoundary,
+                        boolean isVisible, boolean isFloorBoundary,
                         boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryLineThickness,
             isVisible, true, true, isActive, levelIndex);
 
-        this.isTopSideBoundary = isTopSideBoundary;
+        this.isFloorBoundary = isFloorBoundary;
     }
 
     /**
@@ -37,11 +37,11 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                        boolean isTopSideBoundary, boolean isActive, int levelIndex) {
+                        boolean isFloorBoundary, boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, 0, boundaryLineThickness,
             isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
 
-        this.isTopSideBoundary = isTopSideBoundary;
+        this.isFloorBoundary = isFloorBoundary;
     }
 
     /**
@@ -49,14 +49,14 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     boolean contactWithCharacter(ACharacter character) {
 
-        // if(this.isTopSideBoundary) {
+        // if(this.isFloorBoundary) {
         //     return 
         //         character.pos.x > this.startPoint.x - (character.diameter / 2)      // > lower x boundary
         //         && character.pos.x < this.endPoint.x + (character.diameter / 2)     // < upper x boundary
         //         && character.pos.y < this.startPoint.y                              // center of character above boundary
         //         && character.pos.y + (character.diameter / 2) >= this.startPoint.y; // bottom of character 'touching' boundary
 
-        // } else {    // bottom-side boundary
+        // } else {    // ceiling-like boundary
         //     return 
         //         character.pos.x > this.startPoint.x - (character.diameter / 2)      // > lower x boundary
         //         && character.pos.x < this.endPoint.x + (character.diameter / 2)     // < upper x boundary
@@ -82,20 +82,20 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
             if(this.contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) { // this has contact with player
                 if(!this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) { // new collision detected
                     this.charactersTouchingThis.add(getPlayerAtLevelIndex(this.levelIndex));
-                    if(this.isTopSideBoundary) {
-                        getPlayerAtLevelIndex(this.levelIndex).numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate
+                    if(this.isFloorBoundary) {
+                        getPlayerAtLevelIndex(this.levelIndex).numberOfFloorBoundaryContacts++; // TODO: encapsulate
                     } else {
-                        getPlayerAtLevelIndex(this.levelIndex).numberOfBottomHorizontalBoundaryContacts++;  // TODO: encapsulate
+                        getPlayerAtLevelIndex(this.levelIndex).numberOfCeilingBoundaryContacts++;  // TODO: encapsulate
                     }
                 }
-                getPlayerAtLevelIndex(this.levelIndex).handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+                getPlayerAtLevelIndex(this.levelIndex).handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
 
             } else {    // this DOES NOT have contact with player
                 if(this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {
-                    if(this.isTopSideBoundary) {
-                        getPlayerAtLevelIndex(this.levelIndex).numberOfTopHorizontalBoundaryContacts--; // TODO: encapsulate
+                    if(this.isFloorBoundary) {
+                        getPlayerAtLevelIndex(this.levelIndex).numberOfFloorBoundaryContacts--; // TODO: encapsulate
                     } else {
-                        getPlayerAtLevelIndex(this.levelIndex).numberOfBottomHorizontalBoundaryContacts--;  // TODO: encapsulate
+                        getPlayerAtLevelIndex(this.levelIndex).numberOfCeilingBoundaryContacts--;  // TODO: encapsulate
                     }
                     this.charactersTouchingThis.remove(getPlayerAtLevelIndex(this.levelIndex));
                 }
@@ -107,15 +107,15 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
             for(ACharacter curCharacter: getCharactersListAtLevelIndex(this.levelIndex)) { // this has contact with non-player
                 if(curCharacter.isActive) { // TODO: encapsulate
                     if(this.contactWithCharacter(curCharacter)) {
-                        if(this.isTopSideBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
-                            curCharacter.numberOfTopHorizontalBoundaryContacts++; // TODO: encapsulate
+                        if(this.isFloorBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
+                            curCharacter.numberOfFloorBoundaryContacts++; // TODO: encapsulate
                             this.charactersTouchingThis.add(curCharacter);
                         }
-                        curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isTopSideBoundary);
+                        curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
 
                     } else {    // this DOES NOT have contact with non-player
-                        if(this.isTopSideBoundary && this.charactersTouchingThis.contains(curCharacter)) { // curCharacter no longer colliding with this
-                            curCharacter.numberOfTopHorizontalBoundaryContacts--; // TODO: encapsulate
+                        if(this.isFloorBoundary && this.charactersTouchingThis.contains(curCharacter)) { // curCharacter no longer colliding with this
+                            curCharacter.numberOfFloorBoundaryContacts--; // TODO: encapsulate
                             this.charactersTouchingThis.remove(curCharacter);
                         }
                     }

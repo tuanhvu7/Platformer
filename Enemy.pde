@@ -79,7 +79,7 @@ public class Enemy extends ACharacter implements IDrawable {
         }
 
         // check collision with boundary
-        if(this.numberOfTopHorizontalBoundaryContacts == 0 && !this.isFlying) {
+        if(this.numberOfFloorBoundaryContacts == 0 && !this.isFlying) {
             this.handleInAirPhysics();
         }
 

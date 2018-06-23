@@ -6,8 +6,8 @@ public class Player extends ACharacter implements IDrawable {
     // true means this is touching vertical boundary
     private boolean isTouchingVerticalBoundary;
 
-    // number of bottom horizontal boundaries (ceiling-like boundaries) this is touching;
-    protected int numberOfBottomHorizontalBoundaryContacts;
+    // number of ceiling-like boundaries this is touching;
+    protected int numberOfCeilingBoundaryContacts;
 
     /**
      * set properties of this
@@ -15,7 +15,7 @@ public class Player extends ACharacter implements IDrawable {
     Player(int x, int y, int diameter, boolean isActive) {
         super(x, y, diameter, isActive);
         this.isTouchingVerticalBoundary = false;
-        this.numberOfTopHorizontalBoundaryContacts = 0;
+        this.numberOfFloorBoundaryContacts = 0;
     }
     
     /**
@@ -54,38 +54,7 @@ public class Player extends ACharacter implements IDrawable {
      * runs continuously. handles player movement and physics
      */
     void draw() {
-        if(this.isMovingLeft) {
-            this.vel.x = -Constants.PLAYER_RUN_SPEED;
-        }
-        if(this.isMovingRight) {
-            this.vel.x = Constants.PLAYER_RUN_SPEED;
-        }
-        if(!this.isMovingLeft && !this.isMovingRight) {
-            this.vel.x = 0;
-        }
-
-        if(this.isJumping) {    // jump button pressed/held
-            if( this.numberOfTopHorizontalBoundaryContacts > 0 || 
-                (this.isTouchingVerticalBoundary && this.numberOfBottomHorizontalBoundaryContacts == 0) )
-            { // able to jump
-                this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
-            } else {
-                // for jumpin higher the longer jump button is held
-                this.vel.y = 
-                Math.min(
-                    this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
-                    Constants.MAX_VERTICAL_VELOCITY);
-            }
-
-        } else {    // jump button not pressed
-            if(this.isTouchingVerticalBoundary) {   // touching wall
-                this.handleOnWallPhysics();
-            } else if(this.numberOfTopHorizontalBoundaryContacts == 0) {    // in air
-                this.handleInAirPhysics();
-            }
-        }
-
-        this.pos.add(this.vel);
+        this.handleMovement();
         
         fill(Constants.PLAYER_COLOR);
         this.show(); 
@@ -94,10 +63,10 @@ public class Player extends ACharacter implements IDrawable {
     /**
      * handle contact with horizontal boundary
      */
-    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isTopSideBoundary) {
+    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isFloorBoundary) {
         // // for Block mechanics; only handle if no contact with ceiling-like boundary
         if(!this.isTouchingVerticalBoundary) {
-            if(isTopSideBoundary) { // floor-like boundary
+            if(isFloorBoundary) { // floor-like boundary
                 if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
                     this.vel.y = 0;
                     this.pos.y = boundaryYPoint - this.diameter / 2;
@@ -116,7 +85,7 @@ public class Player extends ACharacter implements IDrawable {
      */
     void handleContactWithVerticalBoundary(float boundaryXPoint) {
          // for Block mechanics; only handle if no contact with ceiling-like boundary
-        if(this.numberOfBottomHorizontalBoundaryContacts == 0) {
+        if(this.numberOfCeilingBoundaryContacts == 0) {
             this.vel.x = 0;
             if(this.pos.x > boundaryXPoint) {   // left boundary
                 this.pos.x = boundaryXPoint + this.diameter / 2; // prevent this from going through boundary
@@ -138,6 +107,44 @@ public class Player extends ACharacter implements IDrawable {
      */
     private void handleJumpKillEnemyPhysics() {
         this.vel.y = -Constants.PLAYER_JUMP_KILL_ENEMY_HOP_HEIGHT;
+    }
+
+   /**
+    * handle movement (position, velocity) of this
+    */
+    private void handleMovement() {
+        if(this.isMovingLeft) {
+            this.vel.x = -Constants.PLAYER_RUN_SPEED;
+        }
+        if(this.isMovingRight) {
+            this.vel.x = Constants.PLAYER_RUN_SPEED;
+        }
+        if(!this.isMovingLeft && !this.isMovingRight) {
+            this.vel.x = 0;
+        }
+
+        if(this.isJumping) {    // jump button pressed/held
+            if( this.numberOfFloorBoundaryContacts > 0 || 
+                (this.isTouchingVerticalBoundary && this.numberOfCeilingBoundaryContacts == 0) )
+            { // able to jump
+                this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
+            } else {
+                // for jumpin higher the longer jump button is held
+                this.vel.y = 
+                Math.min(
+                    this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
+                    Constants.MAX_VERTICAL_VELOCITY);
+            }
+
+        } else {    // jump button not pressed
+            if(this.isTouchingVerticalBoundary) {   // touching wall
+                this.handleOnWallPhysics();
+            } else if(this.numberOfFloorBoundaryContacts == 0) {    // in air
+                this.handleInAirPhysics();
+            }
+        }
+
+        this.pos.add(this.vel);
     }
 
     
