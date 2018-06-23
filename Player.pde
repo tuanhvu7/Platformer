@@ -110,7 +110,7 @@ public class Player extends ACharacter implements IDrawable {
     }
 
    /**
-    * handle movement (position, velocity) of this
+    * handle movement (position, velocity)
     */
     private void handleMovement() {
         if(this.isMovingLeft) {

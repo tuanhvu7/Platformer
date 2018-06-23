@@ -76,7 +76,14 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     void draw() {
         this.show();
+        this.checkHandleContactWithPlayer();
+        this.checkHandleContactWithNonPlayerCharacters();
+    }
 
+    /**
+     * check and handle contact with player
+     */
+    private void checkHandleContactWithPlayer() {
         if(this.doesAffectPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) { // TODO: encapsulate
             // boundary collision for player
             if(this.contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) { // this has contact with player
@@ -101,7 +108,12 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
                 }
             }
         }
+    }
 
+    /**
+     *  check and handle contact with non-player characters
+     */
+    private void checkHandleContactWithNonPlayerCharacters() {
         if(this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
             for(ACharacter curCharacter: getCharactersListAtLevelIndex(this.levelIndex)) { // this has contact with non-player
@@ -122,6 +134,5 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
                 }
             }
         }
-
     }
 }

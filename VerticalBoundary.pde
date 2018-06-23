@@ -53,7 +53,14 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      */
     void draw() {
         this.show();
+        this.checkHandleContactWithPlayer();
+        this.checkHandleContactWithNonPlayerCharacters();
+    }
 
+    /**
+     * check and handle contact with player
+     */
+    private void checkHandleContactWithPlayer() {
         if(this.doesAffectPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
             // boundary collision for player
             if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {  // this has contact with non-player
@@ -70,7 +77,12 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
                 }
             }
         }
+    }
 
+    /**
+     *  check and handle contact with non-player characters
+     */
+    private void checkHandleContactWithNonPlayerCharacters() {
         if(this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
             for( ACharacter curCharacter : getCharactersListAtLevelIndex(this.levelIndex) ) {

@@ -33,6 +33,32 @@ public class ViewBox implements IDrawable {
      * runs continuously. handles viewbox position
      */
     void draw() {
+        this.handleMovement();
+        
+        // move viewbox as necessary
+        translate(-this.pos.x, -0);
+    }
+
+    /**
+     * activate and add this to game
+     */
+    void makeActive() {
+        this.isActive = true;
+        registerMethod("draw", this); // connect this draw() from main draw()
+    }
+
+    /**
+     * deactivate and remove this from game
+     */
+    void makeNotActive() {
+        this.isActive = false;
+        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+    }
+
+   /**
+    * handle movement (position, velocity)
+    */
+    private void handleMovement() {
         if(getPlayerAtLevelIndex(this.levelIndex).isMovingLeft) {    // TODO: encapsulate
             if(this.pos.x > 0       // left edge of viewbox not at left edge of level
                 && this.playerAtViewBoxBoundary(true)) {
@@ -58,25 +84,6 @@ public class ViewBox implements IDrawable {
         }
 
         this.pos.add(this.vel);
-        
-        // move viewbox if necessary
-        translate(-this.pos.x, -0);
-    }
-
-    /**
-     * activate and add this to game
-     */
-    void makeActive() {
-        this.isActive = true;
-        registerMethod("draw", this); // connect this draw() from main draw()
-    }
-
-    /**
-     * deactivate and remove this from game
-     */
-    void makeNotActive() {
-        this.isActive = false;
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
     /**

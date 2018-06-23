@@ -58,7 +58,19 @@ public class Enemy extends ACharacter implements IDrawable {
      * runs continuously. handles enemy movement and physics
      */
     void draw() {
-        // check collision with player
+        this.checkHandleContactWithPlayer();
+        this.handleMovement();
+
+        if(this.isVisible) {
+            fill(Constants.ENEMY_COLOR);
+            this.show();
+        }
+    }
+
+    /**
+     *  check and handle contact with player
+     */
+    private void checkHandleContactWithPlayer() {
         if(getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
             double collisionAngle = this.collisionWithPlayer();
             if(collisionAngle >= 0) {
@@ -77,19 +89,17 @@ public class Enemy extends ACharacter implements IDrawable {
                 }
             }
         }
+    }
 
-        // check collision with boundary
+   /**
+    * handle movement (position, velocity)
+    */
+    private void handleMovement() {
         if(this.numberOfFloorBoundaryContacts == 0 && !this.isFlying) {
             this.handleInAirPhysics();
         }
 
         this.pos.add(this.vel);
-
-        if(this.isVisible) {
-            fill(Constants.ENEMY_COLOR);
-            this.show();
-        }
-
     }
 
 }
