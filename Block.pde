@@ -14,11 +14,11 @@ public class Block implements IDrawable {
 
     private int levelIndex;
 
-    private HorizontalBoundary topBoundary;
-    private HorizontalBoundary bottomBoundary;
+    private BlockHorizontalBoundary topBoundary;
+    private BlockHorizontalBoundary bottomBoundary;
 
-    private VerticalBoundary leftBoundary;
-    private VerticalBoundary rightBoundary;
+    private BlockVerticalBoundary leftBoundary;
+    private BlockVerticalBoundary rightBoundary;
 
     /**
      * set properties of this;
@@ -37,7 +37,7 @@ public class Block implements IDrawable {
 
         this.levelIndex = levelIndex;
 
-        this.topBoundary = new HorizontalBoundary(
+        this.topBoundary = new BlockHorizontalBoundary(
             leftX,
             topY,
             width,
@@ -48,7 +48,7 @@ public class Block implements IDrawable {
             levelIndex
         );
 
-        this.bottomBoundary = new HorizontalBoundary(
+        this.bottomBoundary = new BlockHorizontalBoundary(
             leftX,
             topY + height,
             width,
@@ -59,7 +59,7 @@ public class Block implements IDrawable {
             levelIndex
         );
 
-        this.leftBoundary = new VerticalBoundary(
+        this.leftBoundary = new BlockVerticalBoundary(
             leftX,
             topY + 1,
             height - 1,
@@ -69,7 +69,7 @@ public class Block implements IDrawable {
             levelIndex
         );
 
-        this.rightBoundary = new VerticalBoundary(
+        this.rightBoundary = new BlockVerticalBoundary(
             leftX + width,
             topY + 1,
             height - 1,
@@ -103,7 +103,7 @@ public class Block implements IDrawable {
 
         this.levelIndex = levelIndex;
 
-        this.topBoundary = new HorizontalBoundary(
+        this.topBoundary = new BlockHorizontalBoundary(
             leftX + 1,
             topY,
             width - 1,
@@ -114,7 +114,7 @@ public class Block implements IDrawable {
             levelIndex
         );
 
-        this.bottomBoundary = new HorizontalBoundary(
+        this.bottomBoundary = new BlockHorizontalBoundary(
             leftX + 1,
             topY + height,
             width - 1,
@@ -125,7 +125,7 @@ public class Block implements IDrawable {
             levelIndex
         );
 
-        this.leftBoundary = new VerticalBoundary(
+        this.leftBoundary = new BlockVerticalBoundary(
             leftX,
             topY,
             height,
@@ -135,7 +135,7 @@ public class Block implements IDrawable {
             levelIndex
         );
 
-        this.rightBoundary = new VerticalBoundary(
+        this.rightBoundary = new BlockVerticalBoundary(
             leftX + width,
             topY,
             height,
@@ -144,6 +144,10 @@ public class Block implements IDrawable {
             false,  // initially not active, to activate based on isActive && isVisible
             levelIndex
         );
+
+        if(isActive) {
+            this.makeActive();
+        }
     }
 
     /**
@@ -153,27 +157,8 @@ public class Block implements IDrawable {
         if(this.isVisible) {
             this.show();
         }
-        
-        // handle player collision with invisible block
-        if( this.isActive && 
-            !this.isVisible && 
-            getPlayerAtLevelIndex(this.levelIndex).isActive &&  // TODO: encapsulate
-            this.bottomBoundary.contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex)) ) 
-        {
-
-            this.isVisible = true;
-            this.topBoundary.makeActive();
-            this.topBoundary.isVisible = true;  // TODO: encapsulate
-            
-            this.bottomBoundary.isVisible = true;  // TODO: encapsulate
-
-            this.leftBoundary.makeActive();
-            this.leftBoundary.isVisible = true;  // TODO: encapsulate
-
-            this.rightBoundary.makeActive();
-            this.rightBoundary.isVisible = true;  // TODO: encapsulate
-            
-        }
+        this.handleInvisibleBlock();
+        this.handlePlayerContact();
     }
 
     /**
@@ -191,6 +176,7 @@ public class Block implements IDrawable {
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
 
+        // make horizontal boundaries first since their detection takes precedence
         this.bottomBoundary.makeActive();
         
         if(this.isVisible) {
@@ -211,6 +197,81 @@ public class Block implements IDrawable {
         this.bottomBoundary.makeNotActive();
         this.leftBoundary.makeNotActive();
         this.rightBoundary.makeNotActive();
+    }
+
+    /**
+     * handle invisible block player contact
+     */
+    private void handleInvisibleBlock() {
+        Player curPlayer = getPlayerAtLevelIndex(this.levelIndex);
+
+        // handle player collision with invisible block
+        if( this.isActive && 
+            !this.isVisible && 
+            curPlayer.isActive &&  // TODO: encapsulate
+            this.bottomBoundary.contactWithCharacter(curPlayer) ) 
+        {
+
+            this.isVisible = true;
+            this.topBoundary.makeActive();
+            this.topBoundary.isVisible = true;  // TODO: encapsulate
+            
+            this.bottomBoundary.isVisible = true;  // TODO: encapsulate
+
+            this.leftBoundary.makeActive();
+            this.leftBoundary.isVisible = true;  // TODO: encapsulate
+
+            this.rightBoundary.makeActive();
+            this.rightBoundary.isVisible = true;  // TODO: encapsulate
+            
+        }
+    }
+
+    /**
+     * handle contact with player
+     */
+    private void handlePlayerContact() {
+        Player curPlayer = getPlayerAtLevelIndex(this.levelIndex);
+
+        boolean isTopBoundaryPlayerContact = 
+            this.topBoundary.charactersTouchingThis.contains(curPlayer);    // TODO: encapsulate
+
+        boolean isBottomBoundaryPlayerContact = 
+            this.bottomBoundary.charactersTouchingThis.contains(curPlayer); // TODO: encapsulate
+
+        boolean isLeftBoundaryPlayerContact = 
+            this.leftBoundary.charactersTouchingThis.contains(curPlayer);   // TODO: encapsulate
+
+        boolean isRightBoundaryPlayerContact = 
+            this.rightBoundary.charactersTouchingThis.contains(curPlayer);  // TODO: encapsulate
+
+
+        if(isTopBoundaryPlayerContact) {
+            if(!isLeftBoundaryPlayerContact && !isRightBoundaryPlayerContact) {
+                curPlayer
+                    .handleContactWithHorizontalBoundary(
+                        this.topBoundary.startPoint.y,  // TODO: encapsulate
+                        this.topBoundary.getIsFloorBoundary());
+            }
+        
+        } else if(isBottomBoundaryPlayerContact) {
+            if(!isLeftBoundaryPlayerContact && !isRightBoundaryPlayerContact) {
+                curPlayer
+                    .handleContactWithHorizontalBoundary(
+                        this.bottomBoundary.startPoint.y,   // TODO: encapsulate
+                        this.bottomBoundary.getIsFloorBoundary());
+            }
+
+        } else if(isLeftBoundaryPlayerContact) {
+            if(!isTopBoundaryPlayerContact && !isBottomBoundaryPlayerContact) {
+                curPlayer.handleContactWithVerticalBoundary(this.leftBoundary.startPoint.x);    // TODO: encapsulate
+            }
+
+        } else if(isRightBoundaryPlayerContact) {
+            if(!isTopBoundaryPlayerContact && !isBottomBoundaryPlayerContact) {
+                curPlayer.handleContactWithVerticalBoundary(this.rightBoundary.startPoint.x);   // TODO: encapsulate
+            }
+        }
     }
 
 }

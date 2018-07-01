@@ -61,19 +61,21 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        if(this.doesAffectPlayer && getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
+        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
+
+        if(this.doesAffectPlayer && curPlayer.isActive) {   // TODO: encapsulate
             // boundary collision for player
-            if(contactWithCharacter(getPlayerAtLevelIndex(this.levelIndex))) {  // this has contact with non-player
-                if(!this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {  // new collision detected
-                    getPlayerAtLevelIndex(this.levelIndex).isTouchingVerticalBoundary = true;    // TODO: encapsulate
-                    this.charactersTouchingThis.add(getPlayerAtLevelIndex(this.levelIndex));
+            if(contactWithCharacter(curPlayer)) {  // this has contact with non-player
+                if(!this.charactersTouchingThis.contains(curPlayer)) {  // new collision detected
+                    curPlayer.numberOfVerticalBoundaryContacts++;    // TODO: encapsulate
+                    this.charactersTouchingThis.add(curPlayer);
                 }
-                getPlayerAtLevelIndex(this.levelIndex).handleContactWithVerticalBoundary(this.startPoint.x);
+                curPlayer.handleContactWithVerticalBoundary(this.startPoint.x);
                 
             } else {    // this DOES NOT have contact with non-player
-                if(this.charactersTouchingThis.contains(getPlayerAtLevelIndex(this.levelIndex))) {
-                    getPlayerAtLevelIndex(this.levelIndex).isTouchingVerticalBoundary = false;   // TODO: encapsulate
-                    this.charactersTouchingThis.remove(getPlayerAtLevelIndex(this.levelIndex));
+                if(this.charactersTouchingThis.contains(curPlayer)) {
+                    curPlayer.numberOfVerticalBoundaryContacts--;   // TODO: encapsulate
+                    this.charactersTouchingThis.remove(curPlayer);
                 }
             }
         }

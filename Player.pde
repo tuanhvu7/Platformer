@@ -4,7 +4,7 @@
 public class Player extends ACharacter implements IDrawable {
 
     // true means this is touching vertical boundary
-    private boolean isTouchingVerticalBoundary;
+    private int numberOfVerticalBoundaryContacts;
 
     // number of ceiling-like boundaries this is touching;
     protected int numberOfCeilingBoundaryContacts;
@@ -14,7 +14,7 @@ public class Player extends ACharacter implements IDrawable {
      */
     Player(int x, int y, int diameter, boolean isActive) {
         super(x, y, diameter, isActive);
-        this.isTouchingVerticalBoundary = false;
+        this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
     }
     
@@ -64,18 +64,16 @@ public class Player extends ACharacter implements IDrawable {
      * handle contact with horizontal boundary
      */
     void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isFloorBoundary) {
-        // // for Block mechanics; only handle if no contact with ceiling-like boundary
-        if(!this.isTouchingVerticalBoundary) {
-            if(isFloorBoundary) { // floor-like boundary
-                if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
-                    this.vel.y = 0;
-                    this.pos.y = boundaryYPoint - this.diameter / 2;
-                }
-            } else {    // ceiling-like boundary
-                if(this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
-                    this.vel.y = 1;
-                    this.pos.add(this.vel);
-                }
+        if(isFloorBoundary) { // floor-like boundary
+            if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
+                this.vel.y = 0;
+                this.pos.y = boundaryYPoint - this.diameter / 2;
+            }
+        } else {    // ceiling-like boundary
+            if(this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
+                this.vel.y = 1;
+                this.pos.y = boundaryYPoint + this.diameter / 2;
+                this.pos.add(this.vel);
             }
         }
     }
@@ -84,15 +82,12 @@ public class Player extends ACharacter implements IDrawable {
      * handle contact with vertical boundary
      */
     void handleContactWithVerticalBoundary(float boundaryXPoint) {
-         // for Block mechanics; only handle if no contact with ceiling-like boundary
-        if(this.numberOfCeilingBoundaryContacts == 0) {
-            this.vel.x = 0;
-            if(this.pos.x > boundaryXPoint) {   // left boundary
-                this.pos.x = boundaryXPoint + this.diameter / 2; // prevent this from going through boundary
-            } else {    // right boundary
-                this.pos.x = boundaryXPoint - this.diameter / 2; // prevent this from going through boundary
-            }  
-        }
+        this.vel.x = 0;
+        if(this.pos.x > boundaryXPoint) {   // left boundary
+            this.pos.x = boundaryXPoint + this.diameter / 2; // prevent this from going through boundary
+        } else {    // right boundary
+            this.pos.x = boundaryXPoint - this.diameter / 2; // prevent this from going through boundary
+        }  
     }
 
     /**
@@ -125,7 +120,7 @@ public class Player extends ACharacter implements IDrawable {
 
         if(this.isJumping) {    // jump button pressed/held
             if( this.numberOfFloorBoundaryContacts > 0 || 
-                (this.isTouchingVerticalBoundary && this.numberOfCeilingBoundaryContacts == 0) )
+                (this.numberOfVerticalBoundaryContacts > 0 && this.numberOfCeilingBoundaryContacts == 0) )
             { // able to jump
                 this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
             } else {
@@ -137,7 +132,7 @@ public class Player extends ACharacter implements IDrawable {
             }
 
         } else {    // jump button not pressed
-            if(this.isTouchingVerticalBoundary) {   // touching wall
+            if(this.numberOfVerticalBoundaryContacts > 0) {   // touching wall
                 this.handleOnWallPhysics();
             } else if(this.numberOfFloorBoundaryContacts == 0) {    // in air
                 this.handleInAirPhysics();

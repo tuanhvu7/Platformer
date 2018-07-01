@@ -78,6 +78,7 @@ public class LevelOne extends ALevel implements IDrawable {
             Constants.DEFAULT_BLOCK_SIZE,
             Constants.DEFAULT_BLOCK_SIZE,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            false,
             this.isActive,
             this.levelIndex
         ));
