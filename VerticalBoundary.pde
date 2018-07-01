@@ -72,8 +72,10 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
                 }
                 curPlayer.handleContactWithVerticalBoundary(this.startPoint.x);
                 
-            } else {    // this DOES NOT have contact with non-player
+            } else {    // this DOES NOT have contact with player
                 if(this.charactersTouchingThis.contains(curPlayer)) {
+                    curPlayer.ableToMoveRight = true;    // TODO: encapsulate
+                    curPlayer.ableToMoveLeft = true;    // TODO: encapsulate
                     curPlayer.numberOfVerticalBoundaryContacts--;   // TODO: encapsulate
                     this.charactersTouchingThis.remove(curPlayer);
                 }

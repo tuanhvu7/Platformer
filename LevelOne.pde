@@ -83,6 +83,17 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         ));
 
+        this.blocksList.add(new Block(
+            global_levels_width_array[this.levelIndex] / 2 - 300 + Constants.DEFAULT_BLOCK_SIZE,
+            height - 300 - Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true,
+            this.isActive,
+            this.levelIndex
+        ));
+
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(
             0,

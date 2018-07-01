@@ -3,11 +3,17 @@
  */
 public class Player extends ACharacter implements IDrawable {
 
-    // true means this is touching vertical boundary
+    // number of wall-like boundaries this is touching;
     private int numberOfVerticalBoundaryContacts;
 
     // number of ceiling-like boundaries this is touching;
     protected int numberOfCeilingBoundaryContacts;
+
+    // true means able to move right
+    private boolean ableToMoveRight;
+
+    // true means able to move left
+    private boolean ableToMoveLeft;
 
     /**
      * set properties of this
@@ -16,6 +22,9 @@ public class Player extends ACharacter implements IDrawable {
         super(x, y, diameter, isActive);
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
+
+        this.ableToMoveRight = true;
+        this.ableToMoveLeft = true;
     }
     
     /**
@@ -84,9 +93,9 @@ public class Player extends ACharacter implements IDrawable {
     void handleContactWithVerticalBoundary(float boundaryXPoint) {
         this.vel.x = 0;
         if(this.pos.x > boundaryXPoint) {   // left boundary
-            this.pos.x = boundaryXPoint + this.diameter / 2; // prevent this from going through boundary
+            this.ableToMoveLeft = false;
         } else {    // right boundary
-            this.pos.x = boundaryXPoint - this.diameter / 2; // prevent this from going through boundary
+            this.ableToMoveRight = false;
         }  
     }
 
@@ -108,10 +117,10 @@ public class Player extends ACharacter implements IDrawable {
     * handle movement (position, velocity)
     */
     private void handleMovement() {
-        if(this.isMovingLeft) {
+        if(this.isMovingLeft && this.ableToMoveLeft) {
             this.vel.x = -Constants.PLAYER_RUN_SPEED;
         }
-        if(this.isMovingRight) {
+        if(this.isMovingRight && this.ableToMoveRight) {
             this.vel.x = Constants.PLAYER_RUN_SPEED;
         }
         if(!this.isMovingLeft && !this.isMovingRight) {
@@ -124,7 +133,7 @@ public class Player extends ACharacter implements IDrawable {
             { // able to jump
                 this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
             } else {
-                // for jumpin higher the longer jump button is held
+                // for jumping higher the longer jump button is held
                 this.vel.y = 
                 Math.min(
                     this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
