@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.ref.SoftReference;
+import java.util.Optional;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

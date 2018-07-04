@@ -11,8 +11,6 @@ public class BlockHorizontalBoundary extends HorizontalBoundary {
                             boolean isFloorBoundary, boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
                 isFloorBoundary, isActive, levelIndex);
-
-        this.isFloorBoundary = isFloorBoundary;
     }
 
     /**
@@ -24,8 +22,6 @@ public class BlockHorizontalBoundary extends HorizontalBoundary {
                             boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
                 isVisible, isFloorBoundary, isActive, levelIndex);
-
-        this.isFloorBoundary = isFloorBoundary;
     }
 
     /**
@@ -37,8 +33,6 @@ public class BlockHorizontalBoundary extends HorizontalBoundary {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
                 isVisible, doesAffectPlayer, doesAffectNonPlayers,
                 isFloorBoundary, isActive, levelIndex);
-
-        this.isFloorBoundary = isFloorBoundary;
     }
 
     /**

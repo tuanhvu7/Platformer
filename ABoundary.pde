@@ -4,7 +4,7 @@
 abstract class ABoundary {
     // start point (smaller x and smaller y) coordinate for boundary
     protected PVector startPoint;
-    // end piont (larger x and larger y) coordinate for boundary
+    // end point (larger x and larger y) coordinate for boundary
     protected PVector endPoint;
 
     // stoke thickness of boundary

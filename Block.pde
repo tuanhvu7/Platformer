@@ -11,7 +11,7 @@ public class Block extends ABlock implements IDrawable {
     Block(int leftX, int topY, int width, int height, int blockLineThickness, 
             boolean isActive, int levelIndex) {
         
-        super(leftX, topY, width, height, blockLineThickness, false, levelIndex);   // initially not active, to activate based on isActive
+        super(leftX, topY, width, height, blockLineThickness, false, levelIndex);   // initially not active, to be set in makeActive()
 
         this.topSide = new BlockHorizontalBoundary(
             leftX,
@@ -19,7 +19,7 @@ public class Block extends ABlock implements IDrawable {
             width,
             blockLineThickness,
             true,
-            false,  // initially not active, to activate based on isActive
+            false,  // initially not active, to be set in makeActive()
             levelIndex
         );
         
@@ -38,16 +38,16 @@ public class Block extends ABlock implements IDrawable {
             boolean isVisible, boolean isActive, int levelIndex) {
 
         super(leftX, topY, width, height, blockLineThickness,
-                isVisible, false, levelIndex);  // initially not active, to activate based on isActive, isVisible
+                isVisible, false, levelIndex);  // initially not active, to be set in makeActive(), isVisible
 
         this.topSide = new BlockHorizontalBoundary(
-            leftX + 1,
+            leftX,
             topY,
-            width - 1,
+            width,
             blockLineThickness,
             isVisible,
             true,
-            false,  // initially not active, to activate based on isActive && isVisible
+            false,  // initially not active, to be set in makeActive()
             levelIndex
         );
 

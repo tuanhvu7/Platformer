@@ -10,11 +10,6 @@ abstract class ACharacter {
     // character diameter
     protected int diameter;
 
-    // character movement states
-    protected boolean isMovingLeft;
-    protected boolean isMovingRight;
-    protected boolean isJumping;
-
     // number of floor-like boundaries this is touching;
     protected int numberOfFloorBoundaryContacts;
 
@@ -30,10 +25,6 @@ abstract class ACharacter {
         this.diameter = diameter;
 
         this.isActive = true;
-
-        this.isMovingLeft = false;
-        this.isMovingRight = false;
-        this.isJumping = false;
 
         this.numberOfFloorBoundaryContacts = 0;
 

@@ -9,8 +9,15 @@ public class Player extends ACharacter implements IDrawable {
     // number of ceiling-like boundaries this is touching;
     private int numberOfCeilingBoundaryContacts;
 
-    // middle x-positions of top boundary of warp blocks that this is touching
-    private Set<WarpBlockTopBoundary> warpBlockContacts;
+    // top boundary of event blocks that this is touching
+    private Set<EventBlockTopBoundary> eventTopBoundaryContacts;
+
+    // player pressed control states
+    private boolean moveLeftPressed;
+    private boolean moveRightPressed;
+    private boolean jumpPressed;
+
+    private boolean isDescendingDownEventBlock;
 
     // true means able to move right
     private boolean ableToMoveRight;
@@ -26,7 +33,13 @@ public class Player extends ACharacter implements IDrawable {
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
 
-        this.warpBlockContacts = new HashSet<WarpBlockTopBoundary>();
+        this.eventTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
+
+        this.moveLeftPressed = false;
+        this.moveRightPressed = false;
+        this.jumpPressed = false;
+
+        this.isDescendingDownEventBlock = false;
 
         this.ableToMoveRight = true;
         this.ableToMoveLeft = true;
@@ -38,27 +51,29 @@ public class Player extends ACharacter implements IDrawable {
     void keyEvent(KeyEvent keyEvent) {
 
         if(keyEvent.getAction() == KeyEvent.PRESS) {
-            char keyPressed = keyEvent.getKey();
-
-            if(keyPressed == 'a') {   //left
-                this.isMovingLeft = true;
+            if(key == 'a') {   //left
+                this.moveLeftPressed = true;
             }
-            if(keyPressed == 'd') {   //right
-                this.isMovingRight = true;
+            if(key == 'd') {   //right
+                this.moveRightPressed = true;
             }
-            if(keyPressed == 'w') {
-                this.isJumping = true;
+            if(key == 'w') {
+                this.jumpPressed = true;
+            }
+            if(key == 's' && eventTopBoundaryContacts.size() == 1 && !isDescendingDownEventBlock) 
+            {
+                this.isDescendingDownEventBlock = true;
             }
 
         } else if(keyEvent.getAction() == KeyEvent.RELEASE) {
             if(key == 'a') {       //left
-                this.isMovingLeft = false;
+                this.moveLeftPressed = false;
             }
             if(key == 'd') {       //right
-                 this.isMovingRight = false;
+                 this.moveRightPressed = false;
             }
             if(key == 'w') {
-                this.isJumping = false;
+                this.jumpPressed = false;
             }
         }
 
@@ -72,6 +87,24 @@ public class Player extends ACharacter implements IDrawable {
         
         fill(Constants.PLAYER_COLOR);
         this.show(); 
+    }
+
+    /**
+     * active and add this to game
+     */
+    void makeActive() {
+        this.isActive = true;
+        registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
+        registerMethod("draw", this); // connect this draw() from main draw()
+    }
+
+    /**
+     * deactivate and remove this from game
+     */
+    void makeNotActive() {
+        this.isActive = false;
+        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+        unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
     }
 
     /**
@@ -105,6 +138,21 @@ public class Player extends ACharacter implements IDrawable {
     }
 
     /**
+     * handle contact with this and event boundary
+     */
+    void handleConactWithEventBoundary(PVector endWarpPosition) {
+        registerMethod("keyEvent", this); // connect this draw() from main draw()
+        this.isDescendingDownEventBlock = false;
+        if(endWarpPosition == null) {
+            this.vel.y = Constants.CHARACTER_LAUNCH_EVENT_VERTICAL_VELOCITY;
+        } else {
+            this.pos.x = endWarpPosition.x;
+            this.pos.y = endWarpPosition.y;
+            this.vel.y = Constants.CHARACTER_WARP_EVENT_VERTICAL_VELOCITY;
+        }
+    }
+
+    /**
      * handle wall sliding physics
      */
     private void handleOnWallPhysics() {
@@ -115,28 +163,66 @@ public class Player extends ACharacter implements IDrawable {
      * handle jump on enemy physics
      */
     private void handleJumpKillEnemyPhysics() {
-        this.vel.y = -Constants.PLAYER_JUMP_KILL_ENEMY_HOP_HEIGHT;
+        this.vel.y = Constants.PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY;
     }
 
    /**
     * handle movement (position, velocity)
     */
     private void handleMovement() {
-        if(this.isMovingLeft && this.ableToMoveLeft) {
-            this.vel.x = -Constants.PLAYER_RUN_SPEED;
-        }
-        if(this.isMovingRight && this.ableToMoveRight) {
-            this.vel.x = Constants.PLAYER_RUN_SPEED;
-        }
-        if(!this.isMovingLeft && !this.isMovingRight) {
-            this.vel.x = 0;
+        if(this.isDescendingDownEventBlock) {
+            this.handleEventBlockDescent();
+        } else {
+            this.handleHorizontalMovement();
+            this.handleVerticalMovement();
         }
 
-        if(this.isJumping) {    // jump button pressed/held
+        this.pos.add(this.vel);
+    }
+
+    /**
+     * handle this descent down event block
+     */
+    private void handleEventBlockDescent() {
+        if(this.eventTopBoundaryContacts.size() == 1) {
+            unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+            EventBlockTopBoundary firstEventTopBoundaryContacts = 
+                this.eventTopBoundaryContacts.stream().findFirst().get();
+                
+            // TODO: encapsulate
+            int middleOfBoundary = Math.round(
+                (firstEventTopBoundaryContacts.endPoint.x + firstEventTopBoundaryContacts.startPoint.x) / 2);
+            
+            this.pos.x = middleOfBoundary;    
+            this.vel.x = 0;
+            this.vel.y = Constants.EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY;
+        }
+    }
+
+    /**
+     * handle horizontal movement of this
+     */
+    private void handleHorizontalMovement() {
+        if(this.moveLeftPressed && this.ableToMoveLeft) {
+            this.vel.x = -Constants.PLAYER_RUN_SPEED;
+        }
+        if(this.moveRightPressed && this.ableToMoveRight) {
+            this.vel.x = Constants.PLAYER_RUN_SPEED;
+        }
+        if(!this.moveLeftPressed && !this.moveRightPressed) {
+            this.vel.x = 0;
+        }
+    }
+
+    /**
+     * handle vertical movement of this
+     */
+    private void handleVerticalMovement() {
+        if(this.jumpPressed) {    // jump button pressed/held
             if( this.numberOfFloorBoundaryContacts > 0 || 
                 (this.numberOfVerticalBoundaryContacts > 0 && this.numberOfCeilingBoundaryContacts == 0) )
             { // able to jump
-                this.vel.y = -Constants.PLAYER_JUMP_HEIGHT;
+                this.vel.y = Constants.PLAYER_JUMP_VERTICAL_VELOCITY;
             } else {
                 // for jumping higher the longer jump button is held
                 this.vel.y = 
@@ -152,26 +238,6 @@ public class Player extends ACharacter implements IDrawable {
                 this.handleInAirPhysics();
             }
         }
-
-        this.pos.add(this.vel);
     }
 
-    
-    /**
-     * active and add this to game
-     */
-    void makeActive() {
-        this.isActive = true;
-        registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
-        registerMethod("draw", this); // connect this draw() from main draw()
-    }
-
-    /**
-     * deactivate and remove this from game
-     */
-    void makeNotActive() {
-        this.isActive = false;
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
-    }
 }

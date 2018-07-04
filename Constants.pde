@@ -25,21 +25,23 @@ class Constants {
     // gravity multiplier for jumping higher when holding jump button
     private static final float WALL_SLIDE_ACCELERATION = 0.1;
     private static final float VARIABLE_JUMP_GRAVITY_MULTIPLIER = 0.55;
+    private static final float EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY = 0.1;
     private static final float MAX_VERTICAL_VELOCITY = 15;
-
-
-    // minimun angle (degrees) of collision between player and enemy
-    // for player to kill enemy
-    private static final double MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE = 20.0;
-
+    
+    /*** Event config ***/
+    private static final int CHARACTER_LAUNCH_EVENT_VERTICAL_VELOCITY = -26;
+    // launch vertical velocity after warping to desired location
+    private static final int CHARACTER_WARP_EVENT_VERTICAL_VELOCITY = -10;
 
     /*** player config ***/
     private static final int PLAYER_RUN_SPEED = 3;
-    private static final int PLAYER_JUMP_HEIGHT = 12;
-    private static final int PLAYER_JUMP_KILL_ENEMY_HOP_HEIGHT = 7;
+    private static final int PLAYER_JUMP_VERTICAL_VELOCITY = -12;
+    private static final int PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY = -7;
     private static final int PLAYER_COLOR = #000000;
     private static final int PLAYER_DIAMETER = 60;
-
+    // minimun angle (degrees) of collision between player and enemy
+    // for player to kill enemy
+    private static final double MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE = 20.0;
 
     /*** enemy config **/
     private static final float ENEMY_RUN_SPEED = 2.5;

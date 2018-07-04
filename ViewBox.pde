@@ -59,7 +59,7 @@ public class ViewBox implements IDrawable {
     * handle movement (position, velocity)
     */
     private void handleMovement() {
-        if(getPlayerAtLevelIndex(this.levelIndex).isMovingLeft) {    // TODO: encapsulate
+        if(getPlayerAtLevelIndex(this.levelIndex).moveLeftPressed) {    // TODO: encapsulate
             if(this.pos.x > 0       // left edge of viewbox not at left edge of level
                 && this.playerAtViewBoxBoundary(true)) {
                 
@@ -68,7 +68,7 @@ public class ViewBox implements IDrawable {
                 this.vel.x = 0;
             }
         }
-        if(getPlayerAtLevelIndex(this.levelIndex).isMovingRight) {   // TODO: encapsulate
+        if(getPlayerAtLevelIndex(this.levelIndex).moveRightPressed) {   // TODO: encapsulate
             if(this.pos.x < global_levels_width_array[this.levelIndex] - width   // right edge of viewbox not at right edge of level
                 && this.playerAtViewBoxBoundary(false)) {
                 
@@ -77,8 +77,8 @@ public class ViewBox implements IDrawable {
                 this.vel.x = 0;
             }
         }
-        if(!getPlayerAtLevelIndex(this.levelIndex).isMovingLeft && 
-            !getPlayerAtLevelIndex(this.levelIndex).isMovingRight)
+        if(!getPlayerAtLevelIndex(this.levelIndex).moveLeftPressed && 
+            !getPlayerAtLevelIndex(this.levelIndex).moveRightPressed)
         {   // TODO: encapsulate
             this.vel.x = 0;
         }
@@ -87,10 +87,10 @@ public class ViewBox implements IDrawable {
     }
 
     /**
-     * return if player is at lower or upper boundary (from given value) of viewbox
+     * return if player is at lower (left) or upper (right) boundary (from given value) of viewbox
      */
-    private boolean playerAtViewBoxBoundary(boolean isLowerBoundary) {
-        if(isLowerBoundary) {
+    private boolean playerAtViewBoxBoundary(boolean isLowerLeftBoundary) {
+        if(isLowerLeftBoundary) {
             return getPlayerAtLevelIndex(this.levelIndex).pos.x <= this.pos.x + Constants.VIEWBOX_BOUNDARY * width;  // TODO: encapsulate
         } else {
             return getPlayerAtLevelIndex(this.levelIndex).pos.x >= this.pos.x + (1.00 - Constants.VIEWBOX_BOUNDARY) * width; // TODO: encapsulate

@@ -47,7 +47,7 @@ abstract class ABlock {
         this.leftSide = new BlockVerticalBoundary(
             leftX,
             topY + 1,
-            height - 1,
+            height - 2,
             blockLineThickness,
             isActive,
             levelIndex
@@ -56,7 +56,7 @@ abstract class ABlock {
         this.rightSide = new BlockVerticalBoundary(
             leftX + width,
             topY + 1,
-            height - 1,
+            height - 2,
             blockLineThickness,
             isActive,
             levelIndex
@@ -112,6 +112,12 @@ abstract class ABlock {
             levelIndex
         );
     }
+
+    /**
+     * deactivate and remove this from game;
+     * to override in extended classes
+     */
+    public void makeNotActive() {}
 
     /**
      * handle contact with player
