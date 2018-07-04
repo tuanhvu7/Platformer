@@ -51,13 +51,17 @@ class Constants {
     /*** boundary and block config ***/
     private static final int BOUNDARY_COLOR = #000000;
     private static final int DEFAULT_BOUNDARY_LINE_THICKNESS = 1;
+
     private static final int BLOCK_COLOR = #CD853F;
     private static final int DEFAULT_BLOCK_SIZE = 100; 
 
+    private static final int WARP_BLOCK_COLOR = #00E500;
+    private static final int DEFAULT_WARP_BLOCK_WIDTH = 125; 
+    private static final int DEFAULT_BLOCK_BLOCK_HEIGHT = 200; 
 
     /*** assets path ***/
     private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
-    private static final String LEVEL_SONG_NAME = "ugandan-knuckles-song-mono.mp3"; 
+    private static final String LEVEL_SONG_NAME = "ugandan-knuckles-song.mp3"; 
     private static final String PLAYER_DEATH_SONG_NAME = "ugandan-knuckles-song-end.mp3"; 
 
 }

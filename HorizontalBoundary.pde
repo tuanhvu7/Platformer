@@ -62,6 +62,8 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
         //         && character.pos.x < this.endPoint.x + (character.diameter / 2)     // < upper x boundary
         //         && character.pos.y > this.startPoint.y                              // center of character below boundary
         //         && character.pos.y - (character.diameter / 2) <= this.startPoint.y; // top of character 'touching' boundary
+        // } else {
+        //     return false;
         // }
 
         // TODO: encapsulate

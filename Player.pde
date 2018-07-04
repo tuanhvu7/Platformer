@@ -7,7 +7,10 @@ public class Player extends ACharacter implements IDrawable {
     private int numberOfVerticalBoundaryContacts;
 
     // number of ceiling-like boundaries this is touching;
-    protected int numberOfCeilingBoundaryContacts;
+    private int numberOfCeilingBoundaryContacts;
+
+    // middle x-positions of top boundary of warp blocks that this is touching
+    private Set<WarpBlockTopBoundary> warpBlockContacts;
 
     // true means able to move right
     private boolean ableToMoveRight;
@@ -22,6 +25,8 @@ public class Player extends ACharacter implements IDrawable {
         super(x, y, diameter, isActive);
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
+
+        this.warpBlockContacts = new HashSet<WarpBlockTopBoundary>();
 
         this.ableToMoveRight = true;
         this.ableToMoveLeft = true;
