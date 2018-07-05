@@ -64,7 +64,6 @@ public class Block extends ABlock implements IDrawable {
             this.show();
         }
         this.handleInvisibleBlock();
-        this.handlePlayerContact();
     }
 
     /**

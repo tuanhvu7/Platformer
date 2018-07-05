@@ -13,25 +13,26 @@ public class EventBlock extends ABlock implements IDrawable {
     EventBlock(int leftX, int topY, int width, int height, int blockLineThickness,
                 boolean isEventTriggerFloorBoundary, boolean isActive, int levelIndex) {
         
-        super(leftX, topY, width, height, blockLineThickness, isActive, levelIndex);
+        super(leftX, topY, width, height, blockLineThickness, false, levelIndex);   // initially not active, to be set in makeActive()
 
         this.topSide = new EventBlockTopBoundary(
             leftX,
             topY,
             width,
             blockLineThickness,
-            isActive,
+            false,  // initially not active, to be set in makeActive()
             levelIndex
         );
 
         this.eventTriggerBoundary = new EventTriggerHorizontalBoundary(
-            leftX + 1,
+            leftX + 10,
             topY + height - (height / 5),
-            width - 2,
+            width - 20,
             blockLineThickness,
             isEventTriggerFloorBoundary,
-            isActive,
-            levelIndex
+            false,  // initially not active, to be set in makeActive()
+            levelIndex,
+            (EventBlockTopBoundary) this.topSide
         );
         
         if(isActive) {
@@ -47,27 +48,28 @@ public class EventBlock extends ABlock implements IDrawable {
                 int endWarpXPositon, int endWarpYPositon,
                 boolean isEventTriggerFloorBoundary, boolean isActive, int levelIndex) {
         
-        super(leftX, topY, width, height, blockLineThickness, isActive, levelIndex);
+        super(leftX, topY, width, height, blockLineThickness, false, levelIndex);   // initially not active, to be set in makeActive()
 
         this.topSide = new EventBlockTopBoundary(
             leftX,
             topY,
             width,
             blockLineThickness,
-            isActive,
+            false,  // initially not active, to be set in makeActive()
             levelIndex
         );
 
         this.eventTriggerBoundary = new EventTriggerHorizontalBoundary(
-            leftX + 1,
+            leftX + 10,
             topY + height - (height / 5),
-            width - 2,
+            width - 20,
             blockLineThickness,
             endWarpXPositon, 
             endWarpYPositon,
             isEventTriggerFloorBoundary,
-            isActive, 
-            levelIndex
+            false,  // initially not active, to be set in makeActive()
+            levelIndex,
+            (EventBlockTopBoundary) this.topSide
         );
         
         if(isActive) {
@@ -82,14 +84,13 @@ public class EventBlock extends ABlock implements IDrawable {
         if(this.isVisible) {
             this.show();
         }
-        this.handlePlayerContact();
     }
 
     /**
      * display block
      */
     void show() {
-        fill(Constants.WARP_BLOCK_COLOR);
+        fill(Constants.EVENT_BLOCK_COLOR);
         rect(this.leftX, this.topY, this.width, this.height);
     }
 

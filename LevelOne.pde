@@ -21,6 +21,8 @@ public class LevelOne extends ALevel implements IDrawable {
 
         loopSong(true);
 
+        int stageFloorYPositon = height - 100;
+
         charactersList.add(new Enemy(
             global_levels_width_array[this.levelIndex] - 500,
             0,
@@ -72,32 +74,43 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         ));
 
-        this.blocksList.add(new Block(
+        this.blocksList.add(new EventBlock( // launch event
             global_levels_width_array[this.levelIndex] / 2 - 300,
-            height - 300,
-            Constants.DEFAULT_BLOCK_SIZE,
-            Constants.DEFAULT_BLOCK_SIZE,
+            stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+            Constants.DEFAULT_EVENT_BLOCK_WIDTH,
+            Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            false,
+            true, 
             this.isActive,
             this.levelIndex
         ));
 
-        this.blocksList.add(new Block(
-            global_levels_width_array[this.levelIndex] / 2 - 300 + Constants.DEFAULT_BLOCK_SIZE,
-            height - 300 - Constants.DEFAULT_BLOCK_SIZE,
-            Constants.DEFAULT_BLOCK_SIZE,
-            Constants.DEFAULT_BLOCK_SIZE,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            true,
-            this.isActive,
-            this.levelIndex
-        ));
+        // this.blocksList.add(new Block(
+        //     global_levels_width_array[this.levelIndex] / 2 - 300,
+        //     height - 300,
+        //     Constants.DEFAULT_BLOCK_SIZE,
+        //     Constants.DEFAULT_BLOCK_SIZE,
+        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+        //     false,
+        //     this.isActive,
+        //     this.levelIndex
+        // ));
+
+        // this.blocksList.add(new Block(
+        //     global_levels_width_array[this.levelIndex] / 2 - 300 + Constants.DEFAULT_BLOCK_SIZE,
+        //     height - 300 - Constants.DEFAULT_BLOCK_SIZE,
+        //     Constants.DEFAULT_BLOCK_SIZE,
+        //     Constants.DEFAULT_BLOCK_SIZE,
+        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+        //     true,
+        //     this.isActive,
+        //     this.levelIndex
+        // ));
 
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(
             0,
-            height - 100,
+            stageFloorYPositon,
             global_levels_width_array[this.levelIndex],
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
@@ -109,7 +122,7 @@ public class LevelOne extends ALevel implements IDrawable {
         this.boundariesList.add(new VerticalBoundary(
             0,
             0,
-            height - 100,
+            stageFloorYPositon,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex
@@ -118,7 +131,7 @@ public class LevelOne extends ALevel implements IDrawable {
         this.boundariesList.add(new VerticalBoundary(
             global_levels_width_array[this.levelIndex],
             0,
-            height - 100,
+            stageFloorYPositon,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
             this.levelIndex

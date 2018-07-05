@@ -11,7 +11,7 @@ public class EventBlockTopBoundary extends HorizontalBoundary {
     EventBlockTopBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
                             boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                false, isActive, levelIndex);
+                true, isActive, levelIndex);
     }
 
     /**
@@ -22,7 +22,7 @@ public class EventBlockTopBoundary extends HorizontalBoundary {
                             boolean isVisible,
                             boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                isVisible, false, isActive, levelIndex);
+                isVisible, true, isActive, levelIndex);
     }
 
     /**
@@ -33,25 +33,25 @@ public class EventBlockTopBoundary extends HorizontalBoundary {
                             boolean isActive, int levelIndex) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
                 isVisible, doesAffectPlayer, doesAffectNonPlayers,
-                false, isActive, levelIndex);
+                true, isActive, levelIndex);
     }
 
     /**
      * check and handle contact with player
      */
-    private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
-
+    protected void checkHandleContactWithPlayer() {
+        Player curPlayer = getPlayerAtLevelIndex(this.levelIndex);
         if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate
             // boundary collision for player
             if(this.contactWithCharacter(curPlayer)) { // this has contact with player
-                if(!curPlayer.eventTopBoundaryContacts.contains(curPlayer)) { // new collision detected    // TODO: encapsulate
+                if(!curPlayer.eventTopBoundaryContacts.contains(this)) { // new collision detected    // TODO: encapsulate
                     curPlayer.eventTopBoundaryContacts.add(this);
                     curPlayer.numberOfFloorBoundaryContacts++; // TODO: encapsulate
+                    curPlayer.handleContactWithHorizontalBoundary(this.startPoint.y, true);
                 }
 
             } else {    // this DOES NOT have contact with player
-                if(curPlayer.eventTopBoundaryContacts.contains(curPlayer)) {   // TODO: encapsulate
+                if(curPlayer.eventTopBoundaryContacts.contains(this)) {   // TODO: encapsulate
                     curPlayer.eventTopBoundaryContacts.remove(this);   // TODO: encapsulate
                     curPlayer.numberOfFloorBoundaryContacts--; // TODO: encapsulate
                 }

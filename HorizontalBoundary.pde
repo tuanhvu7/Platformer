@@ -100,7 +100,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     /**
      * check and handle contact with player
      */
-    private void checkHandleContactWithPlayer() {
+    protected void checkHandleContactWithPlayer() {
         Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
 
         if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate

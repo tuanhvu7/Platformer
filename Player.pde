@@ -60,7 +60,7 @@ public class Player extends ACharacter implements IDrawable {
             if(key == 'w') {
                 this.jumpPressed = true;
             }
-            if(key == 's' && eventTopBoundaryContacts.size() == 1 && !isDescendingDownEventBlock) 
+            if(key == 's' && this.eventTopBoundaryContacts.size() == 1 && !isDescendingDownEventBlock) 
             {
                 this.isDescendingDownEventBlock = true;
             }
@@ -83,7 +83,14 @@ public class Player extends ACharacter implements IDrawable {
      * runs continuously. handles player movement and physics
      */
     void draw() {
-        this.handleMovement();
+        if(this.isDescendingDownEventBlock) {
+            this.handleEventBlockDescent();
+        } else {
+            this.handleHorizontalMovement();
+            this.handleVerticalMovement();
+        }
+
+        this.pos.add(this.vel);
         
         fill(Constants.PLAYER_COLOR);
         this.show(); 
@@ -140,7 +147,7 @@ public class Player extends ACharacter implements IDrawable {
     /**
      * handle contact with this and event boundary
      */
-    void handleConactWithEventBoundary(PVector endWarpPosition) {
+    void handleConactWithEventBoundary(EventBlockTopBoundary eventBlockTopBoundary, PVector endWarpPosition) {
         registerMethod("keyEvent", this); // connect this draw() from main draw()
         this.isDescendingDownEventBlock = false;
         if(endWarpPosition == null) {
@@ -150,6 +157,7 @@ public class Player extends ACharacter implements IDrawable {
             this.pos.y = endWarpPosition.y;
             this.vel.y = Constants.CHARACTER_WARP_EVENT_VERTICAL_VELOCITY;
         }
+        eventBlockTopBoundary.doesAffectPlayer = true;  // TODO: encapsulate
     }
 
     /**
@@ -166,20 +174,6 @@ public class Player extends ACharacter implements IDrawable {
         this.vel.y = Constants.PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY;
     }
 
-   /**
-    * handle movement (position, velocity)
-    */
-    private void handleMovement() {
-        if(this.isDescendingDownEventBlock) {
-            this.handleEventBlockDescent();
-        } else {
-            this.handleHorizontalMovement();
-            this.handleVerticalMovement();
-        }
-
-        this.pos.add(this.vel);
-    }
-
     /**
      * handle this descent down event block
      */
@@ -193,6 +187,7 @@ public class Player extends ACharacter implements IDrawable {
             int middleOfBoundary = Math.round(
                 (firstEventTopBoundaryContacts.endPoint.x + firstEventTopBoundaryContacts.startPoint.x) / 2);
             
+            firstEventTopBoundaryContacts.doesAffectPlayer = false;
             this.pos.x = middleOfBoundary;    
             this.vel.x = 0;
             this.vel.y = Constants.EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY;

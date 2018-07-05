@@ -31,27 +31,4 @@ public class BlockVerticalBoundary extends VerticalBoundary {
                 isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
     }
 
-    /**
-     * check and handle contact with player
-     */
-    private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
-
-        if(this.doesAffectPlayer && curPlayer.isActive) {   // TODO: encapsulate
-            // boundary collision for player
-            if(contactWithCharacter(curPlayer)) {  // this has contact with non-player
-                if(!this.charactersTouchingThis.contains(curPlayer)) {  // new collision detected
-                    curPlayer.numberOfVerticalBoundaryContacts++;    // TODO: encapsulate
-                    this.charactersTouchingThis.add(curPlayer);
-                }
-                
-            } else {    // this DOES NOT have contact with non-player
-                if(this.charactersTouchingThis.contains(curPlayer)) {
-                    curPlayer.numberOfVerticalBoundaryContacts--;   // TODO: encapsulate
-                    this.charactersTouchingThis.remove(curPlayer);
-                }
-            }
-        }
-    }
-
 }

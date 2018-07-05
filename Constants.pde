@@ -25,11 +25,11 @@ class Constants {
     // gravity multiplier for jumping higher when holding jump button
     private static final float WALL_SLIDE_ACCELERATION = 0.1;
     private static final float VARIABLE_JUMP_GRAVITY_MULTIPLIER = 0.55;
-    private static final float EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY = 0.1;
+    private static final float EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY = 1;
     private static final float MAX_VERTICAL_VELOCITY = 15;
     
     /*** Event config ***/
-    private static final int CHARACTER_LAUNCH_EVENT_VERTICAL_VELOCITY = -26;
+    private static final int CHARACTER_LAUNCH_EVENT_VERTICAL_VELOCITY = -27;
     // launch vertical velocity after warping to desired location
     private static final int CHARACTER_WARP_EVENT_VERTICAL_VELOCITY = -10;
 
@@ -57,9 +57,9 @@ class Constants {
     private static final int BLOCK_COLOR = #CD853F;
     private static final int DEFAULT_BLOCK_SIZE = 100; 
 
-    private static final int WARP_BLOCK_COLOR = #00E500;
-    private static final int DEFAULT_WARP_BLOCK_WIDTH = 125; 
-    private static final int DEFAULT_BLOCK_BLOCK_HEIGHT = 200; 
+    private static final int EVENT_BLOCK_COLOR = #00E500;
+    private static final int DEFAULT_EVENT_BLOCK_WIDTH = 125; 
+    private static final int DEFAULT_EVENT_BLOCK_HEIGHT = 200; 
 
     /*** assets path ***/
     private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";

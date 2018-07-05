@@ -35,36 +35,4 @@ public class BlockHorizontalBoundary extends HorizontalBoundary {
                 isFloorBoundary, isActive, levelIndex);
     }
 
-    /**
-     * check and handle contact with player
-     */
-    private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
-
-        if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate
-            // boundary collision for player
-            if(this.contactWithCharacter(curPlayer)) { // this has contact with player
-                if(!this.charactersTouchingThis.contains(curPlayer)) { // new collision detected
-                    this.charactersTouchingThis.add(curPlayer);
-                    if(this.isFloorBoundary) {
-                        curPlayer.numberOfFloorBoundaryContacts++; // TODO: encapsulate
-                        
-                    } else {
-                        curPlayer.numberOfCeilingBoundaryContacts++;  // TODO: encapsulate
-                    }
-                }
-
-            } else {    // this DOES NOT have contact with player
-                if(this.charactersTouchingThis.contains(curPlayer)) {
-                    if(this.isFloorBoundary) {
-                        curPlayer.numberOfFloorBoundaryContacts--; // TODO: encapsulate
-                    } else {
-                        curPlayer.numberOfCeilingBoundaryContacts--;  // TODO: encapsulate
-                    }
-                    this.charactersTouchingThis.remove(curPlayer);
-                }
-            }
-        }
-    }
-
 }
