@@ -3,9 +3,6 @@
  */
 public class Enemy extends ACharacter implements IDrawable {
 
-    // 0 means this is in level at 0th index of global_levels_list
-    protected int levelIndex;
-
     // true means flying enemy (not affected by gravity)
     private boolean isFlying;
 
@@ -21,14 +18,12 @@ public class Enemy extends ACharacter implements IDrawable {
     Enemy(int x, int y, int diameter,
             boolean isFlying, boolean isInvulnerable, boolean isVisible,
             int levelIndex, boolean isActive) {
-        super(x, y, diameter, isActive);
+        super(x, y, diameter, isActive, levelIndex);
         this.vel.x = -Constants.ENEMY_RUN_SPEED;
 
         this.isFlying = isFlying;
         this.isInvulnerable = isInvulnerable;
         this.isVisible = isVisible;
-
-        this.levelIndex = levelIndex;
     }
 
     /**

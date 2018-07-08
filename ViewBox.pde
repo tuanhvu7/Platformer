@@ -55,31 +55,46 @@ public class ViewBox implements IDrawable {
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
+    /**
+     * set given value to be middle x position of this;
+     * set this x position to be at start or end of level this is in if
+     * given value would result this x position overflow
+     */
+    void setViewBoxHorizontalPosition(float middleXPos) {
+        if(middleXPos - width / 2 < 0) {
+            this.pos.x = 0;
+        } else if(middleXPos + width / 2 > global_levels_width_array[this.levelIndex]) {
+            this.pos.x = global_levels_width_array[this.levelIndex] - Constants.SCREEN_WIDTH;
+        } else {
+            this.pos.x = middleXPos - (Constants.SCREEN_WIDTH / 2);
+        }
+    }
+
    /**
     * handle movement (position, velocity)
     */
     private void handleMovement() {
         if(getPlayerAtLevelIndex(this.levelIndex).moveLeftPressed) {    // TODO: encapsulate
             if(this.pos.x > 0       // left edge of viewbox not at left edge of level
-                && this.playerAtViewBoxBoundary(true)) {
-                
+                && this.playerAtViewBoxBoundary(true)) 
+            {
                 this.vel.x = -Constants.PLAYER_RUN_SPEED;
             } else {
                 this.vel.x = 0;
             }
-        }
+        } 
         if(getPlayerAtLevelIndex(this.levelIndex).moveRightPressed) {   // TODO: encapsulate
             if(this.pos.x < global_levels_width_array[this.levelIndex] - width   // right edge of viewbox not at right edge of level
-                && this.playerAtViewBoxBoundary(false)) {
-                
+                && this.playerAtViewBoxBoundary(false)) 
+            {
                 this.vel.x = Constants.PLAYER_RUN_SPEED;
             } else {
                 this.vel.x = 0;
             }
-        }
-        if(!getPlayerAtLevelIndex(this.levelIndex).moveLeftPressed && 
-            !getPlayerAtLevelIndex(this.levelIndex).moveRightPressed)
-        {   // TODO: encapsulate
+        } 
+        if(!getPlayerAtLevelIndex(this.levelIndex).moveLeftPressed && // TODO: encapsulate
+            !getPlayerAtLevelIndex(this.levelIndex).moveRightPressed)   // TODO: encapsulate
+        {   
             this.vel.x = 0;
         }
 

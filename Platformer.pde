@@ -132,6 +132,13 @@ private Set<ACharacter> getCharactersListAtLevelIndex(int levelIndex) {
 }
 
 /**
+ * return viewbox of level at given index in global_levels_list
+ */
+private ViewBox getViewBoxAtLevelIndex(int levelIndex) {
+    return global_levels_list.get(levelIndex).get().viewBox;  // TODO: encapsulate
+}
+
+/**
  * loop song
  * true isLevelSong - level song
  * false isLevelSong - player death song

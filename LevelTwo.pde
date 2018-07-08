@@ -17,7 +17,7 @@ public class LevelTwo extends ALevel implements IDrawable {
         this.makeActive();
 
         this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive, this.levelIndex);
 
         loopSong(true);
 

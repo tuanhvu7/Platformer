@@ -17,7 +17,7 @@ public class LevelOne extends ALevel implements IDrawable {
         this.makeActive();
 
         this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive, this.levelIndex);
 
         loopSong(true);
 
@@ -74,12 +74,29 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         ));
 
+        // this.blocksList.add(new EventBlock( // launch event
+        //     global_levels_width_array[this.levelIndex] / 2 - 300,
+        //     stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
+        //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+        //     true, 
+        //     this.isActive,
+        //     this.levelIndex
+        // ));
+
+        int playerWarpEndXPos = 1000;
+        // int playerWarpEndXPos = global_levels_width_array[this.levelIndex] - Constants.PLAYER_DIAMETER - 1;  // test end of state
+        // int playerWarpEndXPos = Constants.PLAYER_DIAMETER / 2 + 1;   // test beginning of stage
+
         this.blocksList.add(new EventBlock( // launch event
             global_levels_width_array[this.levelIndex] / 2 - 300,
             stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_EVENT_BLOCK_WIDTH,
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,       
+            playerWarpEndXPos,
+            750,
             true, 
             this.isActive,
             this.levelIndex

@@ -19,17 +19,14 @@ public class Player extends ACharacter implements IDrawable {
 
     private boolean isDescendingDownEventBlock;
 
-    // true means able to move right
     private boolean ableToMoveRight;
-
-    // true means able to move left
     private boolean ableToMoveLeft;
 
     /**
      * set properties of this
      */
-    Player(int x, int y, int diameter, boolean isActive) {
-        super(x, y, diameter, isActive);
+    Player(int x, int y, int diameter, boolean isActive, int levelIndex) {
+        super(x, y, diameter, isActive, levelIndex);
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
 
@@ -155,6 +152,8 @@ public class Player extends ACharacter implements IDrawable {
         } else {
             this.pos.x = endWarpPosition.x;
             this.pos.y = endWarpPosition.y;
+
+            getViewBoxAtLevelIndex(this.levelIndex).setViewBoxHorizontalPosition(this.pos.x);
             this.vel.y = Constants.CHARACTER_WARP_EVENT_VERTICAL_VELOCITY;
         }
         eventBlockTopBoundary.doesAffectPlayer = true;  // TODO: encapsulate
@@ -179,7 +178,11 @@ public class Player extends ACharacter implements IDrawable {
      */
     private void handleEventBlockDescent() {
         if(this.eventTopBoundaryContacts.size() == 1) {
+            this.moveLeftPressed = false;
+            this.moveRightPressed = false;
+            this.jumpPressed = false;
             unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+            
             EventBlockTopBoundary firstEventTopBoundaryContacts = 
                 this.eventTopBoundaryContacts.stream().findFirst().get();
                 
