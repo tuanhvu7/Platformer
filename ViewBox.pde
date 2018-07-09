@@ -58,7 +58,7 @@ public class ViewBox implements IDrawable {
     /**
      * set given value to be middle x position of this;
      * set this x position to be at start or end of level this is in if
-     * given value would result this x position overflow
+     * given value would result this x position level overflow
      */
     void setViewBoxHorizontalPosition(float middleXPos) {
         if(middleXPos - width / 2 < 0) {
@@ -99,6 +99,13 @@ public class ViewBox implements IDrawable {
         }
 
         this.pos.add(this.vel);
+
+        // fix viewbox level overflows
+        if(this.pos.x > global_levels_width_array[this.levelIndex] - width) {
+            this.pos.x = global_levels_width_array[this.levelIndex] - width;
+        } else if(this.pos.x < 0) {
+            this.pos.x = 0;
+        }
     }
 
     /**

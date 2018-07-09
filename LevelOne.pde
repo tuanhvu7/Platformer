@@ -74,6 +74,38 @@ public class LevelOne extends ALevel implements IDrawable {
             this.levelIndex
         ));
 
+        /*** START enemy triggers ***/
+
+        Set<Enemy> enemySet = new HashSet<Enemy>();
+        Enemy triggerEnemy = new Enemy(
+            1200,
+            0,
+            Constants.REGULAR_ENEMY_DIAMETER,
+            false,
+            false,
+            true,
+            this.levelIndex,
+            false
+        );
+
+        enemySet.add(triggerEnemy);
+        charactersList.add(triggerEnemy);
+
+        this.boundariesList.add(new TriggerVerticalBoundary(
+            1000,
+            0,
+            stageFloorYPositon,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true,
+            this.isActive,
+            this.levelIndex,
+            enemySet
+        ));
+
+        /*** START enemy triggers ***/
+
+        /*** START Blocks ***/
+
         // this.blocksList.add(new EventBlock( // launch event
         //     global_levels_width_array[this.levelIndex] / 2 - 300,
         //     stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
@@ -85,22 +117,22 @@ public class LevelOne extends ALevel implements IDrawable {
         //     this.levelIndex
         // ));
 
-        int playerWarpEndXPos = 1000;
-        // int playerWarpEndXPos = global_levels_width_array[this.levelIndex] - Constants.PLAYER_DIAMETER - 1;  // test end of state
-        // int playerWarpEndXPos = Constants.PLAYER_DIAMETER / 2 + 1;   // test beginning of stage
+        // int playerWarpEndXPos = 1000;
+        // // int playerWarpEndXPos = global_levels_width_array[this.levelIndex] - Constants.PLAYER_DIAMETER - 1;  // test end of state
+        // // int playerWarpEndXPos = Constants.PLAYER_DIAMETER / 2 + 1;   // test beginning of stage
 
-        this.blocksList.add(new EventBlock( // launch event
-            global_levels_width_array[this.levelIndex] / 2 - 300,
-            stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-            Constants.DEFAULT_EVENT_BLOCK_WIDTH,
-            Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,       
-            playerWarpEndXPos,
-            750,
-            true, 
-            this.isActive,
-            this.levelIndex
-        ));
+        // this.blocksList.add(new EventBlock( // launch event
+        //     global_levels_width_array[this.levelIndex] / 2 - 300,
+        //     stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
+        //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,       
+        //     playerWarpEndXPos,
+        //     750,
+        //     true, 
+        //     this.isActive,
+        //     this.levelIndex
+        // ));
 
         // this.blocksList.add(new Block(
         //     global_levels_width_array[this.levelIndex] / 2 - 300,
@@ -123,6 +155,8 @@ public class LevelOne extends ALevel implements IDrawable {
         //     this.isActive,
         //     this.levelIndex
         // ));
+
+        /*** END Blocks ***/
 
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(

@@ -7,9 +7,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryLineThickness, 
+    VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness, 
                         boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, 0, y2Offset, boundaryLineThickness,
+        super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
                 true, true, true, isActive, levelIndex);
     }
 
@@ -17,19 +17,19 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * set properties of this
      * sets this to affect all characters
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryLineThickness,
+    VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, 0, y2Offset, boundaryLineThickness,
+        super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
                 isVisible, true, true, isActive, levelIndex);
     }
 
     /**
      * set properties of this
      */
-    VerticalBoundary(int startXPoint, int startyPoint, int y2Offset, int boundaryLineThickness,
+    VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers, 
                         boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, 0, y2Offset, boundaryLineThickness,
+        super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
                 isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
     }
 

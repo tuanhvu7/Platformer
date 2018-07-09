@@ -11,9 +11,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
+    HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                         boolean isFloorBoundary, boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, x2Offset, 0, boundaryLineThickness,
+        super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
             true, true, true, isActive, levelIndex);
 
         this.isFloorBoundary = isFloorBoundary;
@@ -23,10 +23,10 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * set properties of this
      * sets this to affect all characters
      */
-    HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
+    HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean isFloorBoundary,
                         boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, x2Offset, 0, boundaryLineThickness,
+        super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
             isVisible, true, true, isActive, levelIndex);
 
         this.isFloorBoundary = isFloorBoundary;
@@ -35,10 +35,10 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     /**
      * set properties of this
      */
-    HorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
+    HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
                         boolean isFloorBoundary, boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, x2Offset, 0, boundaryLineThickness,
+        super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
             isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
 
         this.isFloorBoundary = isFloorBoundary;
