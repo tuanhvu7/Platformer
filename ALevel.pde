@@ -6,9 +6,6 @@ abstract class ALevel {
     // true means this is active
     protected boolean isActive;
 
-    // index of this in global_levels_list
-    protected int levelIndex;
-
     // player-controllable character
     protected Player player;
 
@@ -39,7 +36,6 @@ abstract class ALevel {
         this.boundariesList = new HashSet<ABoundary>();
         this.blocksList = new HashSet<ABlock>();
 
-        this.levelIndex = levelNumber; // means level 1 is in index 1 of global_levels_list
         this.isPaused = false;
 
         if(isActive) {
@@ -109,9 +105,9 @@ abstract class ALevel {
     */
     void draw() {
         // draw background image horizontally until level width is filled
-        int levelWidthLeftToDraw = global_levels_width_array[this.levelIndex];
+        int levelWidthLeftToDraw = global_levels_width_array[global_current_active_level_number];
         int numberHorizontalBackgroundIterations = 
-            (int) Math.ceil( (double) global_levels_width_array[this.levelIndex] / global_background_image.width);
+            (int) Math.ceil( (double) global_levels_width_array[global_current_active_level_number] / global_background_image.width);
         
         for(int i = 0; i < numberHorizontalBackgroundIterations; i++) {
             int widthToDraw = 

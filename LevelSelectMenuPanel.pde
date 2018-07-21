@@ -20,7 +20,8 @@ public class LevelSelectMenuPanel extends APanel implements IDrawable {
     void executeWhenClicked() {
         // setup and load level associated with this
         global_level_select_menu.deactivateMenu();
-        global_current_active_level = panelLevel;
-        global_levels_list.get(global_current_active_level).get().setUpActivateLevel();
+        global_current_active_level_number = panelLevel;
+        LevelFactory levelFactory = new LevelFactory();
+        global_current_active_level = new WeakReference(levelFactory.getLevel(true));
     }
 }

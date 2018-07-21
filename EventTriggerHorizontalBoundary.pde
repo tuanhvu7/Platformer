@@ -14,10 +14,10 @@ public class EventTriggerHorizontalBoundary extends HorizontalBoundary {
      * sets this to have launch event and affect all characters and be invisible
      */
     EventTriggerHorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                                    boolean isFloorBoundary, boolean isActive, int levelIndex, 
+                                    boolean isFloorBoundary, boolean isActive, 
                                     EventBlockTopBoundary eventBlockTopBoundary) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                true, isFloorBoundary, isActive, levelIndex);
+                true, isFloorBoundary, isActive);
 
         this.endWarpPosition = null;
         this.isFloorBoundary = isFloorBoundary;
@@ -30,10 +30,10 @@ public class EventTriggerHorizontalBoundary extends HorizontalBoundary {
      */
     EventTriggerHorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
                                     int endWarpXPositon, int endWarpYPositon,
-                                    boolean isFloorBoundary, boolean isActive, int levelIndex,
+                                    boolean isFloorBoundary, boolean isActive,
                                     EventBlockTopBoundary eventBlockTopBoundary) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                true, isFloorBoundary, isActive, levelIndex);
+                true, isFloorBoundary, isActive);
 
         this.endWarpPosition = new PVector(endWarpXPositon, endWarpYPositon);
         this.isFloorBoundary = isFloorBoundary;
@@ -44,7 +44,7 @@ public class EventTriggerHorizontalBoundary extends HorizontalBoundary {
      * check and handle contact with player
      */
     protected void checkHandleContactWithPlayer() {
-        Player curPlayer = getPlayerAtLevelIndex(this.levelIndex);
+        Player curPlayer = getCurrentActivePlayer();
 
         if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate
             // boundary collision for player

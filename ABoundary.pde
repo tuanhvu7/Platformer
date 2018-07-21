@@ -25,9 +25,6 @@ abstract class ABoundary {
     // true means this is active (character collision detection)
     protected boolean isActive;
 
-    // 0 means this is in level at 0th index of global_levels_list
-    protected int levelIndex;
-
     /**
      * set properties of this
      * @param x1Point first x coordinate
@@ -37,7 +34,7 @@ abstract class ABoundary {
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
                 boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                boolean isActive, int levelIndex) {
+                boolean isActive) {
         
         // set start points to be smaller of given values
         this.startPoint = new PVector(
@@ -56,8 +53,6 @@ abstract class ABoundary {
         this.doesAffectNonPlayers = doesAffectNonPlayers;
 
         this.charactersTouchingThis = new HashSet<ACharacter>();
-
-        this.levelIndex = levelIndex;
         
         if(isActive) {
             this.makeActive();

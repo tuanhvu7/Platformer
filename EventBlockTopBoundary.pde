@@ -9,9 +9,8 @@ public class EventBlockTopBoundary extends HorizontalBoundary {
      * sets this to affect all characters and be visible
      */
     EventBlockTopBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                            boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                true, isActive, levelIndex);
+                            boolean isActive) {
+        super(startXPoint, startyPoint, x2Offset, boundaryLineThickness, true, isActive);
     }
 
     /**
@@ -19,10 +18,8 @@ public class EventBlockTopBoundary extends HorizontalBoundary {
      * sets this to affect all characters
      */
     EventBlockTopBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                            boolean isVisible,
-                            boolean isActive, int levelIndex) {
-        super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                isVisible, true, isActive, levelIndex);
+                            boolean isVisible, boolean isActive) {
+        super(startXPoint, startyPoint, x2Offset, boundaryLineThickness, isVisible, true, isActive);
     }
 
     /**
@@ -30,17 +27,17 @@ public class EventBlockTopBoundary extends HorizontalBoundary {
      */
     EventBlockTopBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
                             boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                            boolean isActive, int levelIndex) {
+                            boolean isActive) {
         super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
                 isVisible, doesAffectPlayer, doesAffectNonPlayers,
-                true, isActive, levelIndex);
+                true, isActive);
     }
 
     /**
      * check and handle contact with player
      */
     protected void checkHandleContactWithPlayer() {
-        Player curPlayer = getPlayerAtLevelIndex(this.levelIndex);
+        Player curPlayer = getCurrentActivePlayer();
         if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate
             // boundary collision for player
             if(this.contactWithCharacter(curPlayer)) { // this has contact with player

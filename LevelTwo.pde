@@ -6,8 +6,8 @@ public class LevelTwo extends ALevel implements IDrawable {
     /**
      * sets properties, boundaries, and characters of this
      */
-    LevelTwo(boolean isActive, int levelNumber) {
-        super(isActive, levelNumber);
+    LevelTwo(boolean isActive) {
+        super(isActive, 2);
     }
 
     /**
@@ -16,19 +16,18 @@ public class LevelTwo extends ALevel implements IDrawable {
     void setUpActivateLevel() {
         this.makeActive();
 
-        this.viewBox = new ViewBox(0, 0, this.levelIndex, this.isActive);
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive, this.levelIndex);
+        this.viewBox = new ViewBox(0, 0, this.isActive);
+        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
         loopSong(true);
 
         charactersList.add( new Enemy(
-            global_levels_width_array[this.levelIndex] - 500,
+            global_levels_width_array[global_current_active_level_number] - 500,
             0,
             Constants.BIG_ENEMY_DIAMETER,
             false,
             false,
             true,
-            this.levelIndex,
             this.isActive)
         );
 
@@ -38,8 +37,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
 
         this.boundariesList.add(new HorizontalBoundary(
@@ -48,8 +46,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
             
         this.boundariesList.add(new HorizontalBoundary(
@@ -58,8 +55,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             false,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
 
         this.boundariesList.add(new HorizontalBoundary(
@@ -68,8 +64,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
 
 
@@ -77,11 +72,10 @@ public class LevelTwo extends ALevel implements IDrawable {
         this.boundariesList.add(new HorizontalBoundary(
             0,
             height - 100,
-            global_levels_width_array[this.levelIndex],
+            global_levels_width_array[global_current_active_level_number],
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
 
 
@@ -91,17 +85,15 @@ public class LevelTwo extends ALevel implements IDrawable {
             0,
             height - 100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
 
         this.boundariesList.add(new VerticalBoundary(
-            global_levels_width_array[this.levelIndex],
+            global_levels_width_array[global_current_active_level_number],
             0,
             height - 100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
 
         this.boundariesList.add(new VerticalBoundary(
@@ -109,8 +101,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             height / 2,
             height / 2 - 100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive,
-            this.levelIndex
+            this.isActive
         ));
     }
 

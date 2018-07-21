@@ -25,8 +25,8 @@ public class Player extends ACharacter implements IDrawable {
     /**
      * set properties of this
      */
-    Player(int x, int y, int diameter, boolean isActive, int levelIndex) {
-        super(x, y, diameter, isActive, levelIndex);
+    Player(int x, int y, int diameter, boolean isActive) {
+        super(x, y, diameter, isActive);
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
 
@@ -153,7 +153,7 @@ public class Player extends ACharacter implements IDrawable {
             this.pos.x = endWarpPosition.x;
             this.pos.y = endWarpPosition.y;
 
-            getViewBoxAtLevelIndex(this.levelIndex).setViewBoxHorizontalPosition(this.pos.x);
+           getCurrentActiveViewBox().setViewBoxHorizontalPosition(this.pos.x);
             this.vel.y = Constants.CHARACTER_WARP_EVENT_VERTICAL_VELOCITY;
         }
         eventBlockTopBoundary.doesAffectPlayer = true;  // TODO: encapsulate

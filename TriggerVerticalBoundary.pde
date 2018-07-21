@@ -11,9 +11,9 @@ public class TriggerVerticalBoundary extends VerticalBoundary {
      * sets this to affect all characters
      */
     TriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                            boolean isVisible, boolean isActive, int levelIndex, Set<Enemy> enemySet) {
+                            boolean isVisible, boolean isActive, Set<Enemy> enemySet) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
-                isVisible, isActive, levelIndex);
+                isVisible, isActive);
         this.enemiesToAddSet = enemySet;
     }
 
@@ -29,7 +29,7 @@ public class TriggerVerticalBoundary extends VerticalBoundary {
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
+        Player curPlayer =  getCurrentActivePlayer();
 
         if(this.doesAffectPlayer && curPlayer.isActive) {   // TODO: encapsulate
             // boundary collision for player

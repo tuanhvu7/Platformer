@@ -5,13 +5,13 @@ abstract class ABlock {
     protected boolean isActive;
     protected boolean isVisible;
 
+    // position and dimensions
     protected int leftX;
     protected int topY;
     protected int width;
     protected int height;
 
-    protected int levelIndex;
-
+    // boundaries that make up block
     protected HorizontalBoundary topSide;
     protected HorizontalBoundary bottomSide;
 
@@ -23,7 +23,7 @@ abstract class ABlock {
      * sets this to affect all characters and be visible
      */
     ABlock(int leftX, int topY, int width, int height, int blockLineThickness, 
-            boolean isActive, int levelIndex) {
+            boolean isActive) {
         
         this.leftX = leftX;
         this.topY = topY;
@@ -32,16 +32,13 @@ abstract class ABlock {
 
         this.isVisible = true;
 
-        this.levelIndex = levelIndex;
-
         this.bottomSide = new HorizontalBoundary(
             leftX,
             topY + height,
             width,
             blockLineThickness,
             false,
-            isActive,
-            levelIndex
+            isActive
         );
 
         this.leftSide = new VerticalBoundary(
@@ -49,8 +46,7 @@ abstract class ABlock {
             topY + 1,
             height - 2,
             blockLineThickness,
-            isActive,
-            levelIndex
+            isActive
         );
 
         this.rightSide = new VerticalBoundary(
@@ -58,8 +54,7 @@ abstract class ABlock {
             topY + 1,
             height - 2,
             blockLineThickness,
-            isActive,
-            levelIndex
+            isActive
         );
     }
 
@@ -70,7 +65,7 @@ abstract class ABlock {
      * to all characters
      */
     ABlock(int leftX, int topY, int width, int height, int blockLineThickness,
-            boolean isVisible, boolean isActive, int levelIndex) {
+            boolean isVisible, boolean isActive) {
 
         this.leftX = leftX;
         this.topY = topY;
@@ -79,8 +74,6 @@ abstract class ABlock {
 
         this.isVisible = isVisible;
 
-        this.levelIndex = levelIndex;
-
         this.bottomSide = new HorizontalBoundary(
             leftX + 1,
             topY + height,
@@ -88,8 +81,7 @@ abstract class ABlock {
             blockLineThickness,
             isVisible,
             false,
-            isActive,
-            levelIndex
+            isActive
         );
 
         this.leftSide = new VerticalBoundary(
@@ -98,8 +90,7 @@ abstract class ABlock {
             height,
             blockLineThickness,
             isVisible,
-            isActive,
-            levelIndex
+            isActive
         );
 
         this.rightSide = new VerticalBoundary(
@@ -108,8 +99,7 @@ abstract class ABlock {
             height,
             blockLineThickness,
             isVisible,
-            isActive,
-            levelIndex
+            isActive
         );
     }
 

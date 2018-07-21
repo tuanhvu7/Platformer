@@ -8,9 +8,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * sets this to affect all characters and be visible
      */
     VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness, 
-                        boolean isActive, int levelIndex) {
+                        boolean isActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-                true, true, true, isActive, levelIndex);
+                true, true, true, isActive);
     }
 
     /**
@@ -18,9 +18,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * sets this to affect all characters
      */
     VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                        boolean isVisible, boolean isActive, int levelIndex) {
+                        boolean isVisible, boolean isActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-                isVisible, true, true, isActive, levelIndex);
+                isVisible, true, true, isActive);
     }
 
     /**
@@ -28,9 +28,9 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      */
     VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers, 
-                        boolean isActive, int levelIndex) {
+                        boolean isActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-                isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
+                isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
     }
 
     /**
@@ -61,7 +61,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
+        Player curPlayer =  getCurrentActivePlayer();
 
         if(this.doesAffectPlayer && curPlayer.isActive) {   // TODO: encapsulate
             // boundary collision for player
@@ -89,7 +89,7 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     private void checkHandleContactWithNonPlayerCharacters() {
         if(this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
-            for( ACharacter curCharacter : getCharactersListAtLevelIndex(this.levelIndex) ) {
+            for( ACharacter curCharacter : getCurrentActiveCharactersList() ) {
                 if(curCharacter.isActive && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
                 }

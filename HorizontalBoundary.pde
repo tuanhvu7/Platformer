@@ -12,9 +12,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * sets this to affect all characters and be visible
      */
     HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
-                        boolean isFloorBoundary, boolean isActive, int levelIndex) {
+                        boolean isFloorBoundary, boolean isActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
-            true, true, true, isActive, levelIndex);
+            true, true, true, isActive);
 
         this.isFloorBoundary = isFloorBoundary;
     }
@@ -25,9 +25,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean isFloorBoundary,
-                        boolean isActive, int levelIndex) {
+                        boolean isActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
-            isVisible, true, true, isActive, levelIndex);
+            isVisible, true, true, isActive);
 
         this.isFloorBoundary = isFloorBoundary;
     }
@@ -37,9 +37,9 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      */
     HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                         boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                        boolean isFloorBoundary, boolean isActive, int levelIndex) {
+                        boolean isFloorBoundary, boolean isActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
-            isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive, levelIndex);
+            isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
 
         this.isFloorBoundary = isFloorBoundary;
     }
@@ -101,7 +101,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
      * check and handle contact with player
      */
     protected void checkHandleContactWithPlayer() {
-        Player curPlayer =  getPlayerAtLevelIndex(this.levelIndex);
+        Player curPlayer =  getCurrentActivePlayer();
 
         if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate
             // boundary collision for player
@@ -135,7 +135,7 @@ public class HorizontalBoundary extends ABoundary implements IBoundary, IDrawabl
     private void checkHandleContactWithNonPlayerCharacters() {
         if(this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
-            for(ACharacter curCharacter: getCharactersListAtLevelIndex(this.levelIndex)) { // this has contact with non-player
+            for(ACharacter curCharacter: getCurrentActiveCharactersList()) { // this has contact with non-player
                 if(curCharacter.isActive) { // TODO: encapsulate
                     if(this.contactWithCharacter(curCharacter)) {
                         if(this.isFloorBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected

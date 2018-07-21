@@ -16,9 +16,8 @@ public class Enemy extends ACharacter implements IDrawable {
      * set properties of this
      */
     Enemy(int x, int y, int diameter,
-            boolean isFlying, boolean isInvulnerable, boolean isVisible,
-            int levelIndex, boolean isActive) {
-        super(x, y, diameter, isActive, levelIndex);
+            boolean isFlying, boolean isInvulnerable, boolean isVisible, boolean isActive) {
+        super(x, y, diameter, isActive);
         this.vel.x = -Constants.ENEMY_RUN_SPEED;
 
         this.isFlying = isFlying;
@@ -32,11 +31,11 @@ public class Enemy extends ACharacter implements IDrawable {
      * negative angle means no collision
      */
     double collisionWithPlayer() {
-        float xDifference = Math.abs(this.pos.x - getPlayerAtLevelIndex(this.levelIndex).pos.x); // TODO: encapsulate
-        float yDifference = Math.abs(this.pos.y - getPlayerAtLevelIndex(this.levelIndex).pos.y); // TODO: encapsulate
+        float xDifference = Math.abs(this.pos.x - getCurrentActivePlayer().pos.x); // TODO: encapsulate
+        float yDifference = Math.abs(this.pos.y - getCurrentActivePlayer().pos.y); // TODO: encapsulate
 
         // distance between player and this must be sum of their radii for collision
-        float distanceNeededForCollision = (this.diameter / 2) + (getPlayerAtLevelIndex(this.levelIndex).diameter / 2); // TODO: encapsulate
+        float distanceNeededForCollision = (this.diameter / 2) + (getCurrentActivePlayer().diameter / 2); // TODO: encapsulate
 
         // pythagorean theorem
         boolean isAtCollisionDistance =
@@ -66,17 +65,17 @@ public class Enemy extends ACharacter implements IDrawable {
      *  check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        if(getPlayerAtLevelIndex(this.levelIndex).isActive) {   // TODO: encapsulate
+        if(getCurrentActivePlayer().isActive) {   // TODO: encapsulate
             double collisionAngle = this.collisionWithPlayer();
             if(collisionAngle >= 0) {
                 println("coll angle: " + Math.toDegrees(collisionAngle));
                 println("min angle: " + Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE);
                 if(Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE 
-                    && this.pos.y > getPlayerAtLevelIndex(this.levelIndex).pos.y)  // player is above this // TODO: encapsulate
+                    && this.pos.y > getCurrentActivePlayer().pos.y)  // player is above this // TODO: encapsulate
                 {
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
                     this.makeNotActive();
-                    getPlayerAtLevelIndex(this.levelIndex).handleJumpKillEnemyPhysics();
+                    getCurrentActivePlayer().handleJumpKillEnemyPhysics();
 
                 } else {
                     println("killed player: " + Math.toDegrees(collisionAngle));

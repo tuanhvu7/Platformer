@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.Optional;
 
 import javafx.scene.media.Media;
@@ -22,6 +22,7 @@ PVector global_wall_slide_acceleration;
 // background image
 PImage global_background_image;
 
+/*** MUSIC ***/
 // level song
 Media global_level_song;
 // player for level song
@@ -32,14 +33,17 @@ Media global_player_death_song;
 // player for level song
 MediaPlayer global_player_death_song_player;
 
+
+/*** LEVEL ***/
 // level select menu
 LevelSelectMenu global_level_select_menu;
 
-// list of levels
-List< SoftReference<ALevel> > global_levels_list;
+/*** MUSIC ***/
+// stores current active level
+WeakReference<ALevel> global_current_active_level;
 
-// stores currently active level
-int global_current_active_level;
+// stores currently active level number
+int global_current_active_level_number;
 
 // widths of all levels
 final int[] global_levels_width_array = {
@@ -56,11 +60,11 @@ final int[] global_levels_height_array = {
 };
 
 /**
+ * runs once;
  * setup canvas size with variable values and initialize fields
  */
 void settings() {
     global_background_image = loadImage(Constants.BACKGROUND_IMAGE_NAME);
-    global_levels_list = new ArrayList< SoftReference<ALevel> >();
 
     global_gravity = new PVector(0, Constants.GRAVITY);
     global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
@@ -72,21 +76,10 @@ void settings() {
     global_level_song_player = new MediaPlayer(global_level_song);
     global_player_death_song_player = new MediaPlayer(global_player_death_song);
 
-    global_current_active_level = 0;
+    global_current_active_level_number = 0;
 
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-}
-
-/**
- * runs once initialize program
- */
-void setup() {
-
     global_level_select_menu = new LevelSelectMenu(true);
-
-    global_levels_list.add(new SoftReference(null)); // no level zero
-    global_levels_list.add(new SoftReference(new LevelOne(false, 1)));
-    global_levels_list.add(new SoftReference(new LevelTwo(false, 2)));
 }
 
 /**
@@ -105,37 +98,38 @@ private void resetLevel() {
     new Thread( new Runnable() {
         public void run()  {
             try  {
-                global_levels_list.get(global_current_active_level).get().player.makeNotActive(); // TODO: encapsulate
+                getCurrentActivePlayer().makeNotActive(); // TODO: encapsulate
                 Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for player death song duration
             }
             catch (InterruptedException ie)  { }
             
-            global_levels_list.get(global_current_active_level).get().deactivateLevel();
-            global_levels_list.get(global_current_active_level).get().setUpActivateLevel();
+            global_current_active_level.get().deactivateLevel();
+            LevelFactory levelFactory = new LevelFactory();
+            global_current_active_level = new WeakReference(levelFactory.getLevel(true));
         }
     } ).start();
 
 }
 
 /**
- * return player of level at given index in global_levels_list
+ * return player of current active level
  */
-private Player getPlayerAtLevelIndex(int levelIndex) {
-    return global_levels_list.get(levelIndex).get().player;   // TODO: encapsulate
+private Player getCurrentActivePlayer() {
+    return global_current_active_level.get().player;    // TODO: encapsulate
 }
 
 /**
- * return non-player characters of level at given index in global_levels_list
+ * return non-player characters of current active level
  */
-private Set<ACharacter> getCharactersListAtLevelIndex(int levelIndex) {
-    return global_levels_list.get(levelIndex).get().charactersList;   // TODO: encapsulate
+private Set<ACharacter> getCurrentActiveCharactersList() {
+    return global_current_active_level.get().charactersList;    // TODO: encapsulate
 }
 
 /**
- * return viewbox of level at given index in global_levels_list
+ * return viewbox of current active level
  */
-private ViewBox getViewBoxAtLevelIndex(int levelIndex) {
-    return global_levels_list.get(levelIndex).get().viewBox;  // TODO: encapsulate
+private ViewBox getCurrentActiveViewBox() {
+    return global_current_active_level.get().viewBox; // TODO: encapsulate
 }
 
 /**

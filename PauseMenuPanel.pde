@@ -26,14 +26,14 @@ public class PauseMenuPanel extends APanel implements IDrawable {
     void executeWhenClicked() {
         if(panelType == PauseMenuButtonType.Continue) {
             loopSong(true);
-            global_levels_list.get(global_current_active_level).get().isPaused = false; // TODO: encapsulate
-            global_levels_list.get(global_current_active_level).get().closePauseMenu();
+            global_current_active_level.get().isPaused = false; // TODO: encapsulate
+            global_current_active_level.get().closePauseMenu();
         
         } else {
-            global_levels_list.get(global_current_active_level).get().isPaused = false; // TODO: encapsulate
-            global_levels_list.get(global_current_active_level).get().closePauseMenu();
-            global_levels_list.get(global_current_active_level).get().deactivateLevel();
-            global_current_active_level = 0;
+            global_current_active_level.get().isPaused = false; // TODO: encapsulate
+            global_current_active_level.get().closePauseMenu();
+            global_current_active_level.get().deactivateLevel();
+            global_current_active_level_number = 0;
             global_level_select_menu.setupActivateMenu();
         }
 

@@ -9,9 +9,9 @@ public class Block extends ABlock implements IDrawable {
      * sets this to affect all characters and be visible
      */
     Block(int leftX, int topY, int width, int height, int blockLineThickness, 
-            boolean isActive, int levelIndex) {
+            boolean isActive) {
         
-        super(leftX, topY, width, height, blockLineThickness, false, levelIndex);   // initially not active, to be set in makeActive()
+        super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
 
         this.topSide = new HorizontalBoundary(
             leftX,
@@ -19,8 +19,7 @@ public class Block extends ABlock implements IDrawable {
             width,
             blockLineThickness,
             true,
-            false,  // initially not active, to be set in makeActive()
-            levelIndex
+            false  // initially not active, to be set in makeActive()
         );
         
         if(isActive) {
@@ -35,10 +34,10 @@ public class Block extends ABlock implements IDrawable {
      * to all characters
      */
     Block(int leftX, int topY, int width, int height, int blockLineThickness,
-            boolean isVisible, boolean isActive, int levelIndex) {
+            boolean isVisible, boolean isActive) {
 
         super(leftX, topY, width, height, blockLineThickness,
-                isVisible, false, levelIndex);  // initially not active, to be set in makeActive(), isVisible
+                isVisible, false);  // initially not active, to be set in makeActive(), isVisible
 
         this.topSide = new HorizontalBoundary(
             leftX,
@@ -47,8 +46,7 @@ public class Block extends ABlock implements IDrawable {
             blockLineThickness,
             isVisible,
             true,
-            false,  // initially not active, to be set in makeActive()
-            levelIndex
+            false  // initially not active, to be set in makeActive()
         );
 
         if(isActive) {
@@ -108,7 +106,7 @@ public class Block extends ABlock implements IDrawable {
      * handle invisible block player contact
      */
     private void handleInvisibleBlock() {
-        Player curPlayer = getPlayerAtLevelIndex(this.levelIndex);
+        Player curPlayer = getCurrentActivePlayer();
 
         // handle player collision with invisible block
         if( this.isActive && 

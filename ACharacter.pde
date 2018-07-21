@@ -16,19 +16,15 @@ abstract class ACharacter {
     // true means this is active (boundary and character collision detection)
     protected boolean isActive;
 
-    // 0 means this is in level at 0th index of global_levels_list
-    protected int levelIndex;
-
     /**
      * set properties of this
      */
-    ACharacter(int x, int y, int diameter, boolean isActive, int levelIndex) {
+    ACharacter(int x, int y, int diameter, boolean isActive) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
         this.diameter = diameter;
 
         this.isActive = true;
-        this.levelIndex = levelIndex;
 
         this.numberOfFloorBoundaryContacts = 0;
 
