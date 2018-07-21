@@ -59,8 +59,8 @@ public class ViewBox implements IDrawable {
     void setViewBoxHorizontalPosition(float middleXPos) {
         if(middleXPos - width / 2 < 0) {
             this.pos.x = 0;
-        } else if(middleXPos + width / 2 > global_levels_width_array[global_current_active_level_number]) {
-            this.pos.x = global_levels_width_array[global_current_active_level_number] - Constants.SCREEN_WIDTH;
+        } else if(middleXPos + width / 2 > getCurrentActiveLevelWidth()) {
+            this.pos.x = getCurrentActiveLevelWidth() - Constants.SCREEN_WIDTH;
         } else {
             this.pos.x = middleXPos - (Constants.SCREEN_WIDTH / 2);
         }
@@ -80,7 +80,7 @@ public class ViewBox implements IDrawable {
             }
         } 
         if(getCurrentActivePlayer().moveRightPressed) {   // TODO: encapsulate
-            if(this.pos.x < global_levels_width_array[global_current_active_level_number] - width   // right edge of viewbox not at right edge of level
+            if(this.pos.x < getCurrentActiveLevelWidth() - width   // right edge of viewbox not at right edge of level
                 && this.playerAtViewBoxBoundary(false)) 
             {
                 this.vel.x = Constants.PLAYER_RUN_SPEED;
@@ -97,8 +97,8 @@ public class ViewBox implements IDrawable {
         this.pos.add(this.vel);
 
         // fix viewbox level overflows
-        if(this.pos.x > global_levels_width_array[global_current_active_level_number] - width) {
-            this.pos.x = global_levels_width_array[global_current_active_level_number] - width;
+        if(this.pos.x > getCurrentActiveLevelWidth() - width) {
+            this.pos.x = getCurrentActiveLevelWidth() - width;
         } else if(this.pos.x < 0) {
             this.pos.x = 0;
         }

@@ -133,6 +133,13 @@ private ViewBox getCurrentActiveViewBox() {
 }
 
 /**
+ * return width of current active level
+ */
+private int getCurrentActiveLevelWidth() {
+    return global_levels_width_array[global_current_active_level_number];
+}
+
+/**
  * loop song
  * true isLevelSong - level song
  * false isLevelSong - player death song

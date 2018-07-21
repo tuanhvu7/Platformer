@@ -22,7 +22,7 @@ public class LevelTwo extends ALevel implements IDrawable {
         loopSong(true);
 
         charactersList.add( new Enemy(
-            global_levels_width_array[global_current_active_level_number] - 500,
+            getCurrentActiveLevelWidth() - 500,
             0,
             Constants.BIG_ENEMY_DIAMETER,
             false,
@@ -72,7 +72,7 @@ public class LevelTwo extends ALevel implements IDrawable {
         this.boundariesList.add(new HorizontalBoundary(
             0,
             height - 100,
-            global_levels_width_array[global_current_active_level_number],
+            getCurrentActiveLevelWidth(),
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             this.isActive
@@ -89,7 +89,7 @@ public class LevelTwo extends ALevel implements IDrawable {
         ));
 
         this.boundariesList.add(new VerticalBoundary(
-            global_levels_width_array[global_current_active_level_number],
+            getCurrentActiveLevelWidth(),
             0,
             height - 100,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,

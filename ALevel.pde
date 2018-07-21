@@ -105,9 +105,9 @@ abstract class ALevel {
     */
     void draw() {
         // draw background image horizontally until level width is filled
-        int levelWidthLeftToDraw = global_levels_width_array[global_current_active_level_number];
+        int levelWidthLeftToDraw = getCurrentActiveLevelWidth();
         int numberHorizontalBackgroundIterations = 
-            (int) Math.ceil( (double) global_levels_width_array[global_current_active_level_number] / global_background_image.width);
+            (int) Math.ceil( (double) getCurrentActiveLevelWidth() / global_background_image.width);
         
         for(int i = 0; i < numberHorizontalBackgroundIterations; i++) {
             int widthToDraw = 
