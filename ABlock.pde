@@ -13,10 +13,10 @@ abstract class ABlock {
     protected int levelIndex;
 
     protected HorizontalBoundary topSide;
-    protected BlockHorizontalBoundary bottomSide;
+    protected HorizontalBoundary bottomSide;
 
-    protected BlockVerticalBoundary leftSide;
-    protected BlockVerticalBoundary rightSide;
+    protected VerticalBoundary leftSide;
+    protected VerticalBoundary rightSide;
 
     /**
      * set properties of this;
@@ -34,7 +34,7 @@ abstract class ABlock {
 
         this.levelIndex = levelIndex;
 
-        this.bottomSide = new BlockHorizontalBoundary(
+        this.bottomSide = new HorizontalBoundary(
             leftX,
             topY + height,
             width,
@@ -44,7 +44,7 @@ abstract class ABlock {
             levelIndex
         );
 
-        this.leftSide = new BlockVerticalBoundary(
+        this.leftSide = new VerticalBoundary(
             leftX,
             topY + 1,
             height - 2,
@@ -53,7 +53,7 @@ abstract class ABlock {
             levelIndex
         );
 
-        this.rightSide = new BlockVerticalBoundary(
+        this.rightSide = new VerticalBoundary(
             leftX + width,
             topY + 1,
             height - 2,
@@ -81,7 +81,7 @@ abstract class ABlock {
 
         this.levelIndex = levelIndex;
 
-        this.bottomSide = new BlockHorizontalBoundary(
+        this.bottomSide = new HorizontalBoundary(
             leftX + 1,
             topY + height,
             width - 1,
@@ -92,7 +92,7 @@ abstract class ABlock {
             levelIndex
         );
 
-        this.leftSide = new BlockVerticalBoundary(
+        this.leftSide = new VerticalBoundary(
             leftX,
             topY,
             height,
@@ -102,7 +102,7 @@ abstract class ABlock {
             levelIndex
         );
 
-        this.rightSide = new BlockVerticalBoundary(
+        this.rightSide = new VerticalBoundary(
             leftX + width,
             topY,
             height,

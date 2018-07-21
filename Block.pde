@@ -13,7 +13,7 @@ public class Block extends ABlock implements IDrawable {
         
         super(leftX, topY, width, height, blockLineThickness, false, levelIndex);   // initially not active, to be set in makeActive()
 
-        this.topSide = new BlockHorizontalBoundary(
+        this.topSide = new HorizontalBoundary(
             leftX,
             topY,
             width,
@@ -40,7 +40,7 @@ public class Block extends ABlock implements IDrawable {
         super(leftX, topY, width, height, blockLineThickness,
                 isVisible, false, levelIndex);  // initially not active, to be set in makeActive(), isVisible
 
-        this.topSide = new BlockHorizontalBoundary(
+        this.topSide = new HorizontalBoundary(
             leftX,
             topY,
             width,

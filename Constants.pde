@@ -66,4 +66,5 @@ class Constants {
     private static final String LEVEL_SONG_NAME = "ugandan-knuckles-song.mp3"; 
     private static final String PLAYER_DEATH_SONG_NAME = "ugandan-knuckles-song-end.mp3"; 
 
+    private Constants() {}
 }
