@@ -68,7 +68,7 @@ public class Block extends ABlock implements IDrawable {
      * display block
      */
     void show() {
-        fill(Constants.BLOCK_COLOR);
+        fill(Constants.DEFAULT_BLOCK_COLOR);
         rect(this.leftX, this.topY, this.width, this.height);
     }
 

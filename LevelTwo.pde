@@ -6,8 +6,8 @@ public class LevelTwo extends ALevel implements IDrawable {
     /**
      * sets properties, boundaries, and characters of this
      */
-    LevelTwo(boolean isActive) {
-        super(isActive, 2);
+    LevelTwo(boolean isActive, boolean loadPlayerFromCheckPoint) {
+        super(isActive, loadPlayerFromCheckPoint);
     }
 
     /**

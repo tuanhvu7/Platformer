@@ -54,8 +54,12 @@ class Constants {
     private static final int BOUNDARY_COLOR = #000000;
     private static final int DEFAULT_BOUNDARY_LINE_THICKNESS = 1;
 
-    private static final int BLOCK_COLOR = #CD853F;
+    private static final int DEFAULT_BLOCK_COLOR = #CD853F;
     private static final int DEFAULT_BLOCK_SIZE = 100; 
+
+    private static final int CHECKPOINT_BLOCK_COLOR = #FFD700;
+    private static final int CHECKPOINT_BLOCK_WIDTH = 40;
+    private static final int CHECKPOINT_BLOCK_HEIGHT = 100; 
 
     private static final int EVENT_BLOCK_COLOR = #00E500;
     private static final int DEFAULT_EVENT_BLOCK_WIDTH = 125; 

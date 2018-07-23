@@ -5,23 +5,42 @@ public class LevelOne extends ALevel implements IDrawable {
 
     // true means big enemy trigger boundary has been activated
     private boolean bigEnemyTriggerActived;
+    // size of this characters list to make big enemy trigger boundary active
+    private int bigEnemyTriggerCharacterListSizeCondition;
 
     /**
      * sets properties, boundaries, and characters of this
      */
-    LevelOne(boolean isActive) {
-        super(isActive, 1);
-        this.bigEnemyTriggerActived = false;
+    LevelOne(boolean isActive, boolean loadPlayerFromCheckPoint) {
+        super(isActive, loadPlayerFromCheckPoint);
     }
 
     /**
      * setup and activate this
      */
     void setUpActivateLevel() {
+        this.bigEnemyTriggerActived = false;
+        this.bigEnemyTriggerCharacterListSizeCondition = 0;
+        this.checkpointXPos = 1200;
+
         this.makeActive();
 
-        this.viewBox = new ViewBox(0, 0, this.isActive);
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
+        if(this.loadPlayerFromCheckPoint) {
+            this.viewBox = new ViewBox(this.checkpointXPos - 200, 0, this.isActive);
+            this.player = new Player(this.checkpointXPos, 0, Constants.PLAYER_DIAMETER, this.isActive);
+        } else {
+            this.viewBox = new ViewBox(0, 0, this.isActive);
+            this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
+
+            this.checkpoint = new Checkpoint(
+                this.checkpointXPos,
+                this.floorYPosition - Constants.CHECKPOINT_BLOCK_HEIGHT,
+                Constants.CHECKPOINT_BLOCK_WIDTH,
+                Constants.CHECKPOINT_BLOCK_HEIGHT,
+                Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+                this.isActive
+            );
+        }
 
         loopSong(true);
 
@@ -127,7 +146,7 @@ public class LevelOne extends ALevel implements IDrawable {
      * to override in extended classes
      */
     void handleConditionalEnemyTriggers() {
-        if(!bigEnemyTriggerActived && this.charactersList.size() < 1) {
+        if(!bigEnemyTriggerActived && this.charactersList.size() == this.bigEnemyTriggerCharacterListSizeCondition) {
             Set<Enemy> enemySet = new HashSet<Enemy>();
             Enemy triggerEnemy = new Enemy(
                 1200,

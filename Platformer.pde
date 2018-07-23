@@ -98,14 +98,15 @@ private void resetLevel() {
     new Thread( new Runnable() {
         public void run()  {
             try  {
-                getCurrentActivePlayer().makeNotActive(); // TODO: encapsulate
+                getCurrentActivePlayer().makeNotActive();
                 Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for player death song duration
             }
             catch (InterruptedException ie)  { }
             
+            boolean loadPlayerFromCheckPoint = global_current_active_level.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
             global_current_active_level.get().deactivateLevel();
             LevelFactory levelFactory = new LevelFactory();
-            global_current_active_level = new WeakReference(levelFactory.getLevel(true));
+            global_current_active_level = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
         }
     } ).start();
 

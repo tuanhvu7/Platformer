@@ -12,6 +12,9 @@ abstract class ALevel {
     // level viewbox
     protected ViewBox viewBox;
 
+    // level checkpoint
+    protected Checkpoint checkpoint;
+
     // set of all non-playable characters in level
     protected Set<ACharacter> charactersList;
 
@@ -30,10 +33,16 @@ abstract class ALevel {
     // y position of floor
     protected int floorYPosition;
 
+    // checkpoint x position
+    protected int checkpointXPos;
+
+    // true means load player at checkpoint position
+    protected boolean loadPlayerFromCheckPoint;
+
     /**
      * sets properties of this
      */
-    ALevel(boolean isActive, int levelNumber) {
+    ALevel(boolean isActive, boolean loadPlayerFromCheckPoint) {
 
         this.charactersList = new HashSet<ACharacter>();
         this.boundariesList = new HashSet<ABoundary>();
@@ -42,6 +51,8 @@ abstract class ALevel {
         this.isPaused = false;
 
         this.floorYPosition = height - 100;
+
+        this.loadPlayerFromCheckPoint = loadPlayerFromCheckPoint;
 
         if(isActive) {
             this.setUpActivateLevel();
@@ -107,7 +118,7 @@ abstract class ALevel {
     }
 
    /**
-    * runs continuously; draws background of this
+    * runs continuously
     */
     void draw() {
         // draw background image horizontally until level width is filled
@@ -136,7 +147,7 @@ abstract class ALevel {
 
     /**
      * handle conditional enemy triggers in this;
-     * to override in extended classes
+     * to override in extended classes if needed
      */
     void handleConditionalEnemyTriggers() { }
 
