@@ -75,6 +75,7 @@ public class Enemy extends ACharacter implements IDrawable {
                 {
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
                     this.makeNotActive();
+                    getCurrentActiveCharactersList().remove(this);
                     getCurrentActivePlayer().handleJumpKillEnemyPhysics();
 
                 } else {

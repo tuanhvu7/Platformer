@@ -3,11 +3,15 @@
  */
 public class LevelOne extends ALevel implements IDrawable {
 
+    // true means big enemy trigger boundary has been activated
+    private boolean bigEnemyTriggerActived;
+
     /**
      * sets properties, boundaries, and characters of this
      */
     LevelOne(boolean isActive) {
         super(isActive, 1);
+        this.bigEnemyTriggerActived = false;
     }
 
     /**
@@ -20,8 +24,6 @@ public class LevelOne extends ALevel implements IDrawable {
         this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
         loopSong(true);
-
-        int stageFloorYPositon = height - 100;
 
         charactersList.add(new Enemy(
             getCurrentActiveLevelWidth() - 500,
@@ -69,39 +71,11 @@ public class LevelOne extends ALevel implements IDrawable {
             this.isActive
         ));
 
-        /*** START enemy triggers ***/
-
-        Set<Enemy> enemySet = new HashSet<Enemy>();
-        Enemy triggerEnemy = new Enemy(
-            1200,
-            0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            false,
-            false,
-            true,
-            false
-        );
-
-        enemySet.add(triggerEnemy);
-        charactersList.add(triggerEnemy);
-
-        this.boundariesList.add(new TriggerVerticalBoundary(
-            1000,
-            0,
-            stageFloorYPositon,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            true,
-            this.isActive,
-            enemySet
-        ));
-
-        /*** START enemy triggers ***/
-
         /*** START Blocks ***/
 
         // this.blocksList.add(new EventBlock( // launch event
         //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     this.floorYPosition - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
         //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
@@ -115,7 +89,7 @@ public class LevelOne extends ALevel implements IDrawable {
 
         // this.blocksList.add(new EventBlock( // launch event
         //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     stageFloorYPositon - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     this.floorYPosition - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
         //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,       
@@ -146,33 +120,40 @@ public class LevelOne extends ALevel implements IDrawable {
         // ));
 
         /*** END Blocks ***/
+    }
 
-        // stage floor
-        this.boundariesList.add(new HorizontalBoundary(
-            0,
-            stageFloorYPositon,
-            getCurrentActiveLevelWidth(),
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            true,
-            this.isActive
-        ));
+    /**
+     * handle conditional enemy triggers in this;
+     * to override in extended classes
+     */
+    void handleConditionalEnemyTriggers() {
+        if(!bigEnemyTriggerActived && this.charactersList.size() < 1) {
+            Set<Enemy> enemySet = new HashSet<Enemy>();
+            Enemy triggerEnemy = new Enemy(
+                1200,
+                0,
+                Constants.REGULAR_ENEMY_DIAMETER,
+                false,
+                false,
+                true,
+                false
+            );
 
-        // stage right and left walls
-        this.boundariesList.add(new VerticalBoundary(
-            0,
-            0,
-            stageFloorYPositon,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
-        ));
+            enemySet.add(triggerEnemy);
+            charactersList.add(triggerEnemy);
 
-        this.boundariesList.add(new VerticalBoundary(
-            getCurrentActiveLevelWidth(),
-            0,
-            stageFloorYPositon,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
-        ));
+            this.boundariesList.add(new EnemyTriggerVerticalBoundary(
+                1000,
+                0,
+                this.floorYPosition,
+                Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+                true,
+                this.isActive,
+                enemySet
+            ));
+
+            this.bigEnemyTriggerActived = true;
+        }
     }
 
 }

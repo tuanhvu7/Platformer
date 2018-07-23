@@ -67,35 +67,6 @@ public class LevelTwo extends ALevel implements IDrawable {
             this.isActive
         ));
 
-
-        // stage floor
-        this.boundariesList.add(new HorizontalBoundary(
-            0,
-            height - 100,
-            getCurrentActiveLevelWidth(),
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            true,
-            this.isActive
-        ));
-
-
-        // stage right and left walls
-        this.boundariesList.add(new VerticalBoundary(
-            0,
-            0,
-            height - 100,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
-        ));
-
-        this.boundariesList.add(new VerticalBoundary(
-            getCurrentActiveLevelWidth(),
-            0,
-            height - 100,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
-        ));
-
         this.boundariesList.add(new VerticalBoundary(
             width / 2,
             height / 2,

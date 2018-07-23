@@ -1,7 +1,7 @@
 /**
  * boundary to add enemies upon player contact
  */
-public class TriggerVerticalBoundary extends VerticalBoundary {
+public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
 
     // set of enemies to be added
     private Set<Enemy> enemiesToAddSet;
@@ -10,7 +10,7 @@ public class TriggerVerticalBoundary extends VerticalBoundary {
      * set properties of this
      * sets this to affect all characters
      */
-    TriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
+    EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
                             boolean isVisible, boolean isActive, Set<Enemy> enemySet) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
                 isVisible, isActive);

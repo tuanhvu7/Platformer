@@ -27,6 +27,9 @@ abstract class ALevel {
     // true means level is paused and menu appears
     protected boolean isPaused;
 
+    // y position of floor
+    protected int floorYPosition;
+
     /**
      * sets properties of this
      */
@@ -38,8 +41,11 @@ abstract class ALevel {
 
         this.isPaused = false;
 
+        this.floorYPosition = height - 100;
+
         if(isActive) {
             this.setUpActivateLevel();
+            this.setUpActivateFloorWalls();
         }
     }
 
@@ -124,7 +130,15 @@ abstract class ALevel {
 
             levelWidthLeftToDraw -= widthToDraw;
         }
+
+        this.handleConditionalEnemyTriggers();
     }
+
+    /**
+     * handle conditional enemy triggers in this;
+     * to override in extended classes
+     */
+    void handleConditionalEnemyTriggers() { }
 
         
     /**
@@ -152,8 +166,39 @@ abstract class ALevel {
                         this.closePauseMenu();
                     }
                 }
-
-            }   
+            }
         }
+    }
+
+   /**
+    * setup activate floor and walls
+    */
+    protected void setUpActivateFloorWalls() {
+        // stage floor
+        this.boundariesList.add(new HorizontalBoundary(
+            0,
+            this.floorYPosition,
+            getCurrentActiveLevelWidth(),
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true,
+            this.isActive
+        ));
+
+        // stage right and left walls
+        this.boundariesList.add(new VerticalBoundary(
+            0,
+            0,
+            this.floorYPosition,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            this.isActive
+        ));
+
+        this.boundariesList.add(new VerticalBoundary(
+            getCurrentActiveLevelWidth(),
+            0,
+            this.floorYPosition,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            this.isActive
+        ));
     }
 }
