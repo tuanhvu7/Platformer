@@ -78,13 +78,13 @@ public class Player extends ACharacter implements IDrawable {
      * runs continuously. handles player movement and physics
      */
     void draw() {
-        if(!global_is_handling_Level_complete) {
-            if(this.isDescendingDownEventBlock) {
-                this.handleEventBlockDescent();
-            } else {
+        if(this.isDescendingDownEventBlock) {
+            this.handleEventBlockDescent();
+        } else {
+            if(!global_current_active_level.get().isHandlingLevelComplete) {  // TODO: encapsulate
                 this.handleHorizontalMovement();
-                this.handleVerticalMovement();
             }
+            this.handleVerticalMovement();
         }
 
         this.pos.add(this.vel);

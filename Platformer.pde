@@ -38,9 +38,6 @@ Media global_level_complete_song;
 // player for level complete song
 MediaPlayer global_level_complete_song_player;
 
-// true means running handleLevelComplete thread
-boolean global_is_handling_Level_complete;
-
 // level complete thread
 WeakReference<Thread> global_level_complete_thread;
 
@@ -90,8 +87,6 @@ void settings() {
 
     global_current_active_level_number = 0;
 
-    global_is_handling_Level_complete = false;
-
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     global_level_select_menu = new LevelSelectMenu(true);
 }
@@ -112,16 +107,19 @@ private void resetLevel() {
     new Thread( new Runnable() {
         public void run()  {
             try  {
-                global_level_complete_thread.get().interrupt();
+                println("running reset level thread!!!");
+                if(global_level_complete_thread != null) {
+                    global_level_complete_thread.get().interrupt();
+                }
                 getCurrentActivePlayer().makeNotActive();
                 Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for player death song duration
+                
+                boolean loadPlayerFromCheckPoint = global_current_active_level.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
+                global_current_active_level.get().deactivateLevel();
+                LevelFactory levelFactory = new LevelFactory();
+                global_current_active_level = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
             }
             catch (InterruptedException ie)  { }
-            
-            boolean loadPlayerFromCheckPoint = global_current_active_level.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
-            global_current_active_level.get().deactivateLevel();
-            LevelFactory levelFactory = new LevelFactory();
-            global_current_active_level = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
         }
     } ).start();
 
@@ -139,24 +137,20 @@ private void handleLevelComplete() {
             private boolean levelActuallyCompleted = true;
 
             public void run()  {
+                println("running level complete thread!!!");
                 try  {
-                    global_is_handling_Level_complete = true;
+                    global_current_active_level.get().isHandlingLevelComplete = true;    // TODO: encapsulate
                     getCurrentActivePlayer().resetControlPressed();
                     getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));    // TODO: encapsulate
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
                     Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for player death song duration
-                }
-                catch (InterruptedException ie)  {
-                    levelActuallyCompleted = false;
-                }
-
-                if(levelActuallyCompleted) {
                     getCurrentActivePlayer().makeNotActive();
                     global_current_active_level.get().deactivateLevel();
                     global_current_active_level_number = 0;
                     global_level_select_menu.setupActivateMenu();
                 }
+                catch (InterruptedException ie)  { }
             }
         } )
     );

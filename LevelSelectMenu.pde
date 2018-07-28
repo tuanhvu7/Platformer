@@ -14,8 +14,6 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
      * setup and activate this
      */
     void setupActivateMenu() {
-        global_is_handling_Level_complete = false;
-
         // make this active
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()

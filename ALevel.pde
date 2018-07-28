@@ -39,6 +39,9 @@ abstract class ALevel {
     // true means load player at checkpoint position
     protected boolean loadPlayerFromCheckPoint;
 
+    // true means running handleLevelComplete thread
+    protected boolean isHandlingLevelComplete;
+
     /**
      * sets properties of this
      */
@@ -51,6 +54,8 @@ abstract class ALevel {
         this.isPaused = false;
 
         this.loadPlayerFromCheckPoint = loadPlayerFromCheckPoint;
+
+        this.isHandlingLevelComplete = false;
 
         if(isActive) {
             this.setUpActivateLevel();
@@ -154,7 +159,7 @@ abstract class ALevel {
      * handle character keypress controls
      */
     void keyEvent(KeyEvent keyEvent) {
-        if(this.player.isActive) {  // only allow pause if player is active // TODO: encapsulate
+        if(this.player.isActive && !this.isHandlingLevelComplete) {  // only allow pause if player is active // TODO: encapsulate
             // press 'p' for pause
             if(keyEvent.getAction() == KeyEvent.PRESS) {
                 char keyPressed = keyEvent.getKey();
@@ -183,8 +188,6 @@ abstract class ALevel {
     * setup activate floor and walls
     */
     protected void setUpActivateFloorWalls() {
-        global_is_handling_Level_complete = false;
-
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(
             0,
