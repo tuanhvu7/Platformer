@@ -14,9 +14,12 @@ class Constants {
     private static final int SCREEN_BACKGROUND = #7EC0EE;
     private static final int SCREEN_HEIGHT = 900;
     private static final int SCREEN_WIDTH = 1000;
-    // lower and upper boundary of viewbox; 
-    // viewbox will move to follow player if player goes past this screen size boundary
-    // Example: 0.25 means viewbox follow player if player goes past upper and lower 25% screen size
+    private static final int LEVEL_FLOOR_Y_POSITION = SCREEN_HEIGHT - 100;
+    /*
+     * lower and upper boundary of viewbox; 
+     * viewbox will move to follow player if player goes past this screen size boundary
+     * Example: 0.25 means viewbox follow player if player goes past upper and lower 25% screen size
+     */ 
     private static final double VIEWBOX_BOUNDARY = 0.25;
 
 
@@ -61,14 +64,19 @@ class Constants {
     private static final int CHECKPOINT_BLOCK_WIDTH = 40;
     private static final int CHECKPOINT_BLOCK_HEIGHT = 100; 
 
+    private static final int LEVEL_GOAL_BLOCK_COLOR = #DCDCDC;
+    private static final int LEVEL_GOAL_BLOCK_WIDTH = 40;
+    private static final int LEVEL_GOAL_BLOCK_HEIGHT = LEVEL_FLOOR_Y_POSITION; 
+
     private static final int EVENT_BLOCK_COLOR = #00E500;
     private static final int DEFAULT_EVENT_BLOCK_WIDTH = 125; 
     private static final int DEFAULT_EVENT_BLOCK_HEIGHT = 200; 
 
     /*** assets path ***/
     private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
-    private static final String LEVEL_SONG_NAME = "ugandan-knuckles-song.mp3"; 
-    private static final String PLAYER_DEATH_SONG_NAME = "ugandan-knuckles-song-end.mp3"; 
+    private static final String LEVEL_SONG_NAME = "level-song.mp3"; 
+    private static final String PLAYER_DEATH_SONG_NAME = "player-death-song.mp3"; 
+    private static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3"; 
 
     private Constants() {}
 }

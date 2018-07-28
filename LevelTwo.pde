@@ -19,7 +19,7 @@ public class LevelTwo extends ALevel implements IDrawable {
         this.viewBox = new ViewBox(0, 0, this.isActive);
         this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
-        loopSong(true);
+        loopSong(ESongType.Level);
 
         charactersList.add( new Enemy(
             getCurrentActiveLevelWidth() - 500,

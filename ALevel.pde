@@ -30,9 +30,6 @@ abstract class ALevel {
     // true means level is paused and menu appears
     protected boolean isPaused;
 
-    // y position of floor
-    protected int floorYPosition;
-
     // checkpoint x position
     protected int checkpointXPos;
 
@@ -49,8 +46,6 @@ abstract class ALevel {
         this.blocksList = new HashSet<ABlock>();
 
         this.isPaused = false;
-
-        this.floorYPosition = height - 100;
 
         this.loadPlayerFromCheckPoint = loadPlayerFromCheckPoint;
 
@@ -73,6 +68,13 @@ abstract class ALevel {
     * setup and activate this; to override in extended classes
     */
     void setUpActivateLevel() { }
+
+    /**
+     * handle conditional enemy triggers in this;
+     * to override in extended classes if needed
+     */
+    void handleConditionalEnemyTriggers() { }
+
 
     /**
      * deactiviate this
@@ -144,13 +146,6 @@ abstract class ALevel {
 
         this.handleConditionalEnemyTriggers();
     }
-
-    /**
-     * handle conditional enemy triggers in this;
-     * to override in extended classes if needed
-     */
-    void handleConditionalEnemyTriggers() { }
-
         
     /**
      * handle character keypress controls
@@ -172,7 +167,7 @@ abstract class ALevel {
                             true);
 
                     } else {
-                        loopSong(true);
+                        loopSong(ESongType.Level);
                         loop();
                         this.closePauseMenu();
                     }
@@ -188,7 +183,7 @@ abstract class ALevel {
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(
             0,
-            this.floorYPosition,
+            Constants.LEVEL_FLOOR_Y_POSITION,
             getCurrentActiveLevelWidth(),
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
@@ -199,7 +194,7 @@ abstract class ALevel {
         this.boundariesList.add(new VerticalBoundary(
             0,
             0,
-            this.floorYPosition,
+            Constants.LEVEL_FLOOR_Y_POSITION,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive
         ));
@@ -207,7 +202,7 @@ abstract class ALevel {
         this.boundariesList.add(new VerticalBoundary(
             getCurrentActiveLevelWidth(),
             0,
-            this.floorYPosition,
+            Constants.LEVEL_FLOOR_Y_POSITION,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive
         ));

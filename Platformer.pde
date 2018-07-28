@@ -30,8 +30,13 @@ MediaPlayer global_level_song_player;
 
 // player death song
 Media global_player_death_song;
-// player for level song
+// player for player death song
 MediaPlayer global_player_death_song_player;
+
+// level complete song
+Media global_level_complete_song;
+// player for level complete song
+MediaPlayer global_level_complete_song_player;
 
 
 /*** LEVEL ***/
@@ -72,9 +77,11 @@ void settings() {
     new JFXPanel(); // initialize JavaFx toolkit
     global_level_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
     global_player_death_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
+    global_level_complete_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
     
     global_level_song_player = new MediaPlayer(global_level_song);
     global_player_death_song_player = new MediaPlayer(global_player_death_song);
+    global_level_complete_song_player = new MediaPlayer(global_level_complete_song);
 
     global_current_active_level_number = 0;
 
@@ -92,7 +99,7 @@ void draw() { }
  */
 private void resetLevel() {
     stopSong();
-    playSong(false);
+    playSong(ESongType.PlayerDeath);
 
     // to reset level after player death song finishes without freezing game
     new Thread( new Runnable() {
@@ -109,6 +116,13 @@ private void resetLevel() {
             global_current_active_level = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
         }
     } ).start();
+
+}
+
+/**
+ * complete level
+ */
+private void completeLevel() {
 
 }
 
@@ -142,31 +156,37 @@ private int getCurrentActiveLevelWidth() {
 
 /**
  * loop song
- * true isLevelSong - level song
- * false isLevelSong - player death song
  */
-private void loopSong(boolean isLevelSong) {
-    if(isLevelSong) {
+private void loopSong(ESongType songType) {
+    if(songType == ESongType.Level) {
         global_level_song_player.setCycleCount(Integer.MAX_VALUE);
         global_level_song_player.play();
-    } else {
+
+    } else if(songType == ESongType.PlayerDeath) {
         global_player_death_song_player.setCycleCount(Integer.MAX_VALUE);
         global_player_death_song_player.play();  
+
+    } else if(songType == ESongType.LevelComplete) {
+        global_level_complete_song_player.setCycleCount(Integer.MAX_VALUE);
+        global_level_complete_song_player.play();  
     }
 }
 
 /**
  * play song
- * true isLevelSong - level song
- * false isLevelSong - player death song
  */
-private void playSong(boolean isLevelSong) {
-    if(isLevelSong) {
+private void playSong(ESongType songType) {
+    if(songType == ESongType.Level) {
         global_level_song_player.setCycleCount(1);
         global_level_song_player.play();
-    } else {
+
+    } else if(songType == ESongType.PlayerDeath) {
         global_player_death_song_player.setCycleCount(1);
         global_player_death_song_player.play();  
+
+    } else if(songType == ESongType.LevelComplete) {
+        global_level_complete_song_player.setCycleCount(1);
+        global_level_complete_song_player.play();  
     }
 }
 

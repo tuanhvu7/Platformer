@@ -190,7 +190,7 @@ public class Player extends ACharacter implements IDrawable {
             int middleOfBoundary = Math.round(
                 (firstEventTopBoundaryContacts.endPoint.x + firstEventTopBoundaryContacts.startPoint.x) / 2);
             
-            firstEventTopBoundaryContacts.doesAffectPlayer = false;
+            firstEventTopBoundaryContacts.doesAffectPlayer = false; // TODO: encapsulate
             this.pos.x = middleOfBoundary;    
             this.vel.x = 0;
             this.vel.y = Constants.EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY;
@@ -223,8 +223,7 @@ public class Player extends ACharacter implements IDrawable {
                 this.vel.y = Constants.PLAYER_JUMP_VERTICAL_VELOCITY;
             } else {
                 // for jumping higher the longer jump button is held
-                this.vel.y = 
-                Math.min(
+                this.vel.y = Math.min(
                     this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER, 
                     Constants.MAX_VERTICAL_VELOCITY);
             }

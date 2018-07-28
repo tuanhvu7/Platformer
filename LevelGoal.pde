@@ -1,13 +1,12 @@
 /**
- * checkpoint
+ * level goal
  */
-public class Checkpoint extends ACollectable {
-
+public class LevelGoal extends ACollectable {
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    Checkpoint(int leftX, int topY, int width, int height, int blockLineThickness, boolean isActive) {
+    LevelGoal(int leftX, int topY, int width, int height, int blockLineThickness, boolean isActive) {
         super(leftX, topY, width, height, blockLineThickness, isActive);
     }
 
@@ -15,19 +14,18 @@ public class Checkpoint extends ACollectable {
      * display block
      */
     void show() {
-        fill(Constants.CHECKPOINT_BLOCK_COLOR);
+        fill(Constants.LEVEL_GOAL_BLOCK_COLOR);
         strokeWeight(this.blockLineThickness);
         rect(this.leftX, this.topY, this.width, this.height);
     }
 
     /**
-     *  check and handle contact with player
+     * check and handle contact with player
      */
     protected void checkHandleContactWithPlayer() {
         if(getCurrentActivePlayer().isActive && this.contactWithPlayer()) {   // TODO: encapsulate
-            global_current_active_level.get().loadPlayerFromCheckPoint = true;  // TODO: encapsulate
+            // global_current_active_level.get().loadPlayerFromCheckPoint = true;  // TODO: encapsulate
             this.makeNotActive();
         }
     }
-
 }

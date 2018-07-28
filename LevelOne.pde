@@ -34,7 +34,7 @@ public class LevelOne extends ALevel implements IDrawable {
 
             this.checkpoint = new Checkpoint(
                 this.checkpointXPos,
-                this.floorYPosition - Constants.CHECKPOINT_BLOCK_HEIGHT,
+                Constants.LEVEL_FLOOR_Y_POSITION - Constants.CHECKPOINT_BLOCK_HEIGHT,
                 Constants.CHECKPOINT_BLOCK_WIDTH,
                 Constants.CHECKPOINT_BLOCK_HEIGHT,
                 Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
@@ -42,7 +42,7 @@ public class LevelOne extends ALevel implements IDrawable {
             );
         }
 
-        loopSong(true);
+        loopSong(ESongType.Level);
 
         charactersList.add(new Enemy(
             getCurrentActiveLevelWidth() - 500,
@@ -94,7 +94,7 @@ public class LevelOne extends ALevel implements IDrawable {
 
         // this.blocksList.add(new EventBlock( // launch event
         //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     this.floorYPosition - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
         //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
@@ -108,7 +108,7 @@ public class LevelOne extends ALevel implements IDrawable {
 
         // this.blocksList.add(new EventBlock( // launch event
         //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     this.floorYPosition - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+        //     Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
         //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,       
@@ -164,7 +164,7 @@ public class LevelOne extends ALevel implements IDrawable {
             this.boundariesList.add(new EnemyTriggerVerticalBoundary(
                 1000,
                 0,
-                this.floorYPosition,
+                Constants.LEVEL_FLOOR_Y_POSITION,
                 Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
                 true,
                 this.isActive,
