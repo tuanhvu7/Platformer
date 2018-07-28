@@ -15,6 +15,9 @@ abstract class ALevel {
     // level checkpoint
     protected Checkpoint checkpoint;
 
+    // level goal
+    protected LevelGoal levelGoal;
+
     // set of all non-playable characters in level
     protected Set<ACharacter> charactersList;
 
@@ -180,6 +183,8 @@ abstract class ALevel {
     * setup activate floor and walls
     */
     protected void setUpActivateFloorWalls() {
+        global_is_handling_Level_complete = false;
+
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(
             0,

@@ -38,6 +38,11 @@ Media global_level_complete_song;
 // player for level complete song
 MediaPlayer global_level_complete_song_player;
 
+// true means running handleLevelComplete thread
+boolean global_is_handling_Level_complete;
+
+// level complete thread
+WeakReference<Thread> global_level_complete_thread;
 
 /*** LEVEL ***/
 // level select menu
@@ -85,6 +90,8 @@ void settings() {
 
     global_current_active_level_number = 0;
 
+    global_is_handling_Level_complete = false;
+
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     global_level_select_menu = new LevelSelectMenu(true);
 }
@@ -105,6 +112,7 @@ private void resetLevel() {
     new Thread( new Runnable() {
         public void run()  {
             try  {
+                global_level_complete_thread.get().interrupt();
                 getCurrentActivePlayer().makeNotActive();
                 Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for player death song duration
             }
@@ -122,8 +130,37 @@ private void resetLevel() {
 /**
  * complete level
  */
-private void completeLevel() {
+private void handleLevelComplete() {
+    stopSong();
+    playSong(ESongType.LevelComplete);
 
+    global_level_complete_thread = new WeakReference(
+        new Thread( new Runnable() {
+            private boolean levelActuallyCompleted = true;
+
+            public void run()  {
+                try  {
+                    global_is_handling_Level_complete = true;
+                    getCurrentActivePlayer().resetControlPressed();
+                    getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));    // TODO: encapsulate
+                    unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
+                    
+                    Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for player death song duration
+                }
+                catch (InterruptedException ie)  {
+                    levelActuallyCompleted = false;
+                }
+
+                if(levelActuallyCompleted) {
+                    getCurrentActivePlayer().makeNotActive();
+                    global_current_active_level.get().deactivateLevel();
+                    global_current_active_level_number = 0;
+                    global_level_select_menu.setupActivateMenu();
+                }
+            }
+        } )
+    );
+    global_level_complete_thread.get().start();
 }
 
 /**
@@ -196,6 +233,7 @@ private void playSong(ESongType songType) {
 private void stopSong() {
     global_level_song_player.stop();
     global_player_death_song_player.stop();
+    global_level_complete_song_player.stop();
 }
 
 /**

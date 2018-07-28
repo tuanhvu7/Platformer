@@ -38,6 +38,7 @@ class Constants {
 
     /*** player config ***/
     private static final int PLAYER_RUN_SPEED = 3;
+    private static final int PLAYER_LEVEL_COMPLETE_SPEED = 1;
     private static final int PLAYER_JUMP_VERTICAL_VELOCITY = -12;
     private static final int PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY = -7;
     private static final int PLAYER_COLOR = #000000;

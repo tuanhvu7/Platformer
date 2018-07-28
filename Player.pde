@@ -32,9 +32,7 @@ public class Player extends ACharacter implements IDrawable {
 
         this.eventTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
 
-        this.moveLeftPressed = false;
-        this.moveRightPressed = false;
-        this.jumpPressed = false;
+        this.resetControlPressed();
 
         this.isDescendingDownEventBlock = false;
 
@@ -80,11 +78,13 @@ public class Player extends ACharacter implements IDrawable {
      * runs continuously. handles player movement and physics
      */
     void draw() {
-        if(this.isDescendingDownEventBlock) {
-            this.handleEventBlockDescent();
-        } else {
-            this.handleHorizontalMovement();
-            this.handleVerticalMovement();
+        if(!global_is_handling_Level_complete) {
+            if(this.isDescendingDownEventBlock) {
+                this.handleEventBlockDescent();
+            } else {
+                this.handleHorizontalMovement();
+                this.handleVerticalMovement();
+            }
         }
 
         this.pos.add(this.vel);
@@ -160,6 +160,22 @@ public class Player extends ACharacter implements IDrawable {
     }
 
     /**
+     * set velocity to given value
+     */
+    public void setVelocity(PVector vel) {
+        this.vel = vel;
+    }
+
+    /**
+     * set controls pressed to false
+     */
+    public void resetControlPressed() {
+        this.moveLeftPressed = false;
+        this.moveRightPressed = false;
+        this.jumpPressed = false;
+    }
+
+    /**
      * handle wall sliding physics
      */
     private void handleOnWallPhysics() {
@@ -178,9 +194,7 @@ public class Player extends ACharacter implements IDrawable {
      */
     private void handleEventBlockDescent() {
         if(this.eventTopBoundaryContacts.size() == 1) {
-            this.moveLeftPressed = false;
-            this.moveRightPressed = false;
-            this.jumpPressed = false;
+            this.resetControlPressed();
             unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
             
             EventBlockTopBoundary firstEventTopBoundaryContacts = 
