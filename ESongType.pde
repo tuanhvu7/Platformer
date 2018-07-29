@@ -5,5 +5,6 @@ enum ESongType {
     Level,
     PlayerDeath,
     LevelComplete,
-    PlayerAction
+    PlayerAction,
+    EventBlockDescent
 }

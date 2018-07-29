@@ -38,10 +38,15 @@ Media global_level_complete_song;
 // player for level complete song
 MediaPlayer global_level_complete_song_player;
 
-// interaction song; used for player and enemy, block interaction
+// player action 
 Media global_player_action_song;
-// player for interaction song; used for player and enemy, block interaction
+// player for player action 
 MediaPlayer global_player_action_song_player;
+
+// event block descent song
+Media global_event_block_descent_song;
+// player for event block descent song
+MediaPlayer global_event_block_descent_song_player;
 
 // level complete thread
 WeakReference<Thread> global_level_complete_thread;
@@ -86,11 +91,13 @@ void settings() {
     global_player_death_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
     global_level_complete_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
     global_player_action_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
-    
+    global_event_block_descent_song = new Media(convertPathToValidUri(dataPath(Constants.EVENT_BLOCK_DESCENT_SOUND_NAME)));
+
     global_level_song_player = new MediaPlayer(global_level_song);
     global_player_death_song_player = new MediaPlayer(global_player_death_song);
     global_level_complete_song_player = new MediaPlayer(global_level_complete_song);
     global_player_action_song_player = new MediaPlayer(global_player_action_song);
+    global_event_block_descent_song_player = new MediaPlayer(global_event_block_descent_song);
 
     global_current_active_level_number = 0;
 
@@ -119,7 +126,7 @@ private void resetLevel() {
                     global_level_complete_thread.get().interrupt();
                 }
                 getCurrentActivePlayer().makeNotActive();
-                Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for player death song duration
+                Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for song duration
                 
                 boolean loadPlayerFromCheckPoint = global_current_active_level.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
                 global_current_active_level.get().deactivateLevel();
@@ -149,7 +156,7 @@ private void handleLevelComplete() {
                     getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
-                    Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for player death song duration
+                    Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for song duration
                     getCurrentActivePlayer().makeNotActive();
                     global_current_active_level.get().deactivateLevel();
                     global_current_active_level_number = 0;
@@ -229,6 +236,11 @@ private void loopSong(ESongType songType) {
             global_player_action_song_player.play();
         break;
 
+        case EventBlockDescent:
+            global_event_block_descent_song_player.setCycleCount(Integer.MAX_VALUE);
+            global_event_block_descent_song_player.play();
+        break;
+
         default:    
         break;	
     }
@@ -261,8 +273,23 @@ private void playSong(ESongType songType) {
                     try  {
                         global_player_action_song_player.setCycleCount(1);
                         global_player_action_song_player.play();
-                        Thread.sleep( (long) global_player_action_song.getDuration().toMillis() );  // wait for player death song duration
+                        Thread.sleep( (long) global_player_action_song.getDuration().toMillis() );  // wait for song duration
                         global_player_action_song_player.stop();
+                    }
+                    catch (InterruptedException ie)  { }
+                }
+            } ).start();
+        break;
+
+        case EventBlockDescent:
+            // to reset level after player death song finishes without freezing game
+            new Thread( new Runnable() {
+                public void run()  {
+                    try  {
+                        global_event_block_descent_song_player.setCycleCount(1);
+                        global_event_block_descent_song_player.play();
+                        Thread.sleep( (long) global_event_block_descent_song.getDuration().toMillis() );  // wait for song duration
+                        global_event_block_descent_song_player.stop();
                     }
                     catch (InterruptedException ie)  { }
                 }
@@ -282,6 +309,7 @@ private void stopSong() {
     global_player_death_song_player.stop();
     global_level_complete_song_player.stop();
     global_player_action_song_player.stop();
+    global_event_block_descent_song_player.stop();
 }
 
 /**

@@ -208,6 +208,7 @@ public class Player extends ACharacter implements IDrawable {
             this.pos.x = middleOfBoundary;    
             this.vel.x = 0;
             this.vel.y = Constants.EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY;
+            playSong(ESongType.EventBlockDescent);
         }
     }
 

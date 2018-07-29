@@ -28,7 +28,7 @@ class Constants {
     // gravity multiplier for jumping higher when holding jump button
     private static final float WALL_SLIDE_ACCELERATION = 0.1;
     private static final float VARIABLE_JUMP_GRAVITY_MULTIPLIER = 0.55;
-    private static final float EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY = 1;
+    private static final float EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY = 1.5;
     private static final float MAX_VERTICAL_VELOCITY = 15;
     
     /*** Event config ***/
@@ -79,6 +79,7 @@ class Constants {
     private static final String PLAYER_DEATH_SONG_NAME = "player-death-song.mp3"; 
     private static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3";
     private static final String PLAYER_ACTION_SOUND_NAME = "player-action-sound.mp3";
+    private static final String EVENT_BLOCK_DESCENT_SOUND_NAME = "event-block-descent-sound.mp3";
 
     private Constants() {}
 }
