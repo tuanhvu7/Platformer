@@ -38,6 +38,11 @@ Media global_level_complete_song;
 // player for level complete song
 MediaPlayer global_level_complete_song_player;
 
+// interaction song; used for player and enemy, block interaction
+Media global_player_action_song;
+// player for interaction song; used for player and enemy, block interaction
+MediaPlayer global_player_action_song_player;
+
 // level complete thread
 WeakReference<Thread> global_level_complete_thread;
 
@@ -80,10 +85,12 @@ void settings() {
     global_level_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
     global_player_death_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
     global_level_complete_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
+    global_player_action_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
     
     global_level_song_player = new MediaPlayer(global_level_song);
     global_player_death_song_player = new MediaPlayer(global_player_death_song);
     global_level_complete_song_player = new MediaPlayer(global_level_complete_song);
+    global_player_action_song_player = new MediaPlayer(global_player_action_song);
 
     global_current_active_level_number = 0;
 
@@ -201,17 +208,29 @@ private int getCurrentActiveLevelWidth() {
  * loop song
  */
 private void loopSong(ESongType songType) {
-    if(songType == ESongType.Level) {
-        global_level_song_player.setCycleCount(Integer.MAX_VALUE);
-        global_level_song_player.play();
+    switch(songType) {
+        case Level:
+            global_level_song_player.setCycleCount(Integer.MAX_VALUE);
+            global_level_song_player.play();
+        break;
 
-    } else if(songType == ESongType.PlayerDeath) {
-        global_player_death_song_player.setCycleCount(Integer.MAX_VALUE);
-        global_player_death_song_player.play();  
+        case PlayerDeath:
+            global_player_death_song_player.setCycleCount(Integer.MAX_VALUE);
+            global_player_death_song_player.play();
+        break;
 
-    } else if(songType == ESongType.LevelComplete) {
-        global_level_complete_song_player.setCycleCount(Integer.MAX_VALUE);
-        global_level_complete_song_player.play();  
+        case LevelComplete:
+            global_level_complete_song_player.setCycleCount(Integer.MAX_VALUE);
+            global_level_complete_song_player.play();
+        break;
+
+        case PlayerAction:
+            global_player_action_song_player.setCycleCount(Integer.MAX_VALUE);
+            global_player_action_song_player.play();
+        break;
+
+        default:    
+        break;	
     }
 }
 
@@ -219,17 +238,39 @@ private void loopSong(ESongType songType) {
  * play song
  */
 private void playSong(ESongType songType) {
-    if(songType == ESongType.Level) {
-        global_level_song_player.setCycleCount(1);
-        global_level_song_player.play();
+    switch(songType) {
+        case Level:
+            global_level_song_player.setCycleCount(1);
+            global_level_song_player.play();
+        break;
 
-    } else if(songType == ESongType.PlayerDeath) {
-        global_player_death_song_player.setCycleCount(1);
-        global_player_death_song_player.play();  
+        case PlayerDeath:
+            global_player_death_song_player.setCycleCount(1);
+            global_player_death_song_player.play();
+        break;
 
-    } else if(songType == ESongType.LevelComplete) {
-        global_level_complete_song_player.setCycleCount(1);
-        global_level_complete_song_player.play();  
+        case LevelComplete:
+            global_level_complete_song_player.setCycleCount(1);
+            global_level_complete_song_player.play();
+        break;
+
+        case PlayerAction:
+            // to reset level after player death song finishes without freezing game
+            new Thread( new Runnable() {
+                public void run()  {
+                    try  {
+                        global_player_action_song_player.setCycleCount(1);
+                        global_player_action_song_player.play();
+                        Thread.sleep( (long) global_player_action_song.getDuration().toMillis() );  // wait for player death song duration
+                        global_player_action_song_player.stop();
+                    }
+                    catch (InterruptedException ie)  { }
+                }
+            } ).start();
+        break;
+
+        default:    
+        break;	
     }
 }
 
@@ -240,6 +281,7 @@ private void stopSong() {
     global_level_song_player.stop();
     global_player_death_song_player.stop();
     global_level_complete_song_player.stop();
+    global_player_action_song_player.stop();
 }
 
 /**

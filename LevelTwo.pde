@@ -25,6 +25,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             getCurrentActiveLevelWidth() - 500,
             0,
             Constants.BIG_ENEMY_DIAMETER,
+            -Constants.ENEMY_RUN_SPEED,
             false,
             false,
             true,

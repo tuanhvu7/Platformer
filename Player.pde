@@ -234,6 +234,7 @@ public class Player extends ACharacter implements IDrawable {
             if( this.numberOfFloorBoundaryContacts > 0 || 
                 (this.numberOfVerticalBoundaryContacts > 0 && this.numberOfCeilingBoundaryContacts == 0) )
             { // able to jump
+                playSong(ESongType.PlayerAction);
                 this.vel.y = Constants.PLAYER_JUMP_VERTICAL_VELOCITY;
             } else {
                 // for jumping higher the longer jump button is held

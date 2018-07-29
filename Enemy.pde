@@ -15,10 +15,10 @@ public class Enemy extends ACharacter implements IDrawable {
     /**
      * set properties of this
      */
-    Enemy(int x, int y, int diameter,
+    Enemy(int x, int y, int diameter, float runSpeed,
             boolean isFlying, boolean isInvulnerable, boolean isVisible, boolean isActive) {
         super(x, y, diameter, isActive);
-        this.vel.x = -Constants.ENEMY_RUN_SPEED;
+        this.vel.x = runSpeed;
 
         this.isFlying = isFlying;
         this.isInvulnerable = isInvulnerable;
@@ -74,6 +74,7 @@ public class Enemy extends ACharacter implements IDrawable {
                     && this.pos.y > getCurrentActivePlayer().pos.y)  // player is above this // TODO: encapsulate
                 {
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
+                    playSong(ESongType.PlayerAction);
                     this.makeNotActive();
                     getCurrentActiveCharactersList().remove(this);
                     getCurrentActivePlayer().handleJumpKillEnemyPhysics();
@@ -90,7 +91,7 @@ public class Enemy extends ACharacter implements IDrawable {
     * handle movement (position, velocity)
     */
     private void handleMovement() {
-        if(this.numberOfFloorBoundaryContacts == 0 && !this.isFlying) {
+        if(!this.isFlying && this.numberOfFloorBoundaryContacts == 0) {
             this.handleInAirPhysics();
         }
 

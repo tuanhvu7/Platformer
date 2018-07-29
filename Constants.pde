@@ -77,7 +77,8 @@ class Constants {
     private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
     private static final String LEVEL_SONG_NAME = "level-song.mp3"; 
     private static final String PLAYER_DEATH_SONG_NAME = "player-death-song.mp3"; 
-    private static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3"; 
+    private static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3";
+    private static final String PLAYER_ACTION_SOUND_NAME = "player-action-sound.mp3";
 
     private Constants() {}
 }

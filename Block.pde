@@ -73,12 +73,9 @@ public class Block extends ABlock implements IDrawable {
         if(this.bottomSide.contactWithCharacter(getCurrentActivePlayer())) {
             if(!this.isVisible) {
                 this.handleInvisibleBlockCollisionWithPlayer();
+
             } else if(this.isBreakableFromBottom) {
-                getCurrentActivePlayer().handleContactWithHorizontalBoundary(
-                    this.bottomSide.startPoint.y,  // TODO: encapsulate
-                    false);
-                this.makeNotActive();
-                getCurrentActiveBlocksList().remove(this);
+                this.removeBlockFromPlayerContact();
             }   
         }
     }
@@ -126,11 +123,7 @@ public class Block extends ABlock implements IDrawable {
      */
     private void handleInvisibleBlockCollisionWithPlayer() {
         if(this.isBreakableFromBottom) {
-            getCurrentActivePlayer().handleContactWithHorizontalBoundary(
-                this.bottomSide.startPoint.y,  // TODO: encapsulate
-                false);
-            this.makeNotActive();
-            getCurrentActiveBlocksList().remove(this);
+            this.removeBlockFromPlayerContact();
 
         } else {
             this.isVisible = true;
@@ -145,6 +138,17 @@ public class Block extends ABlock implements IDrawable {
             this.rightSide.makeActive();
             this.rightSide.isVisible = true;  // TODO: encapsulate
         }
+    }
 
+    /**
+     * remove block from player contact
+     */
+    private void removeBlockFromPlayerContact() {
+        getCurrentActivePlayer().handleContactWithHorizontalBoundary(
+            this.bottomSide.startPoint.y,  // TODO: encapsulate
+            false);
+        playSong(ESongType.PlayerAction);
+        this.makeNotActive();
+        getCurrentActiveBlocksList().remove(this);
     }
 }
