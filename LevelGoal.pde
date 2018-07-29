@@ -25,6 +25,7 @@ public class LevelGoal extends ACollectable {
     protected void checkHandleContactWithPlayer() {
         if(getCurrentActivePlayer().isActive && this.contactWithPlayer()) {   // TODO: encapsulate
             this.makeNotActive();
+            getCurrentActiveLevelCollectables().remove(this);
             handleLevelComplete();
         }
     }

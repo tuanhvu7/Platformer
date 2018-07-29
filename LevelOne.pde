@@ -32,14 +32,14 @@ public class LevelOne extends ALevel implements IDrawable {
             this.viewBox = new ViewBox(0, 0, this.isActive);
             this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, this.isActive);
 
-            // this.checkpoint = new Checkpoint(
-            //     this.checkpointXPos,
-            //     Constants.LEVEL_FLOOR_Y_POSITION - Constants.CHECKPOINT_BLOCK_HEIGHT,
-            //     Constants.CHECKPOINT_BLOCK_WIDTH,
-            //     Constants.CHECKPOINT_BLOCK_HEIGHT,
-            //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            //     this.isActive
-            // );
+            this.collectablesList.add(new Checkpoint(
+                this.checkpointXPos,
+                Constants.LEVEL_FLOOR_Y_POSITION - Constants.CHECKPOINT_BLOCK_HEIGHT,
+                Constants.CHECKPOINT_BLOCK_WIDTH,
+                Constants.CHECKPOINT_BLOCK_HEIGHT,
+                Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+                this.isActive)
+            );
         }
 
         loopSong(ESongType.Level);
@@ -139,16 +139,6 @@ public class LevelOne extends ALevel implements IDrawable {
         // ));
 
         /*** END Blocks ***/
-
-        this.levelGoal = new LevelGoal(
-            this.checkpointXPos,
-            // global_levels_width_array[global_current_active_level_number] - Constants.LEVEL_GOAL_BLOCK_WIDTH - 10,
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_BLOCK_HEIGHT,
-            Constants.LEVEL_GOAL_BLOCK_WIDTH,
-            Constants.LEVEL_GOAL_BLOCK_HEIGHT,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
-        );
     }
 
     /**

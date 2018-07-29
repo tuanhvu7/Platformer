@@ -134,11 +134,9 @@ private void handleLevelComplete() {
 
     global_level_complete_thread = new WeakReference(
         new Thread( new Runnable() {
-            private boolean levelActuallyCompleted = true;
-
             public void run()  {
-                println("running level complete thread!!!");
                 try  {
+                    println("running level complete thread!!!");
                     global_current_active_level.get().isHandlingLevelComplete = true;    // TODO: encapsulate
                     getCurrentActivePlayer().resetControlPressed();
                     getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));    // TODO: encapsulate
@@ -169,6 +167,13 @@ private Player getCurrentActivePlayer() {
  */
 private Set<ACharacter> getCurrentActiveCharactersList() {
     return global_current_active_level.get().charactersList;    // TODO: encapsulate
+}
+
+/**
+ * return collectables of current active level
+ */
+private Set<ACollectable> getCurrentActiveLevelCollectables() {
+    return global_current_active_level.get().collectablesList;    // TODO: encapsulate
 }
 
 /**

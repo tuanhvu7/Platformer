@@ -12,12 +12,6 @@ abstract class ALevel {
     // level viewbox
     protected ViewBox viewBox;
 
-    // level checkpoint
-    protected Checkpoint checkpoint;
-
-    // level goal
-    protected LevelGoal levelGoal;
-
     // set of all non-playable characters in level
     protected Set<ACharacter> charactersList;
 
@@ -26,6 +20,9 @@ abstract class ALevel {
 
     // set of all blocks in level
     protected Set<ABlock> blocksList;
+
+    // set of all collectables in level
+    protected Set<ACollectable> collectablesList;
 
     // pause menu for level
     private PauseMenu pauseMenu;
@@ -50,6 +47,7 @@ abstract class ALevel {
         this.charactersList = new HashSet<ACharacter>();
         this.boundariesList = new HashSet<ABoundary>();
         this.blocksList = new HashSet<ABlock>();
+        this.collectablesList = new HashSet<ACollectable>();
 
         this.isPaused = false;
 
@@ -59,7 +57,7 @@ abstract class ALevel {
 
         if(isActive) {
             this.setUpActivateLevel();
-            this.setUpActivateFloorWalls();
+            this.setUpActivateFloorWallsGoal();
         }
     }
 
@@ -102,9 +100,14 @@ abstract class ALevel {
             curBlock.makeNotActive();
         }
 
+        for(ACollectable curCollectable: this.collectablesList) {
+            curCollectable.makeNotActive();
+        }
+
         this.charactersList.clear();
         this.boundariesList.clear();
         this.blocksList.clear();
+        this.collectablesList.clear();
         
         // make this not active
         this.isActive = false;
@@ -185,9 +188,19 @@ abstract class ALevel {
     }
 
    /**
-    * setup activate floor and walls
+    * setup activate floor, walls, and goal
     */
-    protected void setUpActivateFloorWalls() {
+    protected void setUpActivateFloorWallsGoal() {
+        this.collectablesList.add(new LevelGoal(
+            getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_BLOCK_WIDTH - 10,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_BLOCK_HEIGHT,
+            Constants.LEVEL_GOAL_BLOCK_WIDTH,
+            Constants.LEVEL_GOAL_BLOCK_HEIGHT,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            this.isActive)
+        );
+
+
         // stage floor
         this.boundariesList.add(new HorizontalBoundary(
             0,
