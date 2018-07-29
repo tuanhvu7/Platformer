@@ -139,7 +139,7 @@ private void handleLevelComplete() {
                     println("running level complete thread!!!");
                     global_current_active_level.get().isHandlingLevelComplete = true;    // TODO: encapsulate
                     getCurrentActivePlayer().resetControlPressed();
-                    getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));    // TODO: encapsulate
+                    getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
                     Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for player death song duration

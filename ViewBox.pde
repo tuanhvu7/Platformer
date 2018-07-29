@@ -70,33 +70,39 @@ public class ViewBox implements IDrawable {
     * handle movement (position, velocity)
     */
     private void handleMovement() {
-        if(getCurrentActivePlayer().moveLeftPressed) {    // TODO: encapsulate
-            if(this.pos.x > 0       // left edge of viewbox not at left edge of level
-                && this.playerAtViewBoxBoundary(true)) 
-            {
-                this.vel.x = -Constants.PLAYER_RUN_SPEED;
-            } else {
+        if(global_current_active_level.get().isHandlingLevelComplete && this.playerAtViewBoxBoundary(false))
+        {   // viewbox movement during level completion
+            this.vel.x = Constants.PLAYER_LEVEL_COMPLETE_SPEED;
+
+        } else {
+            if(getCurrentActivePlayer().moveLeftPressed) {    // TODO: encapsulate
+                if(this.pos.x > 0       // left edge of viewbox not at left edge of level
+                    && this.playerAtViewBoxBoundary(true)) 
+                {
+                    this.vel.x = -Constants.PLAYER_RUN_SPEED;
+                } else {
+                    this.vel.x = 0;
+                }
+            } 
+            if(getCurrentActivePlayer().moveRightPressed) {   // TODO: encapsulate
+                if(this.pos.x < getCurrentActiveLevelWidth() - width   // right edge of viewbox not at right edge of level
+                    && this.playerAtViewBoxBoundary(false)) 
+                {
+                    this.vel.x = Constants.PLAYER_RUN_SPEED;
+                } else {
+                    this.vel.x = 0;
+                }
+            } 
+            if(!getCurrentActivePlayer().moveLeftPressed && // TODO: encapsulate
+                !getCurrentActivePlayer().moveRightPressed)   // TODO: encapsulate
+            {   
                 this.vel.x = 0;
             }
-        } 
-        if(getCurrentActivePlayer().moveRightPressed) {   // TODO: encapsulate
-            if(this.pos.x < getCurrentActiveLevelWidth() - width   // right edge of viewbox not at right edge of level
-                && this.playerAtViewBoxBoundary(false)) 
-            {
-                this.vel.x = Constants.PLAYER_RUN_SPEED;
-            } else {
-                this.vel.x = 0;
-            }
-        } 
-        if(!getCurrentActivePlayer().moveLeftPressed && // TODO: encapsulate
-            !getCurrentActivePlayer().moveRightPressed)   // TODO: encapsulate
-        {   
-            this.vel.x = 0;
         }
 
         this.pos.add(this.vel);
 
-        // fix viewbox level overflows
+        // fix viewbox level boundary overflows
         if(this.pos.x > getCurrentActiveLevelWidth() - width) {
             this.pos.x = getCurrentActiveLevelWidth() - width;
         } else if(this.pos.x < 0) {

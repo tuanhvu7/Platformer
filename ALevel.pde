@@ -191,6 +191,7 @@ abstract class ALevel {
     * setup activate floor, walls, and goal
     */
     protected void setUpActivateFloorWallsGoal() {
+        // stage goal
         this.collectablesList.add(new LevelGoal(
             getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_BLOCK_WIDTH - 10,
             Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_BLOCK_HEIGHT,
