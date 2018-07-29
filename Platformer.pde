@@ -92,7 +92,7 @@ void settings() {
 }
 
 /**
- * runs continuously
+ * runs continuously; need this to run draw() for levels
  */
 void draw() { }
 
@@ -167,6 +167,13 @@ private Player getCurrentActivePlayer() {
  */
 private Set<ACharacter> getCurrentActiveCharactersList() {
     return global_current_active_level.get().charactersList;    // TODO: encapsulate
+}
+
+/**
+ * return blocks of current active level
+ */
+private Set<ABlock> getCurrentActiveBlocksList() {
+    return global_current_active_level.get().blocksList;    // TODO: encapsulate
 }
 
 /**

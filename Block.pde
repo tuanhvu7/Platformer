@@ -4,14 +4,19 @@
  */
 public class Block extends ABlock implements IDrawable {
 
+    // true means breakable from bottom
+    private boolean isBreakableFromBottom;
+
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    Block(int leftX, int topY, int width, int height, int blockLineThickness, 
+    Block(int leftX, int topY, int width, int height, int blockLineThickness, boolean isBreakableFromBottom,
             boolean isActive) {
         
         super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
+
+        this.isBreakableFromBottom = isBreakableFromBottom;
 
         this.topSide = new HorizontalBoundary(
             leftX,
@@ -34,10 +39,12 @@ public class Block extends ABlock implements IDrawable {
      * to all characters
      */
     Block(int leftX, int topY, int width, int height, int blockLineThickness,
-            boolean isVisible, boolean isActive) {
+            boolean isVisible, boolean isBreakableFromBottom, boolean isActive) {
 
         super(leftX, topY, width, height, blockLineThickness,
                 isVisible, false);  // initially not active, to be set in makeActive(), isVisible
+
+        this.isBreakableFromBottom = isBreakableFromBottom;
 
         this.topSide = new HorizontalBoundary(
             leftX,
@@ -61,7 +68,19 @@ public class Block extends ABlock implements IDrawable {
         if(this.isVisible) {
             this.show();
         }
-        this.handleInvisibleBlock();
+
+        // handle player collision with invisible block
+        if(this.bottomSide.contactWithCharacter(getCurrentActivePlayer())) {
+            if(!this.isVisible) {
+                this.handleInvisibleBlockCollisionWithPlayer();
+            } else if(this.isBreakableFromBottom) {
+                getCurrentActivePlayer().handleContactWithHorizontalBoundary(
+                    this.bottomSide.startPoint.y,  // TODO: encapsulate
+                    false);
+                this.makeNotActive();
+                getCurrentActiveBlocksList().remove(this);
+            }   
+        }
     }
 
     /**
@@ -105,16 +124,15 @@ public class Block extends ABlock implements IDrawable {
     /**
      * handle invisible block player contact
      */
-    private void handleInvisibleBlock() {
-        Player curPlayer = getCurrentActivePlayer();
+    private void handleInvisibleBlockCollisionWithPlayer() {
+        if(this.isBreakableFromBottom) {
+            getCurrentActivePlayer().handleContactWithHorizontalBoundary(
+                this.bottomSide.startPoint.y,  // TODO: encapsulate
+                false);
+            this.makeNotActive();
+            getCurrentActiveBlocksList().remove(this);
 
-        // handle player collision with invisible block
-        if( this.isActive && 
-            !this.isVisible && 
-            curPlayer.isActive &&  // TODO: encapsulate
-            this.bottomSide.contactWithCharacter(curPlayer) ) 
-        {
-
+        } else {
             this.isVisible = true;
             this.topSide.makeActive();
             this.topSide.isVisible = true;  // TODO: encapsulate
@@ -126,7 +144,7 @@ public class Block extends ABlock implements IDrawable {
 
             this.rightSide.makeActive();
             this.rightSide.isVisible = true;  // TODO: encapsulate
-            
         }
+
     }
 }

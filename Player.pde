@@ -17,10 +17,10 @@ public class Player extends ACharacter implements IDrawable {
     private boolean moveRightPressed;
     private boolean jumpPressed;
 
-    private boolean isDescendingDownEventBlock;
-
     private boolean ableToMoveRight;
     private boolean ableToMoveLeft;
+
+    private boolean isDescendingDownEventBlock;
 
     /**
      * set properties of this

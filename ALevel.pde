@@ -95,7 +95,7 @@ abstract class ALevel {
         for(ABoundary curBoundary : this.boundariesList) {
             curBoundary.makeNotActive();
         }
-
+        
         for(ABlock curBlock : this.blocksList) {
             curBlock.makeNotActive();
         }
@@ -113,14 +113,6 @@ abstract class ALevel {
         this.isActive = false;
         unregisterMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
-    }
-
-    /**
-     * deactiviate player;
-     * for removing player while letting game run during player death handling
-     */
-    void deactivatePlayer() {
-        this.player.makeNotActive();
     }
 
     /**

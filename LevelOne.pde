@@ -106,7 +106,7 @@ public class LevelOne extends ALevel implements IDrawable {
         // // int playerWarpEndXPos = getCurrentActiveLevelWidth() - Constants.PLAYER_DIAMETER - 1;  // test end of state
         // // int playerWarpEndXPos = Constants.PLAYER_DIAMETER / 2 + 1;   // test beginning of stage
 
-        // this.blocksList.add(new EventBlock( // launch event
+        // this.blocksList.add(new EventBlock( // warp event
         //     getCurrentActiveLevelWidth() / 2 - 300,
         //     Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
         //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
@@ -125,6 +125,7 @@ public class LevelOne extends ALevel implements IDrawable {
         //     Constants.DEFAULT_BLOCK_SIZE,
         //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
         //     false,
+        //     false,
         //     this.isActive
         // ));
 
@@ -134,6 +135,7 @@ public class LevelOne extends ALevel implements IDrawable {
         //     Constants.DEFAULT_BLOCK_SIZE,
         //     Constants.DEFAULT_BLOCK_SIZE,
         //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+        //     true,
         //     true,
         //     this.isActive
         // ));
