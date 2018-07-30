@@ -221,26 +221,6 @@ private void loopSong(ESongType songType) {
             global_level_song_player.play();
         break;
 
-        case PlayerDeath:
-            global_player_death_song_player.setCycleCount(Integer.MAX_VALUE);
-            global_player_death_song_player.play();
-        break;
-
-        case LevelComplete:
-            global_level_complete_song_player.setCycleCount(Integer.MAX_VALUE);
-            global_level_complete_song_player.play();
-        break;
-
-        case PlayerAction:
-            global_player_action_song_player.setCycleCount(Integer.MAX_VALUE);
-            global_player_action_song_player.play();
-        break;
-
-        case EventBlockDescent:
-            global_event_block_descent_song_player.setCycleCount(Integer.MAX_VALUE);
-            global_event_block_descent_song_player.play();
-        break;
-
         default:    
         break;	
     }
@@ -251,11 +231,6 @@ private void loopSong(ESongType songType) {
  */
 private void playSong(ESongType songType) {
     switch(songType) {
-        case Level:
-            global_level_song_player.setCycleCount(1);
-            global_level_song_player.play();
-        break;
-
         case PlayerDeath:
             global_player_death_song_player.setCycleCount(1);
             global_player_death_song_player.play();

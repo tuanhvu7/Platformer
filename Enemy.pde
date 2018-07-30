@@ -4,13 +4,13 @@
 public class Enemy extends ACharacter implements IDrawable {
 
     // true means flying enemy (not affected by gravity)
-    private boolean isFlying;
+    protected boolean isFlying;
 
     // true means invulnerable, cannot be killed by player contact
-    private boolean isInvulnerable;
+    protected boolean isInvulnerable;
 
     // true means visible by player
-    private boolean isVisible;
+    protected boolean isVisible;
 
     /**
      * set properties of this
@@ -65,13 +65,15 @@ public class Enemy extends ACharacter implements IDrawable {
      *  check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        if(getCurrentActivePlayer().isActive) {   // TODO: encapsulate
+        if(getCurrentActivePlayer().isActive) {   // to prevent multiple consecutive deaths TODO: encapsulate
             double collisionAngle = this.collisionWithPlayer();
             if(collisionAngle >= 0) {
                 println("coll angle: " + Math.toDegrees(collisionAngle));
                 println("min angle: " + Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE);
+
                 if(Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE 
-                    && this.pos.y > getCurrentActivePlayer().pos.y)  // player is above this // TODO: encapsulate
+                    && this.pos.y > getCurrentActivePlayer().pos.y
+                    && !this.isInvulnerable)  // player is above this // TODO: encapsulate
                 {
                     println("killed enemy: " + Math.toDegrees(collisionAngle));
                     playSong(ESongType.PlayerAction);
@@ -80,6 +82,7 @@ public class Enemy extends ACharacter implements IDrawable {
                     getCurrentActivePlayer().handleJumpKillEnemyPhysics();
 
                 } else {
+                    this.isVisible = true;
                     println("killed player: " + Math.toDegrees(collisionAngle));
                     resetLevel();
                 }
@@ -90,7 +93,7 @@ public class Enemy extends ACharacter implements IDrawable {
    /**
     * handle movement (position, velocity)
     */
-    private void handleMovement() {
+    protected void handleMovement() {
         if(!this.isFlying && this.numberOfFloorBoundaryContacts == 0) {
             this.handleInAirPhysics();
         }

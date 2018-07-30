@@ -44,7 +44,6 @@ public class Player extends ACharacter implements IDrawable {
      * handle character keypress controls
      */
     void keyEvent(KeyEvent keyEvent) {
-
         if(keyEvent.getAction() == KeyEvent.PRESS) {
             if(key == 'a') {   //left
                 this.moveLeftPressed = true;
@@ -71,7 +70,6 @@ public class Player extends ACharacter implements IDrawable {
                 this.jumpPressed = false;
             }
         }
-
     }
 
     /**

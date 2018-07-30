@@ -44,7 +44,7 @@ public class LevelOne extends ALevel implements IDrawable {
 
         loopSong(ESongType.Level);
 
-        charactersList.add(new Enemy(
+        charactersList.add(new ControllableEnemy(
             getCurrentActiveLevelWidth() - 500,
             0,
             Constants.REGULAR_ENEMY_DIAMETER,
