@@ -1,5 +1,5 @@
 /**
- * states required methods for boundaries
+ * required methods for boundaries
  */
 interface IBoundary {
     boolean contactWithCharacter(ACharacter character);

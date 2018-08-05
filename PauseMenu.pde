@@ -6,34 +6,35 @@ public class PauseMenu extends AMenu implements IDrawable {
     /**
      * set properties of this
      */
-    PauseMenu(int horizontalOffset, boolean isActive) {
+    public PauseMenu(int horizontalOffset, boolean isActive) {
         super(horizontalOffset, isActive);
     }
 
     /**
      * setup and activate this
      */
-    void setupActivateMenu() {
+    @Override
+    public void setupActivateMenu() {
         // make this active
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
-        
+
         this.panelsList.add(new PauseMenuPanel(
-            PauseMenuButtonType.Continue,
+            EPauseMenuButtonType.Continue,
             100 + this.horizontalOffset,    // add offset to account for viewbox
             100,
-            Constants.PANEL_HEIGHT,
             Constants.PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
             this.horizontalOffset,
             this.isActive
         ));
 
         this.panelsList.add(new PauseMenuPanel(
-            PauseMenuButtonType.Quit,
+            EPauseMenuButtonType.Quit,
             400 + this.horizontalOffset,    // add offset to account for viewbox
             100,
-            Constants.PANEL_HEIGHT,
             Constants.PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
             this.horizontalOffset,
             this.isActive
         ));
@@ -42,12 +43,13 @@ public class PauseMenu extends AMenu implements IDrawable {
     /**
      * runs continuously; draws background of this
      */
-    void draw() {
+    @Override
+    public void draw() {
         image(
-            global_background_image, 
-            0 + this.horizontalOffset,  // add offset to account for viewbox 
-            0, 
-            global_background_image.width, 
-            global_background_image.height);
+            getLevelBackgroundImage(),
+            this.horizontalOffset,  // add offset to account for viewbox
+            0,
+            getLevelBackgroundImage().width,
+            getLevelBackgroundImage().height);
     }
 }

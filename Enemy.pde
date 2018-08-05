@@ -4,20 +4,22 @@
 public class Enemy extends ACharacter implements IDrawable {
 
     // true means flying enemy (not affected by gravity)
-    protected boolean isFlying;
+    final boolean isFlying;
 
-    // true means invulnerable, cannot be killed by player contact
-    protected boolean isInvulnerable;
+    // true means invulnerable; always kills player on contact
+    private final boolean isInvulnerable;
 
-    // true means visible by player
-    protected boolean isVisible;
+    private boolean isVisible;
 
     /**
      * set properties of this
      */
-    Enemy(int x, int y, int diameter, float runSpeed,
-            boolean isFlying, boolean isInvulnerable, boolean isVisible, boolean isActive) {
+    public Enemy(int x, int y, int diameter, float runSpeed,
+                 boolean isFlying, boolean isInvulnerable, boolean isVisible, boolean isActive) {
         super(x, y, diameter, isActive);
+
+        this.fillColor = Constants.ENEMY_COLOR;
+
         this.vel.x = runSpeed;
 
         this.isFlying = isFlying;
@@ -30,18 +32,18 @@ public class Enemy extends ACharacter implements IDrawable {
      * range of collision angles (in degrees): [0, 90]
      * negative angle means no collision
      */
-    double collisionWithPlayer() {
-        float xDifference = Math.abs(this.pos.x - getCurrentActivePlayer().pos.x); // TODO: encapsulate
-        float yDifference = Math.abs(this.pos.y - getCurrentActivePlayer().pos.y); // TODO: encapsulate
+    private double collisionWithPlayer() {
+        float xDifference = Math.abs(this.pos.x - getCurrentActivePlayer().getPos().x);
+        float yDifference = Math.abs(this.pos.y - getCurrentActivePlayer().getPos().y);
 
         // distance between player and this must be sum of their radii for collision
-        float distanceNeededForCollision = (this.diameter / 2) + (getCurrentActivePlayer().diameter / 2); // TODO: encapsulate
+        float distanceNeededForCollision = (this.diameter / 2) + (getCurrentActivePlayer().getDiameter() / 2);
 
         // pythagorean theorem
         boolean isAtCollisionDistance =
             Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2)) <= distanceNeededForCollision;
 
-        if(isAtCollisionDistance) {
+        if (isAtCollisionDistance) {
             return Math.atan2(yDifference, xDifference);
         } else {
             return -1.0;
@@ -51,54 +53,66 @@ public class Enemy extends ACharacter implements IDrawable {
     /**
      * runs continuously. handles enemy movement and physics
      */
-    void draw() {
+    @Override
+    public void draw() {
+        this.checkHandleOffscreenDeath();
+
         this.checkHandleContactWithPlayer();
         this.handleMovement();
 
-        if(this.isVisible) {
-            fill(Constants.ENEMY_COLOR);
+        if (this.isVisible) {
             this.show();
         }
     }
 
     /**
-     *  check and handle contact with player
+     * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        if(getCurrentActivePlayer().isActive) {   // to prevent multiple consecutive deaths TODO: encapsulate
+        if (getCurrentActivePlayer().isActive()) {   // to prevent multiple consecutive deaths TODO: encapsulate
             double collisionAngle = this.collisionWithPlayer();
-            if(collisionAngle >= 0) {
-                println("coll angle: " + Math.toDegrees(collisionAngle));
-                println("min angle: " + Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE);
+            if (collisionAngle >= 0) {
+//                System.out.println("coll angle: " + Math.toDegrees(collisionAngle));
+//                System.out.println("min angle: " + Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE);
 
-                if(Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE 
-                    && this.pos.y > getCurrentActivePlayer().pos.y
-                    && !this.isInvulnerable)  // player is above this // TODO: encapsulate
+                if (Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE
+                    && this.pos.y > getCurrentActivePlayer().getPos().y
+                    && !this.isInvulnerable)  // player is above this
                 {
-                    println("killed enemy: " + Math.toDegrees(collisionAngle));
-                    playSong(ESongType.PlayerAction);
-                    this.makeNotActive();
-                    getCurrentActiveCharactersList().remove(this);
-                    getCurrentActivePlayer().handleJumpKillEnemyPhysics();
+                    this.handleDeath(false);
 
                 } else {
                     this.isVisible = true;
-                    println("killed player: " + Math.toDegrees(collisionAngle));
-                    resetLevel();
+//                    System.out.println("killed player: " + Math.toDegrees(collisionAngle));
+                    getCurrentActivePlayer().handleDeath(false);
                 }
             }
         }
     }
 
-   /**
-    * handle movement (position, velocity)
-    */
-    protected void handleMovement() {
-        if(!this.isFlying && this.numberOfFloorBoundaryContacts == 0) {
+    /**
+     * handle movement (position, velocity)
+     */
+    void handleMovement() {
+        if (!this.isFlying && this.numberOfFloorBoundaryContacts == 0) {
             this.handleInAirPhysics();
         }
 
         this.pos.add(this.vel);
+    }
+
+    /**
+     * handle death
+     */
+    @Override
+    void handleDeath(boolean isOffscreenDeath) {
+//                    System.out.println("killed enemy: " + Math.toDegrees(collisionAngle));
+        this.makeNotActive();
+        getCurrentActiveCharactersList().remove(this);
+        if (!isOffscreenDeath) {
+            playSong(ESongType.PlayerAction);
+            getCurrentActivePlayer().handleJumpKillEnemyPhysics();
+        }
     }
 
 }

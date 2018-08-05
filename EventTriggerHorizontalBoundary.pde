@@ -2,22 +2,21 @@
  * horizontal line boundaries that trigger events
  */
 public class EventTriggerHorizontalBoundary extends HorizontalBoundary {
-
     // top boundary of event block that this is part of
-    private EventBlockTopBoundary eventBlockTopBoundary;
+    private final EventBlockTopBoundary eventBlockTopBoundary;
 
     // if not null, end location of warp event; else, launch event
-    private PVector endWarpPosition;
+    private final PVector endWarpPosition;
 
     /**
-     * set properties of this; 
+     * set properties of this;
      * sets this to have launch event and affect all characters and be invisible
      */
-    EventTriggerHorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                                    boolean isFloorBoundary, boolean isActive, 
-                                    EventBlockTopBoundary eventBlockTopBoundary) {
-        super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                true, isFloorBoundary, isActive);
+    public EventTriggerHorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
+                                          boolean isFloorBoundary, boolean isActive,
+                                          EventBlockTopBoundary eventBlockTopBoundary) {
+        super(startXPoint, startYPoint, x2Offset, boundaryLineThickness,
+            true, isFloorBoundary, isActive);
 
         this.endWarpPosition = null;
         this.isFloorBoundary = isFloorBoundary;
@@ -28,14 +27,14 @@ public class EventTriggerHorizontalBoundary extends HorizontalBoundary {
      * set properties of this;
      * sets this to have warp event and affect all characters and be invisible
      */
-    EventTriggerHorizontalBoundary(int startXPoint, int startyPoint, int x2Offset, int boundaryLineThickness,
-                                    int endWarpXPositon, int endWarpYPositon,
-                                    boolean isFloorBoundary, boolean isActive,
-                                    EventBlockTopBoundary eventBlockTopBoundary) {
-        super(startXPoint, startyPoint, x2Offset, boundaryLineThickness,
-                true, isFloorBoundary, isActive);
+    public EventTriggerHorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
+                                          int endWarpXPosition, int endWarpYPosition,
+                                          boolean isFloorBoundary, boolean isActive,
+                                          EventBlockTopBoundary eventBlockTopBoundary) {
+        super(startXPoint, startYPoint, x2Offset, boundaryLineThickness,
+            true, isFloorBoundary, isActive);
 
-        this.endWarpPosition = new PVector(endWarpXPositon, endWarpYPositon);
+        this.endWarpPosition = new PVector(endWarpXPosition, endWarpYPosition);
         this.isFloorBoundary = isFloorBoundary;
         this.eventBlockTopBoundary = eventBlockTopBoundary;
     }
@@ -43,15 +42,15 @@ public class EventTriggerHorizontalBoundary extends HorizontalBoundary {
     /**
      * check and handle contact with player
      */
-    protected void checkHandleContactWithPlayer() {
+    @Override
+    public void checkHandleContactWithPlayer() {
         Player curPlayer = getCurrentActivePlayer();
 
-        if(this.doesAffectPlayer && curPlayer.isActive) { // TODO: encapsulate
+        if (this.doesAffectPlayer && curPlayer.isActive()) {
             // boundary collision for player
-            if(this.contactWithCharacter(curPlayer)) { // this has contact with player
-                curPlayer.handleConactWithEventBoundary(eventBlockTopBoundary, endWarpPosition);
+            if (this.contactWithCharacter(curPlayer)) { // this has contact with player
+                curPlayer.handleContactWithEventBoundary(eventBlockTopBoundary, endWarpPosition);
             }
         }
     }
-
 }

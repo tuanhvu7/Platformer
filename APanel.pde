@@ -1,21 +1,18 @@
 /**
  * Common for panels
  */
-abstract class APanel implements IDrawable {
+public abstract class APanel implements IDrawable {
 
-    protected int leftX;
-    protected int rightX;
+    final int leftX;
+    final int rightX;
 
-    protected int topY;
-    protected int bottomY;
+    final int topY;
+    final int bottomY;
 
-    protected int width;
-    protected int height;
+    private final int width;
+    private final int height;
 
-    protected String panelText;
-
-    // true means is displayed and clickable
-    protected boolean isActive;
+    private final String panelText;
 
     /**
      * set properties of this
@@ -27,11 +24,11 @@ abstract class APanel implements IDrawable {
 
         this.leftX = leftX;
         this.rightX = leftX + width;
-        
+
         this.topY = topY;
         this.bottomY = topY + height;
 
-        if(isActive) {
+        if (isActive) {
             this.makeActive();
         }
     }
@@ -39,8 +36,7 @@ abstract class APanel implements IDrawable {
     /**
      * active and add this to game
      */
-    void makeActive() {
-        this.isActive = true;
+    private void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
         registerMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
     }
@@ -48,8 +44,7 @@ abstract class APanel implements IDrawable {
     /**
      * deactivate and remove this from game
      */
-    void makeNotActive() {
-        this.isActive = false;
+    public void makeNotActive() {
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
         unregisterMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
     }
@@ -57,7 +52,8 @@ abstract class APanel implements IDrawable {
     /**
      * runs continuously; draws rectangle panel using this properties
      */
-    void draw() {
+    @Override
+    public void draw() {
         fill(Constants.PANEL_COLOR);
         rect(this.leftX, this.topY, this.width, this.height);
 
@@ -70,9 +66,9 @@ abstract class APanel implements IDrawable {
     /**
      * Execute appropriate method (executeWhenClicked) when this is clicked
      */
-    void mouseEvent(MouseEvent event) {
-        if(event.getAction() == MouseEvent.CLICK) {
-            if(isMouseIn()) {
+    public void mouseEvent(MouseEvent event) {
+        if (event.getAction() == MouseEvent.CLICK) {
+            if (isMouseIn()) {
                 executeWhenClicked();
             }
         }
@@ -81,16 +77,17 @@ abstract class APanel implements IDrawable {
     /**
      * to execute when this panel is clicked; to override in extended classes
      */
-    void executeWhenClicked() { }
+    void executeWhenClicked() {
+    }
 
-   /**
-    * return if mouse position inside this panel
-    */
-    protected boolean isMouseIn() {
-        return  mouseX > this.leftX && 
-                mouseX < this.rightX &&
-                mouseY > this.topY &&
-                mouseY < this.bottomY;
+    /**
+     * return if mouse position inside this panel
+     */
+    boolean isMouseIn() {
+        return mouseX > this.leftX &&
+            mouseX < this.rightX &&
+            mouseY > this.topY &&
+            mouseY < this.bottomY;
     }
 
 }

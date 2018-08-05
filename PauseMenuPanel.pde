@@ -4,17 +4,17 @@
 public class PauseMenuPanel extends APanel implements IDrawable {
 
     // horizontal offset of this due to viewbox
-    int horizontalOffset;
+    private final int horizontalOffset;
 
     // panel type
-    PauseMenuButtonType panelType;
+    private final EPauseMenuButtonType panelType;
 
     /**
      * set properties of this
      */
-    PauseMenuPanel(PauseMenuButtonType panelType,
-                    int leftX, int topY, int width, int height,
-                    int horizontalOffset, boolean isActive) {
+    public PauseMenuPanel(EPauseMenuButtonType panelType,
+                          int leftX, int topY, int width, int height,
+                          int horizontalOffset, boolean isActive) {
         super(panelType.name(), leftX, topY, width, height, isActive);
         this.horizontalOffset = horizontalOffset;
         this.panelType = panelType;
@@ -23,31 +23,32 @@ public class PauseMenuPanel extends APanel implements IDrawable {
     /**
      * to execute when this panel is clicked
      */
+    @Override
     void executeWhenClicked() {
-        if(panelType == PauseMenuButtonType.Continue) {
+        if (panelType == EPauseMenuButtonType.Continue) {
             loopSong(ESongType.Level);
-            global_current_active_level.get().isPaused = false; // TODO: encapsulate
-            global_current_active_level.get().closePauseMenu();
-        
+            getCurrentActiveLevel().setPaused(false);
+            getCurrentActiveLevel().closePauseMenu();
+
         } else {
-            global_current_active_level.get().isPaused = false; // TODO: encapsulate
-            global_current_active_level.get().closePauseMenu();
-            global_current_active_level.get().deactivateLevel();
-            global_current_active_level_number = 0;
-            global_level_select_menu.setupActivateMenu();
+            getCurrentActiveLevel().closePauseMenu();
+            getCurrentActiveLevel().deactivateLevel();
+            setCurrentActiveLevelNumber(0);
+            getLevelSelectMenu().setupActivateMenu();
         }
 
         loop();
     }
 
-   /**
-    * return if mouse position inside this panel
-    */
-    protected boolean isMouseIn() {
-        return  mouseX > this.leftX - horizontalOffset &&   // subtract offset since mouseX is unaffected by viewbox
-                mouseX < this.rightX - horizontalOffset &&  // subtract offset since mouseX is unaffected by viewbox
-                mouseY > this.topY &&
-                mouseY < this.bottomY;
+    /**
+     * return if mouse position inside this panel
+     */
+    @Override
+    boolean isMouseIn() {
+        return mouseX > this.leftX - horizontalOffset &&   // subtract offset since mouseX is unaffected by viewbox
+            mouseX < this.rightX - horizontalOffset &&  // subtract offset since mouseX is unaffected by viewbox
+            mouseY > this.topY &&
+            mouseY < this.bottomY;
     }
 
 }

@@ -1,30 +1,34 @@
 /**
  * common for blocks
  */
-abstract class ABlock {
-    protected boolean isActive;
-    protected boolean isVisible;
+/**
+ * common for blocks
+ */
+public abstract class ABlock {
+    boolean isVisible;
+
+    int fillColor;
 
     // position and dimensions
-    protected int leftX;
-    protected int topY;
-    protected int width;
-    protected int height;
+    private final int leftX;
+    private final int topY;
+    private final int width;
+    private final int height;
 
     // boundaries that make up block
-    protected HorizontalBoundary topSide;
-    protected HorizontalBoundary bottomSide;
+    HorizontalBoundary topSide;
+    final HorizontalBoundary bottomSide;
 
-    protected VerticalBoundary leftSide;
-    protected VerticalBoundary rightSide;
+    final VerticalBoundary leftSide;
+    final VerticalBoundary rightSide;
 
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    ABlock(int leftX, int topY, int width, int height, int blockLineThickness, 
-            boolean isActive) {
-        
+    ABlock(int leftX, int topY, int width, int height, int blockLineThickness,
+           boolean isActive) {
+
         this.leftX = leftX;
         this.topY = topY;
         this.width = width;
@@ -60,12 +64,12 @@ abstract class ABlock {
 
     /**
      * set properties of this;
-     * sets this to be active for all characters; 
-     * if givien isVisible is false, only bottom boundary of block is active
+     * sets this to be active for all characters;
+     * if given isVisible is false, only bottom boundary of block is active
      * to all characters
      */
     ABlock(int leftX, int topY, int width, int height, int blockLineThickness,
-            boolean isVisible, boolean isActive) {
+           boolean isVisible, boolean isActive) {
 
         this.leftX = leftX;
         this.topY = topY;
@@ -104,9 +108,18 @@ abstract class ABlock {
     }
 
     /**
+     * display block
+     */
+    void show() {
+        fill(this.fillColor);
+        rect(this.leftX, this.topY, this.width, this.height);
+    }
+
+    /**
      * deactivate and remove this from game;
      * to override in extended classes
      */
-    public void makeNotActive() {}
+    public void makeNotActive() {
+    }
 
 }

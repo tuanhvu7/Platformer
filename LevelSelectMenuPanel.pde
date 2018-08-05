@@ -4,12 +4,12 @@
 public class LevelSelectMenuPanel extends APanel implements IDrawable {
 
     // level associated with this
-    int panelLevel;
+    private final int panelLevel;
 
     /**
      * set properties of this
      */
-    LevelSelectMenuPanel(int panelLevel, int leftX, int topY, int width, int height, boolean isActive) {
+    public LevelSelectMenuPanel(int panelLevel, int leftX, int topY, int width, int height, boolean isActive) {
         super(panelLevel + "", leftX, topY, width, height, isActive);
         this.panelLevel = panelLevel;
     }
@@ -17,11 +17,12 @@ public class LevelSelectMenuPanel extends APanel implements IDrawable {
     /**
      * to execute when this panel is clicked
      */
+    @Override
     void executeWhenClicked() {
         // setup and load level associated with this
-        global_level_select_menu.deactivateMenu();
-        global_current_active_level_number = panelLevel;
+        getLevelSelectMenu().deactivateMenu();
+        setCurrentActiveLevelNumber(this.panelLevel);
         LevelFactory levelFactory = new LevelFactory();
-        global_current_active_level = new WeakReference( levelFactory.getLevel(true, false) );
+        setCurrentActiveLevel(levelFactory.getLevel(true, false));
     }
 }

@@ -4,28 +4,29 @@
 public class LevelOne extends ALevel implements IDrawable {
 
     // true means big enemy trigger boundary has been activated
-    private boolean bigEnemyTriggerActived;
+    private boolean bigEnemyTriggerActivated;
     // size of this characters list to make big enemy trigger boundary active
     private int bigEnemyTriggerCharacterListSizeCondition;
 
     /**
      * sets properties, boundaries, and characters of this
      */
-    LevelOne(boolean isActive, boolean loadPlayerFromCheckPoint) {
+    public LevelOne(boolean isActive, boolean loadPlayerFromCheckPoint) {
         super(isActive, loadPlayerFromCheckPoint);
     }
 
     /**
      * setup and activate this
      */
-    void setUpActivateLevel() {
-        this.bigEnemyTriggerActived = false;
+    @Override
+    public void setUpActivateLevel() {
+        this.bigEnemyTriggerActivated = false;
         this.bigEnemyTriggerCharacterListSizeCondition = 0;
         this.checkpointXPos = 1200;
 
         this.makeActive();
 
-        if(this.loadPlayerFromCheckPoint) {
+        if (this.loadPlayerFromCheckPoint) {
             this.viewBox = new ViewBox(this.checkpointXPos - 200, 0, this.isActive);
             this.player = new Player(this.checkpointXPos, 0, Constants.PLAYER_DIAMETER, this.isActive);
         } else {
@@ -34,9 +35,9 @@ public class LevelOne extends ALevel implements IDrawable {
 
             this.collectablesList.add(new Checkpoint(
                 this.checkpointXPos,
-                Constants.LEVEL_FLOOR_Y_POSITION - Constants.CHECKPOINT_BLOCK_HEIGHT,
-                Constants.CHECKPOINT_BLOCK_WIDTH,
-                Constants.CHECKPOINT_BLOCK_HEIGHT,
+                Constants.LEVEL_FLOOR_Y_POSITION - Constants.CHECKPOINT_HEIGHT,
+                Constants.CHECKPOINT_WIDTH,
+                Constants.CHECKPOINT_HEIGHT,
                 Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
                 this.isActive)
             );
@@ -93,53 +94,53 @@ public class LevelOne extends ALevel implements IDrawable {
 
         /*** START Blocks ***/
 
-        // this.blocksList.add(new EventBlock( // launch event
-        //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-        //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
-        //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-        //     true, 
-        //     this.isActive
-        // ));
+//         this.blocksList.add(new EventBlock( // launch event
+//             getCurrentActiveLevelWidth() / 2 - 300,
+//             Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+//             Constants.DEFAULT_EVENT_BLOCK_WIDTH,
+//             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+//             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+//             true,
+//             this.isActive
+//         ));
 
-        // int playerWarpEndXPos = 1000;
-        // // int playerWarpEndXPos = getCurrentActiveLevelWidth() - Constants.PLAYER_DIAMETER - 1;  // test end of state
-        // // int playerWarpEndXPos = Constants.PLAYER_DIAMETER / 2 + 1;   // test beginning of stage
+//         int playerWarpEndXPos = 1000;
+//         // int playerWarpEndXPos = getCurrentActiveLevelWidth() - Constants.PLAYER_DIAMETER - 1;  // test end of state
+//         // int playerWarpEndXPos = Constants.PLAYER_DIAMETER / 2 + 1;   // test beginning of stage
+//
+//         this.blocksList.add(new EventBlock( // warp event
+//             getCurrentActiveLevelWidth() / 2 - 300,
+//             Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+//             Constants.DEFAULT_EVENT_BLOCK_WIDTH,
+//             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
+//             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+//             playerWarpEndXPos,
+//             750,
+//             true,
+//             this.isActive
+//         ));
 
-        // this.blocksList.add(new EventBlock( // warp event
-        //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-        //     Constants.DEFAULT_EVENT_BLOCK_WIDTH,
-        //     Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
-        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,       
-        //     playerWarpEndXPos,
-        //     750,
-        //     true, 
-        //     this.isActive
-        // ));
+        this.blocksList.add(new Block(
+            getCurrentActiveLevelWidth() / 2 - 300,
+            height - 300,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            false,
+            false,
+            this.isActive
+        ));
 
-        // this.blocksList.add(new Block(
-        //     getCurrentActiveLevelWidth() / 2 - 300,
-        //     height - 300,
-        //     Constants.DEFAULT_BLOCK_SIZE,
-        //     Constants.DEFAULT_BLOCK_SIZE,
-        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-        //     false,
-        //     false,
-        //     this.isActive
-        // ));
-
-        // this.blocksList.add(new Block(
-        //     getCurrentActiveLevelWidth() / 2 - 300 + Constants.DEFAULT_BLOCK_SIZE,
-        //     height - 300 - Constants.DEFAULT_BLOCK_SIZE,
-        //     Constants.DEFAULT_BLOCK_SIZE,
-        //     Constants.DEFAULT_BLOCK_SIZE,
-        //     Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-        //     true,
-        //     true,
-        //     this.isActive
-        // ));
+        this.blocksList.add(new Block(
+            getCurrentActiveLevelWidth() / 2 - 300 + Constants.DEFAULT_BLOCK_SIZE,
+            height - 300 - Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BLOCK_SIZE,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true,
+            true,
+            this.isActive
+        ));
 
         /*** END Blocks ***/
     }
@@ -148,8 +149,9 @@ public class LevelOne extends ALevel implements IDrawable {
      * handle conditional enemy triggers in this;
      * to override in extended classes
      */
-    void handleConditionalEnemyTriggers() {
-        if(!bigEnemyTriggerActived && this.charactersList.size() == this.bigEnemyTriggerCharacterListSizeCondition) {
+    @Override
+    public void handleConditionalEnemyTriggers() {
+        if (!bigEnemyTriggerActivated && this.charactersList.size() == this.bigEnemyTriggerCharacterListSizeCondition) {
             Set<Enemy> enemySet = new HashSet<Enemy>();
             Enemy triggerEnemy = new Enemy(
                 1200,
@@ -175,7 +177,7 @@ public class LevelOne extends ALevel implements IDrawable {
                 enemySet
             ));
 
-            this.bigEnemyTriggerActived = true;
+            this.bigEnemyTriggerActivated = true;
         }
     }
 

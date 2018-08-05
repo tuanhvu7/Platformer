@@ -3,24 +3,20 @@
  * to be used in translate(x, y) in draw()
  */
 public class ViewBox implements IDrawable {
-    
+
     // top-left (x, y) coordinates of viewbox position
-    private PVector pos;
+    private final PVector pos;
 
     // velocity of viewbox
-    private PVector vel;
-
-    // true means display this and have this move according to player position
-    private boolean isActive;
+    private final PVector vel;
 
     /**
      * set properties of this
      */
-    ViewBox(int startXPos, int startYPos, boolean isActive) {
+    public ViewBox(int startXPos, int startYPos, boolean isActive) {
         this.pos = new PVector(startXPos, startYPos);
         this.vel = new PVector(0, 0);
-        this.isActive = isActive;
-        if(isActive) {
+        if (isActive) {
             this.makeActive();
         }
     }
@@ -28,9 +24,10 @@ public class ViewBox implements IDrawable {
     /**
      * runs continuously. handles viewbox position
      */
-    void draw() {
+    @Override
+    public void draw() {
         this.handleMovement();
-        
+
         // move viewbox as necessary
         translate(-this.pos.x, -0);
     }
@@ -38,16 +35,14 @@ public class ViewBox implements IDrawable {
     /**
      * activate and add this to game
      */
-    void makeActive() {
-        this.isActive = true;
+    private void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
     /**
      * deactivate and remove this from game
      */
-    void makeNotActive() {
-        this.isActive = false;
+    public void makeNotActive() {
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
@@ -56,46 +51,42 @@ public class ViewBox implements IDrawable {
      * set this x position to be at start or end of level this is in if
      * given value would result this x position level overflow
      */
-    void setViewBoxHorizontalPosition(float middleXPos) {
-        if(middleXPos - width / 2 < 0) {
+    public void setViewBoxHorizontalPosition(float middleXPos) {
+        if (middleXPos - width / 2 < 0) {
             this.pos.x = 0;
-        } else if(middleXPos + width / 2 > getCurrentActiveLevelWidth()) {
+        } else if (middleXPos + width / 2 > getCurrentActiveLevelWidth()) {
             this.pos.x = getCurrentActiveLevelWidth() - Constants.SCREEN_WIDTH;
         } else {
             this.pos.x = middleXPos - (Constants.SCREEN_WIDTH / 2);
         }
     }
 
-   /**
-    * handle movement (position, velocity)
-    */
+    /**
+     * handle movement (position, velocity)
+     */
     private void handleMovement() {
-        if(global_current_active_level.get().isHandlingLevelComplete && this.playerAtViewBoxBoundary(false))
-        {   // viewbox movement during level completion
+        if (getCurrentActiveLevel().isHandlingLevelComplete() && this.playerAtViewBoxBoundary(false)) {   // viewbox movement during level completion
             this.vel.x = Constants.PLAYER_LEVEL_COMPLETE_SPEED;
 
         } else {
-            if(getCurrentActivePlayer().moveLeftPressed) {    // TODO: encapsulate
-                if(this.pos.x > 0       // left edge of viewbox not at left edge of level
-                    && this.playerAtViewBoxBoundary(true)) 
-                {
+            if (getCurrentActivePlayer().isMoveLeftPressed()) {
+                if (this.pos.x > 0       // left edge of viewbox not at left edge of level
+                    && this.playerAtViewBoxBoundary(true)) {
                     this.vel.x = -Constants.PLAYER_RUN_SPEED;
                 } else {
                     this.vel.x = 0;
                 }
-            } 
-            if(getCurrentActivePlayer().moveRightPressed) {   // TODO: encapsulate
-                if(this.pos.x < getCurrentActiveLevelWidth() - width   // right edge of viewbox not at right edge of level
-                    && this.playerAtViewBoxBoundary(false)) 
-                {
+            }
+            if (getCurrentActivePlayer().isMoveRightPressed()) {
+                if (this.pos.x < getCurrentActiveLevelWidth() - width   // right edge of viewbox not at right edge of level
+                    && this.playerAtViewBoxBoundary(false)) {
                     this.vel.x = Constants.PLAYER_RUN_SPEED;
                 } else {
                     this.vel.x = 0;
                 }
-            } 
-            if(!getCurrentActivePlayer().moveLeftPressed && // TODO: encapsulate
-                !getCurrentActivePlayer().moveRightPressed)   // TODO: encapsulate
-            {   
+            }
+            if (!getCurrentActivePlayer().isMoveLeftPressed() &&
+                !getCurrentActivePlayer().isMoveRightPressed()) {
                 this.vel.x = 0;
             }
         }
@@ -103,9 +94,9 @@ public class ViewBox implements IDrawable {
         this.pos.add(this.vel);
 
         // fix viewbox level boundary overflows
-        if(this.pos.x > getCurrentActiveLevelWidth() - width) {
+        if (this.pos.x > getCurrentActiveLevelWidth() - width) {
             this.pos.x = getCurrentActiveLevelWidth() - width;
-        } else if(this.pos.x < 0) {
+        } else if (this.pos.x < 0) {
             this.pos.x = 0;
         }
     }
@@ -114,11 +105,15 @@ public class ViewBox implements IDrawable {
      * return if player is at lower (left) or upper (right) boundary (from given value) of viewbox
      */
     private boolean playerAtViewBoxBoundary(boolean isLowerLeftBoundary) {
-        if(isLowerLeftBoundary) {
-            return getCurrentActivePlayer().pos.x <= this.pos.x + Constants.VIEWBOX_BOUNDARY * width;  // TODO: encapsulate
+        if (isLowerLeftBoundary) {
+            return getCurrentActivePlayer().getPos().x <= this.pos.x + Constants.VIEWBOX_BOUNDARY * width;
         } else {
-            return getCurrentActivePlayer().pos.x >= this.pos.x + (1.00 - Constants.VIEWBOX_BOUNDARY) * width; // TODO: encapsulate
+            return getCurrentActivePlayer().getPos().x >= this.pos.x + (1.00 - Constants.VIEWBOX_BOUNDARY) * width;
         }
     }
 
+    /*** getters and setters ***/
+    public PVector getPos() {
+        return pos;
+    }
 }

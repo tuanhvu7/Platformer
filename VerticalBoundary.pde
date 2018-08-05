@@ -1,57 +1,53 @@
 /**
  * vertical line boundaries; walls
  */
-public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable {
-
+public class VerticalBoundary extends ABoundary implements IDrawable, IBoundary {
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness, 
-                        boolean isActive) {
+    public VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
+                            boolean isActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-                true, true, true, isActive);
+            true, true, true, isActive);
     }
 
     /**
      * set properties of this
      * sets this to affect all characters
      */
-    VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                        boolean isVisible, boolean isActive) {
+    public VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
+                            boolean isVisible, boolean isActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-                isVisible, true, true, isActive);
+            isVisible, true, true, isActive);
     }
 
     /**
      * set properties of this
      */
-    VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                        boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers, 
-                        boolean isActive) {
+    public VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
+                            boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
+                            boolean isActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-                isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
+            isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
     }
 
     /**
      * return true if collide with given character
      */
-    boolean contactWithCharacter(ACharacter character) {
-        if( character.pos.x  + (character.diameter / 2) >= this.startPoint.x         // contact right of character
-            && character.pos.x - (character.diameter / 2) <= this.startPoint.x      // contact left of character
-            && character.pos.y > this.startPoint.y - (character.diameter / 2)       // > lower y boundary
-            && character.pos.y < this.endPoint.y + (character.diameter / 2) )         // < upper y boundary
-        {      
-            return true;
-        } else {
-            return false;
-        }
+    @Override
+    public boolean contactWithCharacter(ACharacter character) {
+        return
+            character.getPos().x + (character.getDiameter() / 2) >= this.startPoint.x         // contact right of character
+                && character.getPos().x - (character.getDiameter() / 2) <= this.startPoint.x      // contact left of character
+                && character.getPos().y > this.startPoint.y - (character.getDiameter() / 2)       // > lower y boundary
+                && character.getPos().y < this.endPoint.y + (character.getDiameter() / 2);         // < upper y boundary
     }
 
     /**
      * runs continuously. checks and handles contact between this and characters
      */
-    void draw() {
+    public void draw() {
         this.show();
         this.checkHandleContactWithPlayer();
         this.checkHandleContactWithNonPlayerCharacters();
@@ -61,22 +57,22 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getCurrentActivePlayer();
+        Player curPlayer = getCurrentActivePlayer();
 
-        if(this.doesAffectPlayer && curPlayer.isActive) {   // TODO: encapsulate
+        if (this.doesAffectPlayer && curPlayer.isActive()) {
             // boundary collision for player
-            if(contactWithCharacter(curPlayer)) {  // this has contact with non-player
-                if(!this.charactersTouchingThis.contains(curPlayer)) {  // new collision detected
-                    curPlayer.numberOfVerticalBoundaryContacts++;    // TODO: encapsulate
+            if (contactWithCharacter(curPlayer)) {  // this has contact with non-player
+                if (!this.charactersTouchingThis.contains(curPlayer)) {  // new collision detected
+                    curPlayer.changeNumberOfVerticalBoundaryContacts(1);
                     this.charactersTouchingThis.add(curPlayer);
                 }
                 curPlayer.handleContactWithVerticalBoundary(this.startPoint.x);
-                
+
             } else {    // this DOES NOT have contact with player
-                if(this.charactersTouchingThis.contains(curPlayer)) {
-                    curPlayer.ableToMoveRight = true;    // TODO: encapsulate
-                    curPlayer.ableToMoveLeft = true;    // TODO: encapsulate
-                    curPlayer.numberOfVerticalBoundaryContacts--;   // TODO: encapsulate
+                if (this.charactersTouchingThis.contains(curPlayer)) {
+                    curPlayer.setAbleToMoveRight(true);
+                    curPlayer.setAbleToMoveLeft(true);
+                    curPlayer.changeNumberOfVerticalBoundaryContacts(-1);
                     this.charactersTouchingThis.remove(curPlayer);
                 }
             }
@@ -84,17 +80,16 @@ public class VerticalBoundary extends ABoundary implements IBoundary, IDrawable 
     }
 
     /**
-     *  check and handle contact with non-player characters
+     * check and handle contact with non-player characters
      */
     private void checkHandleContactWithNonPlayerCharacters() {
-        if(this.doesAffectNonPlayers) {
+        if (this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
-            for( ACharacter curCharacter : getCurrentActiveCharactersList() ) {
-                if(curCharacter.isActive && this.contactWithCharacter(curCharacter)) {  // TODO: encapsulate
-                    curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);     
+            for (ACharacter curCharacter : getCurrentActiveCharactersList()) {
+                if (curCharacter.isActive() && this.contactWithCharacter(curCharacter)) {
+                    curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);
                 }
             }
         }
     }
-
 }

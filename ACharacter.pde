@@ -1,20 +1,21 @@
 /**
  * Common for circular characters
  */
-abstract class ACharacter {
+public abstract class ACharacter {
+
     // (x, y) coordinates of center of character (x, y)
-    protected PVector pos;
+    final PVector pos;
     // (x, y) velocity of character (x, y)
-    protected PVector vel;
-    
-    // character diameter
-    protected int diameter;
+    PVector vel;
+
+    final int diameter;
+
+    int fillColor;
 
     // number of floor-like boundaries this is touching;
-    protected int numberOfFloorBoundaryContacts;
+    int numberOfFloorBoundaryContacts;
 
-    // true means this is active (boundary and character collision detection)
-    protected boolean isActive;
+    boolean isActive;
 
     /**
      * set properties of this
@@ -28,7 +29,7 @@ abstract class ACharacter {
 
         this.numberOfFloorBoundaryContacts = 0;
 
-        if(isActive) {
+        if (isActive) {
             this.makeActive();
         }
     }
@@ -37,6 +38,7 @@ abstract class ACharacter {
      * draw circle character
      */
     void show() {
+        fill(this.fillColor);
         strokeWeight(0);
         ellipse(this.pos.x, this.pos.y, this.diameter, this.diameter);
     }
@@ -44,14 +46,14 @@ abstract class ACharacter {
     /**
      * handle contact with horizontal boundary
      */
-    void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isFloorBoundary) {
-        if(isFloorBoundary) { // floor-like boundary
-            if(this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
+    public void handleContactWithHorizontalBoundary(float boundaryYPoint, boolean isFloorBoundary) {
+        if (isFloorBoundary) { // floor-like boundary
+            if (this.vel.y > 0) {    // boundary only act like floor if this is falling onto boundary
                 this.vel.y = 0;
                 this.pos.y = boundaryYPoint - this.diameter / 2;
             }
         } else {    // ceiling-like boundary
-            if(this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
+            if (this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
                 this.vel.y = 1;
                 this.pos.add(this.vel);
             }
@@ -61,22 +63,22 @@ abstract class ACharacter {
     /**
      * handle contact with vertical boundary
      */
-    void handleContactWithVerticalBoundary(float boundaryXPoint) {
-        this.vel.x = -this.vel.x; // move in oposite horizontal direction
+    public void handleContactWithVerticalBoundary(float boundaryXPoint) {
+        this.vel.x = -this.vel.x; // move in opposite horizontal direction
     }
 
     /**
      * handle arial physics
      */
     void handleInAirPhysics() {
-        this.vel.y = Math.min(this.vel.y + global_gravity.y, Constants.MAX_VERTICAL_VELOCITY);
+        this.vel.y = Math.min(this.vel.y + getGravity().y, Constants.MAX_VERTICAL_VELOCITY);
     }
 
 
     /**
      * active and add this to game
      */
-    void makeActive() {
+    public void makeActive() {
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
@@ -84,9 +86,52 @@ abstract class ACharacter {
     /**
      * deactivate and remove this from game
      */
-    void makeNotActive() {
+    public void makeNotActive() {
         this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
+    /**
+     * @param amount change numberOfFloorBoundaryContacts by given value
+     */
+    public void changeNumberOfFloorBoundaryContacts(int amount) {
+        this.numberOfFloorBoundaryContacts += amount;
+    }
+
+    /**
+     * check and handle death of this by going offscreen
+     */
+    void checkHandleOffscreenDeath() {
+        if (this.pos.y + this.diameter / 2 <= 0 || this.pos.y - this.diameter / 2 >= height) {
+            this.handleDeath(true);
+        }
+    }
+
+    /**
+     * handle death of this;
+     * to override in extended methods
+     */
+    void handleDeath(boolean isOffscreenDeath) {
+    }
+
+    /*** getters and setters ***/
+    public PVector getPos() {
+        return pos;
+    }
+
+    public PVector getVel() {
+        return vel;
+    }
+
+    public void setVel(PVector vel) {
+        this.vel = vel;
+    }
+
+    public int getDiameter() {
+        return diameter;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
 }

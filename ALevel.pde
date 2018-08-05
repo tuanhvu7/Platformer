@@ -1,43 +1,43 @@
 /**
  * common for levels
  */
-abstract class ALevel {
+public abstract class ALevel implements IDrawable {
 
     // true means this is active
-    protected boolean isActive;
+    boolean isActive;
 
     // player-controllable character
-    protected Player player;
+    Player player;
 
     // level viewbox
-    protected ViewBox viewBox;
+    ViewBox viewBox;
 
     // set of all non-playable characters in level
-    protected Set<ACharacter> charactersList;
+    final Set<ACharacter> charactersList;
 
     // set of all boundaries in level
-    protected Set<ABoundary> boundariesList;
+    final Set<ABoundary> boundariesList;
 
     // set of all blocks in level
-    protected Set<ABlock> blocksList;
+    final Set<ABlock> blocksList;
 
     // set of all collectables in level
-    protected Set<ACollectable> collectablesList;
+    final Set<ACollectable> collectablesList;
 
     // pause menu for level
     private PauseMenu pauseMenu;
 
     // true means level is paused and menu appears
-    protected boolean isPaused;
+    private boolean isPaused;
 
     // checkpoint x position
-    protected int checkpointXPos;
+    int checkpointXPos;
 
     // true means load player at checkpoint position
-    protected boolean loadPlayerFromCheckPoint;
+    boolean loadPlayerFromCheckPoint;
 
     // true means running handleLevelComplete thread
-    protected boolean isHandlingLevelComplete;
+    private boolean isHandlingLevelComplete;
 
     /**
      * sets properties of this
@@ -55,7 +55,7 @@ abstract class ALevel {
 
         this.isHandlingLevelComplete = false;
 
-        if(isActive) {
+        if (isActive) {
             this.setUpActivateLevel();
             this.setUpActivateFloorWallsGoal();
         }
@@ -70,37 +70,41 @@ abstract class ALevel {
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
-   /**
-    * setup and activate this; to override in extended classes
-    */
-    void setUpActivateLevel() { }
+    /**
+     * setup and activate this; to override in extended classes
+     */
+    void setUpActivateLevel() {
+    }
 
     /**
      * handle conditional enemy triggers in this;
      * to override in extended classes if needed
      */
-    void handleConditionalEnemyTriggers() { }
+    void handleConditionalEnemyTriggers() {
+    }
 
 
     /**
-     * deactiviate this
+     * deactivate this;
      */
-    void deactivateLevel() {
+    public void deactivateLevel() {
+        this.player.makeNotActive();
+
         this.viewBox.makeNotActive();
 
-        for(ACharacter curCharacter : this.charactersList) {
+        for (ACharacter curCharacter : this.charactersList) {
             curCharacter.makeNotActive();
         }
 
-        for(ABoundary curBoundary : this.boundariesList) {
+        for (ABoundary curBoundary : this.boundariesList) {
             curBoundary.makeNotActive();
         }
-        
-        for(ABlock curBlock : this.blocksList) {
+
+        for (ABlock curBlock : this.blocksList) {
             curBlock.makeNotActive();
         }
 
-        for(ACollectable curCollectable: this.collectablesList) {
+        for (ACollectable curCollectable : this.collectablesList) {
             curCollectable.makeNotActive();
         }
 
@@ -108,7 +112,7 @@ abstract class ALevel {
         this.boundariesList.clear();
         this.blocksList.clear();
         this.collectablesList.clear();
-        
+
         // make this not active
         this.isActive = false;
         unregisterMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
@@ -118,55 +122,56 @@ abstract class ALevel {
     /**
      * close pause menu
      */
-    void closePauseMenu() {
+    public void closePauseMenu() {
         this.pauseMenu.deactivateMenu();
     }
 
-   /**
-    * runs continuously
-    */
-    void draw() {
+    /**
+     * runs continuously
+     */
+    @Override
+    public void draw() {
         // draw background image horizontally until level width is filled
         int levelWidthLeftToDraw = getCurrentActiveLevelWidth();
-        int numberHorizontalBackgroundIterations = 
-            (int) Math.ceil( (double) getCurrentActiveLevelWidth() / global_background_image.width);
-        
-        for(int i = 0; i < numberHorizontalBackgroundIterations; i++) {
-            int widthToDraw = 
-            Math.min(
-                global_background_image.width, 
-                levelWidthLeftToDraw);
-            
+        int numberHorizontalBackgroundIterations =
+            (int) Math.ceil((double) getCurrentActiveLevelWidth() / getLevelBackgroundImage().width);
+
+        for (int i = 0; i < numberHorizontalBackgroundIterations; i++) {
+            int widthToDraw =
+                Math.min(
+                    getLevelBackgroundImage().width,
+                    levelWidthLeftToDraw);
+
             image(
-                global_background_image, 
-                i * global_background_image.width, 
-                0, 
-                widthToDraw, 
-                global_background_image.height);
+                getLevelBackgroundImage(),
+                i * getLevelBackgroundImage().width,
+                0,
+                widthToDraw,
+                getLevelBackgroundImage().height);
 
             levelWidthLeftToDraw -= widthToDraw;
         }
 
         this.handleConditionalEnemyTriggers();
     }
-        
+
     /**
      * handle character keypress controls
      */
-    void keyEvent(KeyEvent keyEvent) {
-        if(this.player.isActive && !this.isHandlingLevelComplete) {  // only allow pause if player is active // TODO: encapsulate
+    public void keyEvent(KeyEvent keyEvent) {
+        if (this.player.isActive() && !this.isHandlingLevelComplete) {  // only allow pause if player is active
             // press 'p' for pause
-            if(keyEvent.getAction() == KeyEvent.PRESS) {
+            if (keyEvent.getAction() == KeyEvent.PRESS) {
                 char keyPressed = keyEvent.getKey();
 
-                if(keyPressed == 'p') {   // pause
+                if (keyPressed == 'p') {   // pause
                     this.isPaused = !this.isPaused;
 
-                    if(this.isPaused) {
+                    if (this.isPaused) {
                         stopSong();
                         noLoop();
                         this.pauseMenu = new PauseMenu(
-                            (int) this.viewBox.pos.x, // TODO: encapsulate
+                            (int) this.viewBox.getPos().x,
                             true);
 
                     } else {
@@ -179,16 +184,17 @@ abstract class ALevel {
         }
     }
 
-   /**
-    * setup activate floor, walls, and goal
-    */
-    protected void setUpActivateFloorWallsGoal() {
+    /**
+     * setup activate floor, walls, and goal
+     */
+    private void setUpActivateFloorWallsGoal() {
         // stage goal
         this.collectablesList.add(new LevelGoal(
-            getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_BLOCK_WIDTH - 10,
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_BLOCK_HEIGHT,
-            Constants.LEVEL_GOAL_BLOCK_WIDTH,
-            Constants.LEVEL_GOAL_BLOCK_HEIGHT,
+            
+            getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_WIDTH - 10,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_HEIGHT,
+            Constants.LEVEL_GOAL_WIDTH,
+            Constants.LEVEL_GOAL_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive)
         );
@@ -220,5 +226,46 @@ abstract class ALevel {
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive
         ));
+    }
+
+    /*** getters and setters ***/
+    public Player getPlayer() {
+        return player;
+    }
+
+    public ViewBox getViewBox() {
+        return viewBox;
+    }
+
+    public Set<ACharacter> getCharactersList() {
+        return charactersList;
+    }
+
+    public Set<ABlock> getBlocksList() {
+        return blocksList;
+    }
+
+    public Set<ACollectable> getCollectablesList() {
+        return collectablesList;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public boolean isLoadPlayerFromCheckPoint() {
+        return loadPlayerFromCheckPoint;
+    }
+
+    public void setLoadPlayerFromCheckPoint(boolean loadPlayerFromCheckPoint) {
+        this.loadPlayerFromCheckPoint = loadPlayerFromCheckPoint;
+    }
+
+    public boolean isHandlingLevelComplete() {
+        return isHandlingLevelComplete;
+    }
+
+    public void setHandlingLevelComplete(boolean handlingLevelComplete) {
+        isHandlingLevelComplete = handlingLevelComplete;
     }
 }

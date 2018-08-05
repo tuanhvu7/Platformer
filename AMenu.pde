@@ -1,25 +1,25 @@
 /**
  * common for menus
  */
-abstract class AMenu {
+public abstract class AMenu {
 
     // horizontal offset of this from viewbox
-    protected int horizontalOffset;
+    final int horizontalOffset;
 
     // true means displayed
-    protected boolean isActive;
-    
+    boolean isActive;
+
     // list of panels in menu
-    protected List<APanel> panelsList;
+    final List<APanel> panelsList;
 
     /**
      * set properties of this;
-     * sets this is have no offsetted
+     * sets this if have no offset
      */
     AMenu(boolean isActive) {
         this.horizontalOffset = 0;
         this.panelsList = new ArrayList<APanel>();
-        if(isActive) {
+        if (isActive) {
             this.setupActivateMenu();
         }
     }
@@ -31,7 +31,7 @@ abstract class AMenu {
     AMenu(int horizontalOffset, boolean isActive) {
         this.horizontalOffset = horizontalOffset;
         this.panelsList = new ArrayList<APanel>();
-        if(isActive) {
+        if (isActive) {
             this.setupActivateMenu();
         }
     }
@@ -39,16 +39,17 @@ abstract class AMenu {
     /**
      * activate and setup this; to override in extended classes
      */
-    void setupActivateMenu() { }
+    void setupActivateMenu() {
+    }
 
     /**
-     * deactiviate this
+     * deactivate this
      */
-    void deactivateMenu() {
-        for(APanel curPanel : this.panelsList) {
+    public void deactivateMenu() {
+        for (APanel curPanel : this.panelsList) {
             curPanel.makeNotActive();
         }
-        
+
         this.panelsList.clear();
         // make this not active
         this.isActive = false;

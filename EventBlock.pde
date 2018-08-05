@@ -4,16 +4,18 @@
 public class EventBlock extends ABlock implements IDrawable {
 
     // boundary that events player upon player contact
-    private EventTriggerHorizontalBoundary eventTriggerBoundary;
+    private final EventTriggerHorizontalBoundary eventTriggerBoundary;
 
     /**
      * set properties of this;
      * sets this to have launch event and affect all characters and be visible
      */
-    EventBlock(int leftX, int topY, int width, int height, int blockLineThickness,
-                boolean isEventTriggerFloorBoundary, boolean isActive) {
-        
+    public EventBlock(int leftX, int topY, int width, int height, int blockLineThickness,
+                      boolean isEventTriggerFloorBoundary, boolean isActive) {
+
         super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
+
+        this.fillColor = Constants.EVENT_BLOCK_COLOR;
 
         this.topSide = new EventBlockTopBoundary(
             leftX,
@@ -32,8 +34,8 @@ public class EventBlock extends ABlock implements IDrawable {
             false,  // initially not active, to be set in makeActive()
             (EventBlockTopBoundary) this.topSide
         );
-        
-        if(isActive) {
+
+        if (isActive) {
             this.makeActive();
         }
     }
@@ -42,11 +44,13 @@ public class EventBlock extends ABlock implements IDrawable {
      * set properties of this;
      * sets this to have warp event and affect all characters and be visible
      */
-    EventBlock(int leftX, int topY, int width, int height, int blockLineThickness, 
-                int endWarpXPositon, int endWarpYPositon,
-                boolean isEventTriggerFloorBoundary, boolean isActive) {
-        
+    public EventBlock(int leftX, int topY, int width, int height, int blockLineThickness,
+                      int endWarpXPosition, int endWarpYPosition,
+                      boolean isEventTriggerFloorBoundary, boolean isActive) {
+
         super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
+
+        this.fillColor = Constants.EVENT_BLOCK_COLOR;
 
         this.topSide = new EventBlockTopBoundary(
             leftX,
@@ -61,14 +65,14 @@ public class EventBlock extends ABlock implements IDrawable {
             topY + height - (height / 5),
             width - 20,
             blockLineThickness,
-            endWarpXPositon, 
-            endWarpYPositon,
+            endWarpXPosition,
+            endWarpYPosition,
             isEventTriggerFloorBoundary,
             false,  // initially not active, to be set in makeActive()
             (EventBlockTopBoundary) this.topSide
         );
-        
-        if(isActive) {
+
+        if (isActive) {
             this.makeActive();
         }
     }
@@ -76,25 +80,17 @@ public class EventBlock extends ABlock implements IDrawable {
     /**
      * runs continuously
      */
+    @Override
     public void draw() {
-        if(this.isVisible) {
+        if (this.isVisible) {
             this.show();
         }
     }
 
     /**
-     * display block
-     */
-    void show() {
-        fill(Constants.EVENT_BLOCK_COLOR);
-        rect(this.leftX, this.topY, this.width, this.height);
-    }
-
-    /**
      * active and add this to game
      */
-    void makeActive() {
-        this.isActive = true;
+    private void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
 
         // make horizontal boundaries first since their detection takes precedence
@@ -108,8 +104,8 @@ public class EventBlock extends ABlock implements IDrawable {
     /**
      * deactivate and remove this from game
      */
-    void makeNotActive() {
-        this.isActive = false;
+    @Override
+    public void makeNotActive() {
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
 
         this.topSide.makeNotActive();
