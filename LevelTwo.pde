@@ -6,14 +6,15 @@ public class LevelTwo extends ALevel implements IDrawable {
     /**
      * sets properties, boundaries, and characters of this
      */
-    LevelTwo(boolean isActive, boolean loadPlayerFromCheckPoint) {
+    public LevelTwo(boolean isActive, boolean loadPlayerFromCheckPoint) {
         super(isActive, loadPlayerFromCheckPoint);
     }
 
     /**
      * setup and activate this
      */
-    void setUpActivateLevel() {
+    @Override
+    public void setUpActivateLevel() {
         this.makeActive();
 
         this.viewBox = new ViewBox(0, 0, this.isActive);
@@ -21,7 +22,7 @@ public class LevelTwo extends ALevel implements IDrawable {
 
         loopSong(ESongType.Level);
 
-        charactersList.add( new Enemy(
+        charactersList.add(new Enemy(
             getCurrentActiveLevelWidth() - 500,
             0,
             Constants.BIG_ENEMY_DIAMETER,
@@ -49,7 +50,7 @@ public class LevelTwo extends ALevel implements IDrawable {
             true,
             this.isActive
         ));
-            
+
         this.boundariesList.add(new HorizontalBoundary(
             width / 2,
             height / 6,

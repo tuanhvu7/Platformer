@@ -61,13 +61,13 @@ class Constants {
     private static final int DEFAULT_BLOCK_COLOR = #CD853F;
     private static final int DEFAULT_BLOCK_SIZE = 100; 
 
-    private static final int CHECKPOINT_BLOCK_COLOR = #FFD700;
-    private static final int CHECKPOINT_BLOCK_WIDTH = 40;
-    private static final int CHECKPOINT_BLOCK_HEIGHT = 100; 
+    private static final int CHECKPOINT_COLOR = #FFD700;
+    private static final int CHECKPOINT_WIDTH = 40;
+    private static final int CHECKPOINT_HEIGHT = 100; 
 
-    private static final int LEVEL_GOAL_BLOCK_COLOR = #DCDCDC;
-    private static final int LEVEL_GOAL_BLOCK_WIDTH = 40;
-    private static final int LEVEL_GOAL_BLOCK_HEIGHT = LEVEL_FLOOR_Y_POSITION; 
+    private static final int LEVEL_GOAL_COLOR = #DCDCDC;
+    private static final int LEVEL_GOAL_WIDTH = 40;
+    private static final int LEVEL_GOAL_HEIGHT = LEVEL_FLOOR_Y_POSITION; 
 
     private static final int EVENT_BLOCK_COLOR = #00E500;
     private static final int DEFAULT_EVENT_BLOCK_WIDTH = 125; 

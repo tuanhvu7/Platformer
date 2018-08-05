@@ -2,25 +2,25 @@
  * boundary to add enemies upon player contact
  */
 public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
-
     // set of enemies to be added
-    private Set<Enemy> enemiesToAddSet;
+    private final Set<Enemy> enemiesToAddSet;
 
     /**
      * set properties of this
      * sets this to affect all characters
      */
-    EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                            boolean isVisible, boolean isActive, Set<Enemy> enemySet) {
+    public EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
+                                        boolean isVisible, boolean isActive, Set<Enemy> enemySet) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
-                isVisible, isActive);
+            isVisible, isActive);
         this.enemiesToAddSet = enemySet;
     }
 
     /**
      * runs continuously. checks and handles contact between this and characters
      */
-    void draw() {
+    @Override
+    public void draw() {
         this.show();
         this.checkHandleContactWithPlayer();
     }
@@ -29,17 +29,16 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        Player curPlayer =  getCurrentActivePlayer();
+        Player curPlayer = getCurrentActivePlayer();
 
-        if(this.doesAffectPlayer && curPlayer.isActive) {   // TODO: encapsulate
+        if (this.doesAffectPlayer && curPlayer.isActive()) {
             // boundary collision for player
-            if(contactWithCharacter(curPlayer)) {  // this has contact with non-player
-                for(Enemy curEnemy : enemiesToAddSet) {
+            if (contactWithCharacter(curPlayer)) {  // this has contact with non-player
+                for (Enemy curEnemy : enemiesToAddSet) {
                     curEnemy.makeActive();
                 }
                 this.makeNotActive();
             }
         }
     }
-
 }

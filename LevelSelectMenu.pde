@@ -1,29 +1,30 @@
 /**
  * menu to select level to play;
  */
-public class LevelSelectMenu extends AMenu  implements IDrawable {
+public class LevelSelectMenu extends AMenu implements IDrawable {
 
     /**
      * set properties of this
      */
-    LevelSelectMenu(boolean isActive) {
+    public LevelSelectMenu(boolean isActive) {
         super(isActive);
     }
 
     /**
      * setup and activate this
      */
-    void setupActivateMenu() {
+    @Override
+    public void setupActivateMenu() {
         // make this active
         this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
-        
+
         this.panelsList.add(new LevelSelectMenuPanel(
             1,
             100,
             100,
-            Constants.PANEL_HEIGHT,
             Constants.PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
             this.isActive
         ));
 
@@ -31,8 +32,8 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
             2,
             400,
             100,
-            Constants.PANEL_HEIGHT,
             Constants.PANEL_WIDTH,
+            Constants.PANEL_HEIGHT,
             this.isActive
         ));
     }
@@ -40,12 +41,13 @@ public class LevelSelectMenu extends AMenu  implements IDrawable {
     /**
      * runs continuously; draws background of this
      */
-    void draw() {
+    @Override
+    public void draw() {
         image(
-            global_background_image, 
-            0, 
-            0, 
-            global_background_image.width, 
+            global_background_image,
+            0,
+            0,
+            global_background_image.width,
             global_background_image.height);
     }
 

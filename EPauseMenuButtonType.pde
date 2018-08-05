@@ -1,7 +1,7 @@
 /**
  * possible values for pause menu panels
  */
-enum PauseMenuButtonType {
+enum EPauseMenuButtonType {
     Continue,
     Quit
 }

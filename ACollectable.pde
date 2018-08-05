@@ -1,23 +1,24 @@
 /**
  * common for rectangular collectables
  */
-public class ACollectable implements IDrawable {
+public abstract class ACollectable implements IDrawable {
+
+    int fillColor;
 
     // position and dimensions
-    protected int leftX;
-    protected int topY;
-    protected int width;
-    protected int height;
-    protected boolean isActive;
+    private final int leftX;
+    private final int topY;
+    private final int width;
+    private final int height;
 
-    protected int blockLineThickness;
+    private final int blockLineThickness;
 
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
     ACollectable(int leftX, int topY, int width, int height, int blockLineThickness, boolean isActive) {
-        
+
         this.leftX = leftX;
         this.topY = topY;
         this.width = width;
@@ -25,7 +26,7 @@ public class ACollectable implements IDrawable {
 
         this.blockLineThickness = blockLineThickness;
 
-        if(isActive) {
+        if (isActive) {
             this.makeActive();
         }
     }
@@ -33,6 +34,7 @@ public class ACollectable implements IDrawable {
     /**
      * runs continuously
      */
+    @Override
     public void draw() {
         this.show();
         this.checkHandleContactWithPlayer();
@@ -41,46 +43,46 @@ public class ACollectable implements IDrawable {
     /**
      * active and add this to game
      */
-    void makeActive() {
-        this.isActive = true;
+    private void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
     /**
      * deactivate and remove this from game
      */
-    void makeNotActive() {
-        this.isActive = false;
+    public void makeNotActive() {
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
     /**
-     * display collectable;
-     * to override in extended classes
+     * display block
      */
-    void show() { }
+    private void show() {
+        fill(this.fillColor);
+        strokeWeight(this.blockLineThickness);
+        rect(this.leftX, this.topY, this.width, this.height);
+    }
 
     /**
      * check and handle contact with player;
      * to override in extended classes
      */
-    protected void checkHandleContactWithPlayer() { }
+    void checkHandleContactWithPlayer() {
+    }
 
     /**
      * true means this contact with player
      */
-    protected boolean contactWithPlayer() {
-        // TODO: encapsulate
-        boolean playerInHorizontalRange = 
-            (getCurrentActivePlayer().pos.x  + (getCurrentActivePlayer().diameter / 2) >= this.leftX) &&
-            (getCurrentActivePlayer().pos.x  - (getCurrentActivePlayer().diameter / 2) <= this.leftX + this.width);
+    boolean contactWithPlayer() {
+        Player curPlayer = getCurrentActivePlayer();
+        boolean playerInHorizontalRange =
+            (curPlayer.getPos().x + (curPlayer.getDiameter() / 2) >= this.leftX) &&
+                (curPlayer.getPos().x - (curPlayer.getDiameter() / 2) <= this.leftX + this.width);
 
-        boolean playerInVerticalRange = 
-            (getCurrentActivePlayer().pos.y  + (getCurrentActivePlayer().diameter / 2) >= this.topY) &&
-            (getCurrentActivePlayer().pos.y  - (getCurrentActivePlayer().diameter / 2) <= this.topY + this.height);;
-
+        boolean playerInVerticalRange =
+            (curPlayer.getPos().y + (curPlayer.getDiameter() / 2) >= this.topY) &&
+                (curPlayer.getPos().y - (curPlayer.getDiameter() / 2) <= this.topY + this.height);
 
         return playerInHorizontalRange && playerInVerticalRange;
     }
-
 }

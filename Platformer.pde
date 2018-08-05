@@ -24,53 +24,53 @@ PImage global_background_image;
 
 /*** MUSIC ***/
 // level song
-Media global_level_song;
+private Media global_level_song;
 // player for level song
-MediaPlayer global_level_song_player;
+private MediaPlayer global_level_song_player;
 
 // player death song
-Media global_player_death_song;
+private Media global_player_death_song;
 // player for player death song
-MediaPlayer global_player_death_song_player;
+private MediaPlayer global_player_death_song_player;
 
 // level complete song
-Media global_level_complete_song;
+private Media global_level_complete_song;
 // player for level complete song
-MediaPlayer global_level_complete_song_player;
+private MediaPlayer global_level_complete_song_player;
 
 // player action 
-Media global_player_action_song;
+private Media global_player_action_song;
 // player for player action 
-MediaPlayer global_player_action_song_player;
+private MediaPlayer global_player_action_song_player;
 
 // event block descent song
-Media global_event_block_descent_song;
+private Media global_event_block_descent_song;
 // player for event block descent song
-MediaPlayer global_event_block_descent_song_player;
+private MediaPlayer global_event_block_descent_song_player;
 
 // level complete thread
-WeakReference<Thread> global_level_complete_thread;
+private WeakReference<Thread> global_level_complete_thread;
 
 /*** LEVEL ***/
 // level select menu
-LevelSelectMenu global_level_select_menu;
+private LevelSelectMenu global_level_select_menu;
 
 /*** MUSIC ***/
 // stores current active level
-WeakReference<ALevel> global_current_active_level;
+private WeakReference<ALevel> global_current_active_level;
 
 // stores currently active level number
-int global_current_active_level_number;
+private int global_current_active_level_number;
 
 // widths of all levels
-final int[] global_levels_width_array = {
+private final int[] global_levels_width_array = {
     0,          // non-existent level zero
     1500,       // 5632 level one
     1000
 };
 
 // heights of all levels
-final int[] global_levels_height_array = {
+private final int[] global_levels_height_array = {
     0,      // non-existent level zero
     900,    // level one
     900
@@ -153,7 +153,7 @@ private void handleLevelComplete() {
                     println("running level complete thread!!!");
                     global_current_active_level.get().isHandlingLevelComplete = true;    // TODO: encapsulate
                     getCurrentActivePlayer().resetControlPressed();
-                    getCurrentActivePlayer().setVelocity(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
+                    getCurrentActivePlayer().setVel(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
                     Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for song duration
@@ -167,6 +167,27 @@ private void handleLevelComplete() {
         } )
     );
     global_level_complete_thread.get().start();
+}
+
+/*** getters and setters ***/
+public LevelSelectMenu getLevelSelectMenu() {
+    return global_level_select_menu;
+}
+
+public ALevel getCurrentActiveLevel() {
+    return global_current_active_level.get();
+}
+
+public void setCurrentActiveLevel(ALevel currentActiveLevel) {
+    global_current_active_level = new WeakReference<ALevel>(currentActiveLevel);
+}
+
+public int getCurrentActiveLevelNumber() {
+    return global_current_active_level_number;
+}
+
+public void setCurrentActiveLevelNumber(int currentActiveLevelNumber) {
+    global_current_active_level_number = currentActiveLevelNumber;
 }
 
 /**
