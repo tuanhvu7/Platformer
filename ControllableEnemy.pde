@@ -46,7 +46,7 @@ public class ControllableEnemy extends Enemy {
                 } else {
                     // for jumping higher the longer jump button is held
                     this.vel.y = Math.min(
-                        this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER,
+                        this.vel.y + getGravity().y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER,
                         Constants.MAX_VERTICAL_VELOCITY);
                 }
 

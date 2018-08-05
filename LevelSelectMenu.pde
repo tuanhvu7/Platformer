@@ -44,11 +44,11 @@ public class LevelSelectMenu extends AMenu implements IDrawable {
     @Override
     public void draw() {
         image(
-            global_background_image,
+            getLevelBackgroundImage(),
             0,
             0,
-            global_background_image.width,
-            global_background_image.height);
+            getLevelBackgroundImage().width,
+            getLevelBackgroundImage().height);
     }
 
 }

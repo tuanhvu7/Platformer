@@ -134,20 +134,20 @@ public abstract class ALevel implements IDrawable {
         // draw background image horizontally until level width is filled
         int levelWidthLeftToDraw = getCurrentActiveLevelWidth();
         int numberHorizontalBackgroundIterations =
-            (int) Math.ceil((double) getCurrentActiveLevelWidth() / global_background_image.width);
+            (int) Math.ceil((double) getCurrentActiveLevelWidth() / getLevelBackgroundImage().width);
 
         for (int i = 0; i < numberHorizontalBackgroundIterations; i++) {
             int widthToDraw =
                 Math.min(
-                    global_background_image.width,
+                    getLevelBackgroundImage().width,
                     levelWidthLeftToDraw);
 
             image(
-                global_background_image,
-                i * global_background_image.width,
+                getLevelBackgroundImage(),
+                i * getLevelBackgroundImage().width,
                 0,
                 widthToDraw,
-                global_background_image.height);
+                getLevelBackgroundImage().height);
 
             levelWidthLeftToDraw -= widthToDraw;
         }

@@ -46,10 +46,10 @@ public class PauseMenu extends AMenu implements IDrawable {
     @Override
     public void draw() {
         image(
-            global_background_image,
+            getLevelBackgroundImage(),
             this.horizontalOffset,  // add offset to account for viewbox
             0,
-            global_background_image.width,
-            global_background_image.height);
+            getLevelBackgroundImage().width,
+            getLevelBackgroundImage().height);
     }
 }

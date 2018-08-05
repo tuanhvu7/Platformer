@@ -14,63 +14,63 @@ import javafx.util.Duration;
 import javafx.embed.swing.JFXPanel;
 
 // gravity that affects characters
-PVector global_gravity;
+private PVector gravity;
 
 // wall slide acceleration
-PVector global_wall_slide_acceleration;
+private PVector wallSlideAcceleration;
 
 // background image
-PImage global_background_image;
+private PImage levelBackgroundImage;
 
 /*** MUSIC ***/
 // level song
-private Media global_level_song;
+private Media levelSong;
 // player for level song
-private MediaPlayer global_level_song_player;
+private MediaPlayer levelSongPlayer;
 
 // player death song
-private Media global_player_death_song;
+private Media playerDeathSong;
 // player for player death song
-private MediaPlayer global_player_death_song_player;
+private MediaPlayer playerDeathSongPlayer;
 
 // level complete song
-private Media global_level_complete_song;
+private Media levelCompleteSong;
 // player for level complete song
-private MediaPlayer global_level_complete_song_player;
+private MediaPlayer levelCompleteSongPlayer;
 
 // player action 
-private Media global_player_action_song;
+private Media playerActionSong;
 // player for player action 
-private MediaPlayer global_player_action_song_player;
+private MediaPlayer playerActionSongPlayer;
 
 // event block descent song
-private Media global_event_block_descent_song;
+private Media eventBlockDescentSong;
 // player for event block descent song
-private MediaPlayer global_event_block_descent_song_player;
+private MediaPlayer eventBlockDescentSongPlayer;
 
 // level complete thread
-private WeakReference<Thread> global_level_complete_thread;
+private WeakReference<Thread> levelCompleteThread;
 
 /*** LEVEL ***/
 // level select menu
-private LevelSelectMenu global_level_select_menu;
+private LevelSelectMenu levelSelectMenu;
 
 /*** MUSIC ***/
 // stores current active level
-private WeakReference<ALevel> global_current_active_level;
+private WeakReference<ALevel> currentActiveLevel;
 
 // stores currently active level number
-private int global_current_active_level_number;
+private int currentActiveLevelNumber;
 
 // widths of all levels
-private final int[] global_levels_width_array = {
+private final int[] levelsWidthArray = {
     0,          // non-existent level zero
     1500,       // 5632 level one
     1000
 };
 
 // heights of all levels
-private final int[] global_levels_height_array = {
+private final int[] levelsHeightArray = {
     0,      // non-existent level zero
     900,    // level one
     900
@@ -81,28 +81,28 @@ private final int[] global_levels_height_array = {
  * setup canvas size with variable values and initialize fields
  */
 void settings() {
-    global_background_image = loadImage(Constants.BACKGROUND_IMAGE_NAME);
+    levelBackgroundImage = loadImage(Constants.BACKGROUND_IMAGE_NAME);
 
-    global_gravity = new PVector(0, Constants.GRAVITY);
-    global_wall_slide_acceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
+    gravity = new PVector(0, Constants.GRAVITY);
+    wallSlideAcceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
     
     new JFXPanel(); // initialize JavaFx toolkit
-    global_level_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
-    global_player_death_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
-    global_level_complete_song = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
-    global_player_action_song = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
-    global_event_block_descent_song = new Media(convertPathToValidUri(dataPath(Constants.EVENT_BLOCK_DESCENT_SOUND_NAME)));
+    levelSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
+    playerDeathSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
+    levelCompleteSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
+    playerActionSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
+    eventBlockDescentSong = new Media(convertPathToValidUri(dataPath(Constants.EVENT_BLOCK_DESCENT_SOUND_NAME)));
 
-    global_level_song_player = new MediaPlayer(global_level_song);
-    global_player_death_song_player = new MediaPlayer(global_player_death_song);
-    global_level_complete_song_player = new MediaPlayer(global_level_complete_song);
-    global_player_action_song_player = new MediaPlayer(global_player_action_song);
-    global_event_block_descent_song_player = new MediaPlayer(global_event_block_descent_song);
+    levelSongPlayer = new MediaPlayer(levelSong);
+    playerDeathSongPlayer = new MediaPlayer(playerDeathSong);
+    levelCompleteSongPlayer = new MediaPlayer(levelCompleteSong);
+    playerActionSongPlayer = new MediaPlayer(playerActionSong);
+    eventBlockDescentSongPlayer = new MediaPlayer(eventBlockDescentSong);
 
-    global_current_active_level_number = 0;
+    currentActiveLevelNumber = 0;
 
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
-    global_level_select_menu = new LevelSelectMenu(true);
+    levelSelectMenu = new LevelSelectMenu(true);
 }
 
 /**
@@ -122,16 +122,16 @@ private void resetLevel() {
         public void run()  {
             try  {
                 println("running reset level thread!!!");
-                if(global_level_complete_thread != null) {
-                    global_level_complete_thread.get().interrupt();
+                if(levelCompleteThread != null) {
+                    levelCompleteThread.get().interrupt();
                 }
                 getCurrentActivePlayer().makeNotActive();
-                Thread.sleep( (long) global_player_death_song.getDuration().toMillis() );  // wait for song duration
+                Thread.sleep( (long) playerDeathSong.getDuration().toMillis() );  // wait for song duration
                 
-                boolean loadPlayerFromCheckPoint = global_current_active_level.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
-                global_current_active_level.get().deactivateLevel();
+                boolean loadPlayerFromCheckPoint = currentActiveLevel.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
+                currentActiveLevel.get().deactivateLevel();
                 LevelFactory levelFactory = new LevelFactory();
-                global_current_active_level = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
+                currentActiveLevel = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
             }
             catch (InterruptedException ie)  { }
         }
@@ -146,90 +146,27 @@ private void handleLevelComplete() {
     stopSong();
     playSong(ESongType.LevelComplete);
 
-    global_level_complete_thread = new WeakReference(
+    levelCompleteThread = new WeakReference(
         new Thread( new Runnable() {
             public void run()  {
                 try  {
                     println("running level complete thread!!!");
-                    global_current_active_level.get().isHandlingLevelComplete = true;    // TODO: encapsulate
+                    currentActiveLevel.get().isHandlingLevelComplete = true;    // TODO: encapsulate
                     getCurrentActivePlayer().resetControlPressed();
                     getCurrentActivePlayer().setVel(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
-                    Thread.sleep( (long) global_level_complete_song.getDuration().toMillis() );  // wait for song duration
+                    Thread.sleep( (long) levelCompleteSong.getDuration().toMillis() );  // wait for song duration
                     getCurrentActivePlayer().makeNotActive();
-                    global_current_active_level.get().deactivateLevel();
-                    global_current_active_level_number = 0;
-                    global_level_select_menu.setupActivateMenu();
+                    currentActiveLevel.get().deactivateLevel();
+                    currentActiveLevelNumber = 0;
+                    levelSelectMenu.setupActivateMenu();
                 }
                 catch (InterruptedException ie)  { }
             }
         } )
     );
-    global_level_complete_thread.get().start();
-}
-
-/*** getters and setters ***/
-public LevelSelectMenu getLevelSelectMenu() {
-    return global_level_select_menu;
-}
-
-public ALevel getCurrentActiveLevel() {
-    return global_current_active_level.get();
-}
-
-public void setCurrentActiveLevel(ALevel currentActiveLevel) {
-    global_current_active_level = new WeakReference<ALevel>(currentActiveLevel);
-}
-
-public int getCurrentActiveLevelNumber() {
-    return global_current_active_level_number;
-}
-
-public void setCurrentActiveLevelNumber(int currentActiveLevelNumber) {
-    global_current_active_level_number = currentActiveLevelNumber;
-}
-
-/**
- * return player of current active level
- */
-private Player getCurrentActivePlayer() {
-    return global_current_active_level.get().player;    // TODO: encapsulate
-}
-
-/**
- * return non-player characters of current active level
- */
-private Set<ACharacter> getCurrentActiveCharactersList() {
-    return global_current_active_level.get().charactersList;    // TODO: encapsulate
-}
-
-/**
- * return blocks of current active level
- */
-private Set<ABlock> getCurrentActiveBlocksList() {
-    return global_current_active_level.get().blocksList;    // TODO: encapsulate
-}
-
-/**
- * return collectables of current active level
- */
-private Set<ACollectable> getCurrentActiveLevelCollectables() {
-    return global_current_active_level.get().collectablesList;    // TODO: encapsulate
-}
-
-/**
- * return viewbox of current active level
- */
-private ViewBox getCurrentActiveViewBox() {
-    return global_current_active_level.get().viewBox; // TODO: encapsulate
-}
-
-/**
- * return width of current active level
- */
-private int getCurrentActiveLevelWidth() {
-    return global_levels_width_array[global_current_active_level_number];
+    levelCompleteThread.get().start();
 }
 
 /**
@@ -238,8 +175,8 @@ private int getCurrentActiveLevelWidth() {
 private void loopSong(ESongType songType) {
     switch(songType) {
         case Level:
-            global_level_song_player.setCycleCount(Integer.MAX_VALUE);
-            global_level_song_player.play();
+            levelSongPlayer.setCycleCount(Integer.MAX_VALUE);
+            levelSongPlayer.play();
         break;
 
         default:    
@@ -253,13 +190,13 @@ private void loopSong(ESongType songType) {
 private void playSong(ESongType songType) {
     switch(songType) {
         case PlayerDeath:
-            global_player_death_song_player.setCycleCount(1);
-            global_player_death_song_player.play();
+            playerDeathSongPlayer.setCycleCount(1);
+            playerDeathSongPlayer.play();
         break;
 
         case LevelComplete:
-            global_level_complete_song_player.setCycleCount(1);
-            global_level_complete_song_player.play();
+            levelCompleteSongPlayer.setCycleCount(1);
+            levelCompleteSongPlayer.play();
         break;
 
         case PlayerAction:
@@ -267,10 +204,10 @@ private void playSong(ESongType songType) {
             new Thread( new Runnable() {
                 public void run()  {
                     try  {
-                        global_player_action_song_player.setCycleCount(1);
-                        global_player_action_song_player.play();
-                        Thread.sleep( (long) global_player_action_song.getDuration().toMillis() );  // wait for song duration
-                        global_player_action_song_player.stop();
+                        playerActionSongPlayer.setCycleCount(1);
+                        playerActionSongPlayer.play();
+                        Thread.sleep( (long) playerActionSong.getDuration().toMillis() );  // wait for song duration
+                        playerActionSongPlayer.stop();
                     }
                     catch (InterruptedException ie)  { }
                 }
@@ -282,10 +219,10 @@ private void playSong(ESongType songType) {
             new Thread( new Runnable() {
                 public void run()  {
                     try  {
-                        global_event_block_descent_song_player.setCycleCount(1);
-                        global_event_block_descent_song_player.play();
-                        Thread.sleep( (long) global_event_block_descent_song.getDuration().toMillis() );  // wait for song duration
-                        global_event_block_descent_song_player.stop();
+                        eventBlockDescentSongPlayer.setCycleCount(1);
+                        eventBlockDescentSongPlayer.play();
+                        Thread.sleep( (long) eventBlockDescentSong.getDuration().toMillis() );  // wait for song duration
+                        eventBlockDescentSongPlayer.stop();
                     }
                     catch (InterruptedException ie)  { }
                 }
@@ -301,11 +238,11 @@ private void playSong(ESongType songType) {
  * stop song
  */
 private void stopSong() {
-    global_level_song_player.stop();
-    global_player_death_song_player.stop();
-    global_level_complete_song_player.stop();
-    global_player_action_song_player.stop();
-    global_event_block_descent_song_player.stop();
+    levelSongPlayer.stop();
+    playerDeathSongPlayer.stop();
+    levelCompleteSongPlayer.stop();
+    playerActionSongPlayer.stop();
+    eventBlockDescentSongPlayer.stop();
 }
 
 /**
@@ -316,4 +253,79 @@ private String convertPathToValidUri(String path) {
         .replace(" ", "%20")            // space is illegal character
         .replace("\\", "/")             // back-slash illegal character
         .replace("C:/", "file:///C:/"); // prevent unsupported protocol c
+}
+
+/*** getters and setters ***/
+public PVector getGravity() {
+    return gravity;
+}
+
+public PVector getWallSlideAcceleration() {
+    return wallSlideAcceleration;
+}
+
+public PImage getLevelBackgroundImage() {
+    return levelBackgroundImage;
+}
+
+public LevelSelectMenu getLevelSelectMenu() {
+    return levelSelectMenu;
+}
+
+public ALevel getCurrentActiveLevel() {
+    return currentActiveLevel.get();
+}
+
+public void setCurrentActiveLevel(ALevel newCurrentActiveLevel) {
+    currentActiveLevel = new WeakReference<ALevel>(newCurrentActiveLevel);
+}
+
+public int getCurrentActiveLevelNumber() {
+    return currentActiveLevelNumber;
+}
+
+public void setCurrentActiveLevelNumber(int newCurrentActiveLevelNumber) {
+    currentActiveLevelNumber = newCurrentActiveLevelNumber;
+}
+
+/**
+ * return player of current active level
+ */
+public Player getCurrentActivePlayer() {
+    return currentActiveLevel.get().player;    // TODO: encapsulate
+}
+
+/**
+ * return non-player characters of current active level
+ */
+public Set<ACharacter> getCurrentActiveCharactersList() {
+    return currentActiveLevel.get().charactersList;    // TODO: encapsulate
+}
+
+/**
+ * return blocks of current active level
+ */
+public Set<ABlock> getCurrentActiveBlocksList() {
+    return currentActiveLevel.get().blocksList;    // TODO: encapsulate
+}
+
+/**
+ * return collectables of current active level
+ */
+public Set<ACollectable> getCurrentActiveLevelCollectables() {
+    return currentActiveLevel.get().collectablesList;    // TODO: encapsulate
+}
+
+/**
+ * return viewbox of current active level
+ */
+public ViewBox getCurrentActiveViewBox() {
+    return currentActiveLevel.get().viewBox; // TODO: encapsulate
+}
+
+/**
+ * return width of current active level
+ */
+public int getCurrentActiveLevelWidth() {
+    return levelsWidthArray[currentActiveLevelNumber];
 }

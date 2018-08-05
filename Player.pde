@@ -185,7 +185,7 @@ public class Player extends ACharacter implements IDrawable {
      * handle wall sliding physics
      */
     private void handleOnWallPhysics() {
-        this.vel.y = Math.min(this.vel.y + global_wall_slide_acceleration.y, Constants.MAX_VERTICAL_VELOCITY);
+        this.vel.y = Math.min(this.vel.y + getWallSlideAcceleration().y, Constants.MAX_VERTICAL_VELOCITY);
     }
 
     /**
@@ -244,7 +244,7 @@ public class Player extends ACharacter implements IDrawable {
             } else {
                 // for jumping higher the longer jump button is held
                 this.vel.y = Math.min(
-                    this.vel.y + global_gravity.y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER,
+                    this.vel.y + getGravity().y * Constants.VARIABLE_JUMP_GRAVITY_MULTIPLIER,
                     Constants.MAX_VERTICAL_VELOCITY);
             }
 
