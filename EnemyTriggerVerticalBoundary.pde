@@ -28,7 +28,8 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
     /**
      * check and handle contact with player
      */
-    private void checkHandleContactWithPlayer() {
+    @Override
+    void checkHandleContactWithPlayer() {
         Player curPlayer = getCurrentActivePlayer();
 
         if (this.doesAffectPlayer && curPlayer.isActive()) {
