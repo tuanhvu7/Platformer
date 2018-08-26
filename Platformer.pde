@@ -65,7 +65,7 @@ private int currentActiveLevelNumber;
 // widths of all levels
 private final int[] levelsWidthArray = {
     0,          // non-existent level zero
-    1500,       // 5632 level one
+    8750,
     1000
 };
 

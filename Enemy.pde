@@ -66,6 +66,20 @@ public class Enemy extends ACharacter implements IDrawable {
     }
 
     /**
+     * draw circle character
+     */
+    @Override
+    void show() {
+        if (this.isInvulnerable) {
+            fill(random(0, 255), random(0, 255), random(0, 255));
+        } else {
+            fill(this.fillColor);
+        }
+        strokeWeight(0);
+        ellipse(this.pos.x, this.pos.y, this.diameter, this.diameter);
+    }
+
+    /**
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {

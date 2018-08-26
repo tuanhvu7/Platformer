@@ -109,18 +109,22 @@ public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundar
     void checkHandleContactWithPlayer() {
         Player curPlayer = getCurrentActivePlayer();
 
-        if (this.doesAffectPlayer && curPlayer.isActive()) {
+        if (curPlayer.isActive()) {
             // boundary collision for player
             if (this.contactWithCharacter(curPlayer) && !this.isPreviousContactWithPlayer()) { // this has contact with player
-                if (!this.charactersTouchingThis.contains(curPlayer)) { // new collision detected
-                    this.charactersTouchingThis.add(curPlayer);
-                    if (this.isFloorBoundary) {
-                        curPlayer.changeNumberOfFloorBoundaryContacts(1);
-                    } else {
-                        curPlayer.changeNumberOfCeilingBoundaryContacts(1);
+                if (this.doesAffectPlayer) {
+                    if (!this.charactersTouchingThis.contains(curPlayer)) { // new collision detected
+                        this.charactersTouchingThis.add(curPlayer);
+                        if (this.isFloorBoundary) {
+                            curPlayer.changeNumberOfFloorBoundaryContacts(1);
+                        } else {
+                            curPlayer.changeNumberOfCeilingBoundaryContacts(1);
+                        }
                     }
+                    curPlayer.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
+                } else {    // does NOT affect player
+                    this.setVisible(false);
                 }
-                curPlayer.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
 
             } else {    // this DOES NOT have contact with player
                 if (this.charactersTouchingThis.contains(curPlayer)) {

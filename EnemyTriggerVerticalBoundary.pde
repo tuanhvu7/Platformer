@@ -10,9 +10,9 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
      * sets this to affect all characters
      */
     public EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                                        boolean isVisible, boolean isActive, Set<Enemy> enemySet) {
+                                        boolean isActive, Set<Enemy> enemySet) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
-            isVisible, isActive);
+            false, isActive);
         this.enemiesToAddSet = enemySet;
     }
 

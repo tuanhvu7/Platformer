@@ -42,7 +42,7 @@ public abstract class ALevel implements IDrawable {
     /**
      * sets properties of this
      */
-    ALevel(boolean isActive, boolean loadPlayerFromCheckPoint) {
+    ALevel(boolean isActive, boolean loadPlayerFromCheckPoint, int goalRightSideOffsetWithStageWidth) {
 
         this.charactersList = new HashSet<ACharacter>();
         this.boundariesList = new HashSet<ABoundary>();
@@ -57,7 +57,7 @@ public abstract class ALevel implements IDrawable {
 
         if (isActive) {
             this.setUpActivateLevel();
-            this.setUpActivateFloorWallsGoal();
+            this.setUpActivateWallsGoal(goalRightSideOffsetWithStageWidth);
         }
     }
 
@@ -185,30 +185,22 @@ public abstract class ALevel implements IDrawable {
     }
 
     /**
-     * setup activate floor, walls, and goal
+     * setup activate walls, and goal
+     *
+     * @param goalRightSideOffsetWithStageWidth offset of goal's right side relative to stage width
+     *                                          (example: 50 means goal is 50 pixels less than stage width
      */
-    private void setUpActivateFloorWallsGoal() {
+    private void setUpActivateWallsGoal(int goalRightSideOffsetWithStageWidth) {
         // stage goal
         this.collectablesList.add(new LevelGoal(
             
-            getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_WIDTH - 10,
+            getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_WIDTH - goalRightSideOffsetWithStageWidth,
             Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_HEIGHT,
             Constants.LEVEL_GOAL_WIDTH,
             Constants.LEVEL_GOAL_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive)
         );
-
-
-        // stage floor
-        this.boundariesList.add(new HorizontalBoundary(
-            0,
-            Constants.LEVEL_FLOOR_Y_POSITION,
-            getCurrentActiveLevelWidth(),
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            true,
-            this.isActive
-        ));
 
         // stage right and left walls
         this.boundariesList.add(new VerticalBoundary(
