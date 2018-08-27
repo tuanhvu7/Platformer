@@ -6,8 +6,21 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
     private final Set<Enemy> enemiesToAddSet;
 
     /**
-     * set properties of this
-     * sets this to affect all characters
+     * set properties of this;
+     * only one enemy to trigger
+     */
+    public EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
+                                        boolean isActive, Enemy enemy) {
+        super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
+            false, isActive);
+        Set<Enemy> set = new HashSet<Enemy>();
+        set.add(enemy);
+        this.enemiesToAddSet = set;
+    }
+
+    /**
+     * set properties of this;
+     * set of enemies to trigger
      */
     public EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
                                         boolean isActive, Set<Enemy> enemySet) {
@@ -15,6 +28,7 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
             false, isActive);
         this.enemiesToAddSet = enemySet;
     }
+
 
     /**
      * runs continuously. checks and handles contact between this and characters

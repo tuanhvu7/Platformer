@@ -23,6 +23,11 @@ private PVector wallSlideAcceleration;
 private PImage levelBackgroundImage;
 
 /*** MUSIC ***/
+// level select menu song
+private Media levelSelectMenuSong;
+// player for level select menu song
+private MediaPlayer levelSelectMenuSongPlayer;
+
 // level song
 private Media levelSong;
 // player for level song
@@ -87,12 +92,15 @@ void settings() {
     wallSlideAcceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
     
     new JFXPanel(); // initialize JavaFx toolkit
+    // set song files
+    levelSelectMenuSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SELECT_MENU_SONG_NAME)));
     levelSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
     playerDeathSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
     levelCompleteSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
     playerActionSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
     eventBlockDescentSong = new Media(convertPathToValidUri(dataPath(Constants.EVENT_BLOCK_DESCENT_SOUND_NAME)));
-
+    // set song players
+    levelSelectMenuSongPlayer = new MediaPlayer(levelSelectMenuSong);
     levelSongPlayer = new MediaPlayer(levelSong);
     playerDeathSongPlayer = new MediaPlayer(playerDeathSong);
     levelCompleteSongPlayer = new MediaPlayer(levelCompleteSong);
@@ -174,11 +182,16 @@ private void handleLevelComplete() {
  */
 private void loopSong(ESongType songType) {
     switch(songType) {
+        case LevelSelectMenu:
+            levelSelectMenuSongPlayer.setCycleCount(Integer.MAX_VALUE);
+            levelSelectMenuSongPlayer.play();
+        break;
+
         case Level:
             levelSongPlayer.setCycleCount(Integer.MAX_VALUE);
             levelSongPlayer.play();
         break;
-
+        
         default:    
         break;	
     }
@@ -238,6 +251,7 @@ private void playSong(ESongType songType) {
  * stop song
  */
 private void stopSong() {
+    levelSelectMenuSongPlayer.stop();
     levelSongPlayer.stop();
     playerDeathSongPlayer.stop();
     levelCompleteSongPlayer.stop();

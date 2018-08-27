@@ -75,6 +75,7 @@ public class Constants {
 
     /*** assets path ***/
     public static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
+    public static final String LEVEL_SELECT_MENU_SONG_NAME = "level-select-menu-song.mp3";
     public static final String LEVEL_SONG_NAME = "level-song.mp3"; 
     public static final String PLAYER_DEATH_SONG_NAME = "player-death-song.mp3"; 
     public static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3";

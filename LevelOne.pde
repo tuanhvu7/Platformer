@@ -58,7 +58,6 @@ public class LevelOne extends ALevel implements IDrawable {
     @Override
     public void handleConditionalEnemyTriggers() {
         if (!bigEnemyTriggerActivated && this.charactersList.size() == this.bigEnemyTriggerCharacterListSizeCondition) {
-            Set<Enemy> triggerEnemySet = new HashSet<Enemy>();
             Enemy triggerEnemy = new Enemy(
                 3000,
                 0,
@@ -70,7 +69,6 @@ public class LevelOne extends ALevel implements IDrawable {
                 false
             );
 
-            triggerEnemySet.add(triggerEnemy);
             charactersList.add(triggerEnemy);
 
             this.boundariesList.add(new EnemyTriggerVerticalBoundary(
@@ -79,7 +77,7 @@ public class LevelOne extends ALevel implements IDrawable {
                 Constants.LEVEL_FLOOR_Y_POSITION,
                 Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
                 this.isActive,
-                triggerEnemySet
+                triggerEnemy
             ));
 
             this.bigEnemyTriggerActivated = true;
@@ -253,7 +251,6 @@ public class LevelOne extends ALevel implements IDrawable {
         ));
 
         // controllable enemy
-        Set<Enemy> triggerEnemySet = new HashSet<Enemy>();
         Enemy enemyToAdd = new ControllableEnemy(
             startMiddleSectionXPos + 1000 + 4 * Constants.PLAYER_DIAMETER,
             Constants.LEVEL_FLOOR_Y_POSITION - Constants.REGULAR_ENEMY_DIAMETER - 10,
@@ -264,7 +261,6 @@ public class LevelOne extends ALevel implements IDrawable {
             true,
             false
         );
-        triggerEnemySet.add(enemyToAdd);
         this.charactersList.add(enemyToAdd);
         this.boundariesList.add(new EnemyTriggerVerticalBoundary(
             startMiddleSectionXPos + 500 + 4 * Constants.PLAYER_DIAMETER,
@@ -272,11 +268,11 @@ public class LevelOne extends ALevel implements IDrawable {
             Constants.LEVEL_FLOOR_Y_POSITION,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
-            triggerEnemySet
+            enemyToAdd
         ));
 
         // flying enemies
-        triggerEnemySet = new HashSet<Enemy>();
+        Set<Enemy> triggerEnemySet = new HashSet<Enemy>();
         enemyToAdd = new Enemy(
             startMiddleSectionXPos + 1600 + 4 * Constants.PLAYER_DIAMETER,
             Constants.LEVEL_FLOOR_Y_POSITION - 4 * Constants.PLAYER_DIAMETER,
@@ -457,7 +453,6 @@ public class LevelOne extends ALevel implements IDrawable {
         ));
 
         // invincible enemy at end of level
-        Set<Enemy> triggerEnemySet = new HashSet<Enemy>();
         Enemy triggerEnemy = new Enemy(
             getCurrentActiveLevelWidth() - (Constants.BIG_ENEMY_DIAMETER / 2),
             Constants.LEVEL_FLOOR_Y_POSITION - (Constants.BIG_ENEMY_DIAMETER / 2),
@@ -468,7 +463,6 @@ public class LevelOne extends ALevel implements IDrawable {
             true,
             false
         );
-        triggerEnemySet.add(triggerEnemy);
         charactersList.add(triggerEnemy);
         this.boundariesList.add(new EnemyTriggerVerticalBoundary(
             doubleEventBlockXReference + (int) (1.5 * Constants.DEFAULT_EVENT_BLOCK_WIDTH),
@@ -476,7 +470,7 @@ public class LevelOne extends ALevel implements IDrawable {
             Constants.LEVEL_FLOOR_Y_POSITION,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             this.isActive,
-            triggerEnemySet
+            triggerEnemy
         ));
         // warp to event block with invincible enemy
         this.blocksList.add(new EventBlock( // warp event

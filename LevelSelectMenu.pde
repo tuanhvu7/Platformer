@@ -36,6 +36,8 @@ public class LevelSelectMenu extends AMenu implements IDrawable {
             Constants.PANEL_HEIGHT,
             this.isActive
         ));
+
+        loopSong(ESongType.LevelSelectMenu);
     }
 
     /**

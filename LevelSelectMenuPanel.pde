@@ -19,8 +19,9 @@ public class LevelSelectMenuPanel extends APanel implements IDrawable {
      */
     @Override
     void executeWhenClicked() {
-        // setup and load level associated with this
         getLevelSelectMenu().deactivateMenu();
+        stopSong();
+        // setup and load level associated with this
         setCurrentActiveLevelNumber(this.panelLevel);
         LevelFactory levelFactory = new LevelFactory();
         setCurrentActiveLevel(levelFactory.getLevel(true, false));
