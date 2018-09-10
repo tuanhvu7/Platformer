@@ -129,7 +129,7 @@ private void resetLevel() {
     new Thread( new Runnable() {
         public void run()  {
             try  {
-                println("running reset level thread!!!");
+                // println("running reset level thread!!!");
                 if(levelCompleteThread != null) {
                     levelCompleteThread.get().interrupt();
                 }
@@ -158,7 +158,7 @@ private void handleLevelComplete() {
         new Thread( new Runnable() {
             public void run()  {
                 try  {
-                    println("running level complete thread!!!");
+                    // println("running level complete thread!!!");
                     currentActiveLevel.get().isHandlingLevelComplete = true;    // TODO: encapsulate
                     getCurrentActivePlayer().resetControlPressed();
                     getCurrentActivePlayer().setVel(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
