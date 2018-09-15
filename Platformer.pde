@@ -54,7 +54,7 @@ private Media eventBlockDescentSong;
 private MediaPlayer eventBlockDescentSongPlayer;
 
 // level complete thread
-private WeakReference<Thread> levelCompleteThread;
+Thread levelCompleteThread;
 
 /*** LEVEL ***/
 // level select menu
@@ -131,7 +131,7 @@ private void resetLevel() {
             try  {
                 // println("running reset level thread!!!");
                 if(levelCompleteThread != null) {
-                    levelCompleteThread.get().interrupt();
+                    levelCompleteThread.interrupt();
                 }
                 getCurrentActivePlayer().makeNotActive();
                 Thread.sleep( (long) playerDeathSong.getDuration().toMillis() );  // wait for song duration
@@ -154,8 +154,8 @@ private void handleLevelComplete() {
     stopSong();
     playSong(ESongType.LevelComplete);
 
-    levelCompleteThread = new WeakReference(
-        new Thread( new Runnable() {
+    levelCompleteThread =
+        new Thread(new Runnable() {
             public void run()  {
                 try  {
                     // println("running level complete thread!!!");
@@ -172,9 +172,8 @@ private void handleLevelComplete() {
                 }
                 catch (InterruptedException ie)  { }
             }
-        } )
-    );
-    levelCompleteThread.get().start();
+        });
+    levelCompleteThread.start();
 }
 
 /**
