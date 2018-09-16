@@ -123,7 +123,7 @@ void draw() { }
  */
 private void resetLevel() {
     stopSong();
-    playSong(ESongType.PlayerDeath);
+    playSong(ESongType.PLAYER_DEATH);
 
     // to reset level after player death song finishes without freezing game
     new Thread( new Runnable() {
@@ -152,7 +152,7 @@ private void resetLevel() {
  */
 private void handleLevelComplete() {
     stopSong();
-    playSong(ESongType.LevelComplete);
+    playSong(ESongType.LEVEL_COMPLETE);
 
     levelCompleteThread =
         new Thread(new Runnable() {
@@ -181,12 +181,12 @@ private void handleLevelComplete() {
  */
 private void loopSong(ESongType songType) {
     switch(songType) {
-        case LevelSelectMenu:
+        case LEVEL_SELECT_MENU:
             levelSelectMenuSongPlayer.setCycleCount(Integer.MAX_VALUE);
             levelSelectMenuSongPlayer.play();
         break;
 
-        case Level:
+        case LEVEL:
             levelSongPlayer.setCycleCount(Integer.MAX_VALUE);
             levelSongPlayer.play();
         break;
@@ -201,17 +201,17 @@ private void loopSong(ESongType songType) {
  */
 private void playSong(ESongType songType) {
     switch(songType) {
-        case PlayerDeath:
+        case PLAYER_DEATH:
             playerDeathSongPlayer.setCycleCount(1);
             playerDeathSongPlayer.play();
         break;
 
-        case LevelComplete:
+        case LEVEL_COMPLETE:
             levelCompleteSongPlayer.setCycleCount(1);
             levelCompleteSongPlayer.play();
         break;
 
-        case PlayerAction:
+        case PLAYER_ACTION:
             // to reset level after player death song finishes without freezing game
             new Thread( new Runnable() {
                 public void run()  {
@@ -226,7 +226,7 @@ private void playSong(ESongType songType) {
             } ).start();
         break;
 
-        case EventBlockDescent:
+        case EVENT_BLOCK_DESCENT:
             // to reset level after player death song finishes without freezing game
             new Thread( new Runnable() {
                 public void run()  {

@@ -24,7 +24,7 @@ public class LevelOne extends ALevel implements IDrawable {
         this.checkpointXPos = 3100;
 
         this.makeActive();
-        loopSong(ESongType.Level);
+        loopSong(ESongType.LEVEL);
 
         if (this.loadPlayerFromCheckPoint) {
             this.viewBox = new ViewBox(this.checkpointXPos - 200, 0, this.isActive);

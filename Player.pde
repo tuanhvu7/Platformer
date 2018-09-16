@@ -224,7 +224,7 @@ public class Player extends ACharacter implements IDrawable {
             this.pos.x = middleOfBoundary;
             this.vel.x = 0;
             this.vel.y = Constants.EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY;
-            playSong(ESongType.EventBlockDescent);
+            playSong(ESongType.EVENT_BLOCK_DESCENT);
         }
     }
 
@@ -250,7 +250,7 @@ public class Player extends ACharacter implements IDrawable {
         if (this.jumpPressed) {    // jump button pressed/held
             if (this.numberOfFloorBoundaryContacts > 0 ||
                 (this.numberOfVerticalBoundaryContacts > 0 && this.numberOfCeilingBoundaryContacts == 0)) { // able to jump
-                playSong(ESongType.PlayerAction);
+                playSong(ESongType.PLAYER_ACTION);
                 this.vel.y = Constants.PLAYER_JUMP_VERTICAL_VELOCITY;
 
                 this.shouldSetPreviousFloorBoundaryContact = false;

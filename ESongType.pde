@@ -2,10 +2,10 @@
  * possible values for songs
  */
 enum ESongType {
-    LevelSelectMenu,
-    Level,
-    PlayerDeath,
-    LevelComplete,
-    PlayerAction,
-    EventBlockDescent
+    LEVEL_SELECT_MENU,
+    LEVEL,
+    PLAYER_DEATH,
+    LEVEL_COMPLETE,
+    PLAYER_ACTION,
+    EVENT_BLOCK_DESCENT
 }

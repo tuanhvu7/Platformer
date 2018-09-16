@@ -37,7 +37,7 @@ public class LevelSelectMenu extends AMenu implements IDrawable {
             this.isActive
         ));
 
-        loopSong(ESongType.LevelSelectMenu);
+        loopSong(ESongType.LEVEL_SELECT_MENU);
     }
 
     /**

@@ -20,7 +20,7 @@ public class PauseMenu extends AMenu implements IDrawable {
         registerMethod("draw", this); // connect this draw() from main draw()
 
         this.panelsList.add(new PauseMenuPanel(
-            EPauseMenuButtonType.Continue,
+            EPauseMenuButtonType.CONTINUE,
             100 + this.horizontalOffset,    // add offset to account for viewbox
             100,
             Constants.PANEL_WIDTH,
@@ -30,7 +30,7 @@ public class PauseMenu extends AMenu implements IDrawable {
         ));
 
         this.panelsList.add(new PauseMenuPanel(
-            EPauseMenuButtonType.Quit,
+            EPauseMenuButtonType.QUIT,
             400 + this.horizontalOffset,    // add offset to account for viewbox
             100,
             Constants.PANEL_WIDTH,

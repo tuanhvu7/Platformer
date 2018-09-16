@@ -124,7 +124,7 @@ public class Enemy extends ACharacter implements IDrawable {
         this.makeNotActive();
         getCurrentActiveCharactersList().remove(this);
         if (!isOffscreenDeath) {
-            playSong(ESongType.PlayerAction);
+            playSong(ESongType.PLAYER_ACTION);
             getCurrentActivePlayer().handleJumpKillEnemyPhysics();
         }
     }

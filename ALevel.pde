@@ -175,7 +175,7 @@ public abstract class ALevel implements IDrawable {
                             true);
 
                     } else {
-                        loopSong(ESongType.Level);
+                        loopSong(ESongType.LEVEL);
                         loop();
                         this.closePauseMenu();
                     }
