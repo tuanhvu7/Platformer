@@ -70,6 +70,7 @@ public class Constants {
     public static final int LEVEL_GOAL_HEIGHT = LEVEL_FLOOR_Y_POSITION;
 
     public static final int EVENT_BLOCK_COLOR = #00E500;
+    public static final int BREAKABLE_BLOCK_COLOR = #800000;
     public static final int DEFAULT_EVENT_BLOCK_WIDTH = 125;
     public static final int DEFAULT_EVENT_BLOCK_HEIGHT = 200;
 

@@ -16,10 +16,13 @@ public class Block extends ABlock implements IDrawable {
 
         super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
 
-        this.fillColor = Constants.DEFAULT_BLOCK_COLOR;
-
+        if (isBreakableFromBottom) {
+            this.fillColor = Constants.BREAKABLE_BLOCK_COLOR;
+        } else {
+            this.fillColor = Constants.DEFAULT_BLOCK_COLOR;
+        }
         this.isBreakableFromBottom = isBreakableFromBottom;
-
+        
         this.topSide = new HorizontalBoundary(
             leftX,
             topY,
@@ -46,8 +49,11 @@ public class Block extends ABlock implements IDrawable {
         super(leftX, topY, width, height, blockLineThickness,
             isVisible, false);  // initially not active, to be set in makeActive(), isVisible
 
-        this.fillColor = Constants.DEFAULT_BLOCK_COLOR;
-
+        if (isBreakableFromBottom) {
+            this.fillColor = Constants.BREAKABLE_BLOCK_COLOR;
+        } else {
+            this.fillColor = Constants.DEFAULT_BLOCK_COLOR;
+        }
         this.isBreakableFromBottom = isBreakableFromBottom;
 
         this.topSide = new HorizontalBoundary(
