@@ -136,20 +136,36 @@ public abstract class ALevel implements IDrawable {
         int numberHorizontalBackgroundIterations =
             (int) Math.ceil((double) getCurrentActiveLevelWidth() / getLevelBackgroundImage().width);
 
-        for (int i = 0; i < numberHorizontalBackgroundIterations; i++) {
-            int widthToDraw =
-                Math.min(
-                    getLevelBackgroundImage().width,
-                    levelWidthLeftToDraw);
+        int levelHeightLeftToDraw = getCurrentActiveLevelHeight();
+        int numberVerticalBackgroundIterations =
+            (int) Math.ceil((double) getCurrentActiveLevelHeight() / getLevelBackgroundImage().height);
 
-            image(
-                getLevelBackgroundImage(),
-                i * getLevelBackgroundImage().width,
-                0,
-                widthToDraw,
-                getLevelBackgroundImage().height);
+        for (int i = 0; i < numberVerticalBackgroundIterations; i++) {
+            for (int j = 0; j < numberHorizontalBackgroundIterations; j++) {
+                int curIterationWidthToDraw =
+                    Math.min(
+                        getLevelBackgroundImage().width,
+                        levelWidthLeftToDraw);
 
-            levelWidthLeftToDraw -= widthToDraw;
+                int curIterationHeightToDraw =
+                    Math.min(
+                        getLevelBackgroundImage().height,
+                        levelHeightLeftToDraw);
+
+                int startYPosToDraw =
+                    -i * getLevelBackgroundImage().height
+                        - (getLevelBackgroundImage().height - curIterationHeightToDraw);
+
+                image(
+                    getLevelBackgroundImage(),
+                    i * getLevelBackgroundImage().width, // start x pos
+                    startYPosToDraw,  // start y pos
+                    curIterationWidthToDraw,
+                    curIterationHeightToDraw);
+
+                levelWidthLeftToDraw -= curIterationWidthToDraw;
+                levelHeightLeftToDraw -= curIterationHeightToDraw;
+            }
         }
 
         this.handleConditionalEnemyTriggers();

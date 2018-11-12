@@ -71,7 +71,7 @@ private int currentActiveLevelNumber;
 private final int[] levelsWidthArray = {
     0,          // non-existent level zero
     8750,
-    1000
+    1300
 };
 
 // heights of all levels
@@ -341,4 +341,11 @@ public ViewBox getCurrentActiveViewBox() {
  */
 public int getCurrentActiveLevelWidth() {
     return levelsWidthArray[currentActiveLevelNumber];
+}
+
+/**
+ * return height of current active level
+ */
+public int getCurrentActiveLevelHeight() {
+    return levelsHeightArray[this.currentActiveLevelNumber];
 }

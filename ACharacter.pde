@@ -102,7 +102,11 @@ public abstract class ACharacter {
      * check and handle death of this by going offscreen
      */
     void checkHandleOffscreenDeath() {
-        if (this.pos.y + this.diameter / 2 <= 0 || this.pos.y - this.diameter / 2 >= height) {
+        int upperScreenLimit = height - getCurrentActiveLevelHeight();
+
+        if (this.pos.y + this.diameter / 2 <= upperScreenLimit
+            || this.pos.y - this.diameter / 2 >= height) {
+
             this.handleDeath(true);
         }
     }

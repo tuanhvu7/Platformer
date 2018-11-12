@@ -29,7 +29,7 @@ public class ViewBox implements IDrawable {
         this.handleMovement();
 
         // move viewbox as necessary
-        translate(-this.pos.x, -0);
+        translate(-this.pos.x, -this.pos.y);
     }
 
     /**
@@ -65,33 +65,42 @@ public class ViewBox implements IDrawable {
      * handle movement (position, velocity)
      */
     private void handleMovement() {
-        if (getCurrentActiveLevel().isHandlingLevelComplete() && this.playerAtViewBoxBoundary(false)) {   // viewbox movement during level completion
+        this.handleHorizontalMovement();
+        this.handleVerticalMovement();
+    }
+
+    /**
+     * handle horizontal movement
+     */
+    private void handleHorizontalMovement() {
+        Player player = getCurrentActivePlayer();
+        if (getCurrentActiveLevel().isHandlingLevelComplete() && this.playerAtHorizontalViewBoxBoundary(false)) {   // viewbox movement during level completion
             this.vel.x = Constants.PLAYER_LEVEL_COMPLETE_SPEED;
 
         } else {
-            if (getCurrentActivePlayer().isMoveLeftPressed()) {
+            if (player.isMoveLeftPressed()) {
                 if (this.pos.x > 0       // left edge of viewbox not at left edge of level
-                    && this.playerAtViewBoxBoundary(true)) {
+                    && this.playerAtHorizontalViewBoxBoundary(true)) {
                     this.vel.x = -Constants.PLAYER_RUN_SPEED;
                 } else {
                     this.vel.x = 0;
                 }
             }
-            if (getCurrentActivePlayer().isMoveRightPressed()) {
+            if (player.isMoveRightPressed()) {
                 if (this.pos.x < getCurrentActiveLevelWidth() - width   // right edge of viewbox not at right edge of level
-                    && this.playerAtViewBoxBoundary(false)) {
+                    && this.playerAtHorizontalViewBoxBoundary(false)) {
                     this.vel.x = Constants.PLAYER_RUN_SPEED;
                 } else {
                     this.vel.x = 0;
                 }
             }
-            if (!getCurrentActivePlayer().isMoveLeftPressed() &&
-                !getCurrentActivePlayer().isMoveRightPressed()) {
+            if (!player.isMoveLeftPressed() &&
+                !player.isMoveRightPressed()) {
                 this.vel.x = 0;
             }
         }
 
-        this.pos.add(this.vel);
+        this.pos.add(this.vel.x, 0);
 
         // fix viewbox level boundary overflows
         if (this.pos.x > getCurrentActiveLevelWidth() - width) {
@@ -102,13 +111,53 @@ public class ViewBox implements IDrawable {
     }
 
     /**
-     * return if player is at lower (left) or upper (right) boundary (from given value) of viewbox
+     * handle vertical movement
      */
-    private boolean playerAtViewBoxBoundary(boolean isLowerLeftBoundary) {
-        if (isLowerLeftBoundary) {
-            return getCurrentActivePlayer().getPos().x <= this.pos.x + Constants.VIEWBOX_BOUNDARY * width;
+    private void handleVerticalMovement() {
+        Player player = getCurrentActivePlayer();
+
+        boolean shouldScrollDown = this.playerAtVerticalViewBoxBoundary(true)
+            && player.getVel().y < 0;
+
+        boolean shouldScrollUp = this.playerAtVerticalViewBoxBoundary(false)
+            && player.getVel().y > 0;
+        if (shouldScrollDown || shouldScrollUp) {
+            this.vel.y = player.getVel().y;
         } else {
-            return getCurrentActivePlayer().getPos().x >= this.pos.x + (1.00 - Constants.VIEWBOX_BOUNDARY) * width;
+            this.vel.y = 0;
+        }
+
+        this.pos.add(0, this.vel.y);
+
+        // fix viewbox level boundary overflows
+        if (this.pos.y < height - getCurrentActiveLevelHeight()) {    // top overflow
+            this.pos.y = height - getCurrentActiveLevelHeight();
+        } else if (this.pos.y > 0) { // bottom overflow
+            this.pos.y = 0;
+        }
+    }
+
+    /**
+     * return if player is at lower (left) or upper (right) boundary (depending from given value) of viewbox
+     */
+    private boolean playerAtHorizontalViewBoxBoundary(boolean isLowerLeftBoundary) {
+        float playerXPos = getCurrentActivePlayer().getPos().x;
+        if (isLowerLeftBoundary) {
+            return playerXPos <= this.pos.x + Constants.HORIZONTAL_VIEWBOX_BOUNDARY * width;
+        } else {
+            return playerXPos >= this.pos.x + (1.00 - Constants.HORIZONTAL_VIEWBOX_BOUNDARY) * width;
+        }
+    }
+
+    /**
+     * return if player is at bottom or top boundary (depending on given value) of viewbox
+     */
+    private boolean playerAtVerticalViewBoxBoundary(boolean isBottomBoundary) {
+        float playerYPos = getCurrentActivePlayer().getPos().y;
+        if (isBottomBoundary) {
+            return playerYPos <= this.pos.y + Constants.VERTICAL_VIEWBOX_BOUNDARY * height;
+        } else {
+            return playerYPos >= this.pos.y + (1.00 - Constants.VERTICAL_VIEWBOX_BOUNDARY) * height;
         }
     }
 

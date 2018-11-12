@@ -18,8 +18,8 @@ public class Constants {
      * viewbox will move to follow player if player goes past this screen size boundary
      * Example: 0.25 means viewbox follow player if player goes past upper and lower 25% screen size
      */
-    public static final double VIEWBOX_BOUNDARY = 0.35;
-
+    public static final double HORIZONTAL_VIEWBOX_BOUNDARY = 0.35;
+    public static final double VERTICAL_VIEWBOX_BOUNDARY = 0.1;
 
     /*** velocity and acceleration physics ***/
     public static final float GRAVITY = 0.4;
