@@ -64,7 +64,11 @@ public abstract class ACharacter {
      * handle contact with vertical boundary
      */
     public void handleContactWithVerticalBoundary(float boundaryXPoint) {
-        this.vel.x = -this.vel.x; // move in opposite horizontal direction
+        final boolean movingIntoBoundaryFromRight = this.pos.x > boundaryXPoint && this.vel.x < 0;
+        final boolean movingIntoBoundaryFromLeft = this.pos.x < boundaryXPoint && this.vel.x > 0;
+        if(movingIntoBoundaryFromRight || movingIntoBoundaryFromLeft) {
+            this.vel.x = -this.vel.x; // move in opposite horizontal direction
+        }
     }
 
     /**
@@ -115,8 +119,7 @@ public abstract class ACharacter {
      * handle death of this;
      * to override in extended methods
      */
-    void handleDeath(boolean isOffscreenDeath) {
-    }
+    abstract void handleDeath(boolean isOffscreenDeath);
 
     /*** getters and setters ***/
     public PVector getPos() {

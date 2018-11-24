@@ -9,7 +9,7 @@ public class Player extends ACharacter implements IDrawable {
     private int numberOfCeilingBoundaryContacts;
 
     // top boundary of event blocks that this is touching
-    private final Set<EventBlockTopBoundary> eventTopBoundaryContacts;
+    private final Set<EventBlockTopBoundary> eventBlockTopBoundaryContacts;
 
     // stores floor boundary that this cannot contact with
     // to prevent going on floor boundaries when walking from below
@@ -40,7 +40,7 @@ public class Player extends ACharacter implements IDrawable {
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
 
-        this.eventTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
+        this.eventBlockTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
         this.previousFloorBoundaryContact = null;
         this.shouldSetPreviousFloorBoundaryContact = true;
 
@@ -66,7 +66,7 @@ public class Player extends ACharacter implements IDrawable {
             if (keyEvent.getKey() == 'w') {
                 this.jumpPressed = true;
             }
-            if (keyEvent.getKey() == 's' && this.eventTopBoundaryContacts.size() == 1 && !isDescendingDownEventBlock) {
+            if (keyEvent.getKey() == 's' && this.eventBlockTopBoundaryContacts.size() == 1 && !isDescendingDownEventBlock) {
                 this.isDescendingDownEventBlock = true;
             }
 
@@ -160,8 +160,10 @@ public class Player extends ACharacter implements IDrawable {
         this.vel.x = 0;
         if (this.pos.x > boundaryXPoint) {   // left boundary
             this.ableToMoveLeft = false;
+            this.pos.x = boundaryXPoint + this.diameter / 2;
         } else {    // right boundary
             this.ableToMoveRight = false;
+            this.pos.x = boundaryXPoint - this.diameter / 2;
         }
     }
 
@@ -180,6 +182,8 @@ public class Player extends ACharacter implements IDrawable {
             getCurrentActiveViewBox().setViewBoxHorizontalPosition(this.pos.x);
             this.vel.y = Constants.CHARACTER_WARP_EVENT_VERTICAL_VELOCITY;
         }
+        // event block top boundary can affect player again
+        this.shouldSetPreviousFloorBoundaryContact = false;
         eventBlockTopBoundary.setDoesAffectPlayer(true);
     }
 
@@ -210,12 +214,12 @@ public class Player extends ACharacter implements IDrawable {
      * handle this descent down event block
      */
     private void handleEventBlockDescent() {
-        if (this.eventTopBoundaryContacts.size() == 1) {
+        if (this.eventBlockTopBoundaryContacts.size() == 1) {
             this.resetControlPressed();
             unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
 
             EventBlockTopBoundary firstEventTopBoundaryContacts =
-                this.eventTopBoundaryContacts.stream().findFirst().get();
+                this.eventBlockTopBoundaryContacts.stream().findFirst().get();
 
             int middleOfBoundary = Math.round(
                 (firstEventTopBoundaryContacts.getEndPoint().x + firstEventTopBoundaryContacts.getStartPoint().x) / 2);
@@ -287,8 +291,8 @@ public class Player extends ACharacter implements IDrawable {
 
 
     /*** getters and setters ***/
-    public Set<EventBlockTopBoundary> getEventTopBoundaryContacts() {
-        return eventTopBoundaryContacts;
+    public Set<EventBlockTopBoundary> getEventBlockTopBoundaryContacts() {
+        return eventBlockTopBoundaryContacts;
     }
 
     public boolean isMoveLeftPressed() {
