@@ -1,7 +1,7 @@
 /**
  * flying enemy
  */
-public class FlyingEnemy extends Enemy implements IDrawable {
+public class FlyingEnemy extends Enemy {
 
     // top y position this.pos.y can be at before vertical movement direction change
     private final int topY;

@@ -1,7 +1,7 @@
 /**
  * menu to select level to play;
  */
-public class LevelSelectMenu extends AMenu implements IDrawable {
+public class LevelSelectMenu extends AMenu {
 
     /**
      * set properties of this
@@ -16,26 +16,27 @@ public class LevelSelectMenu extends AMenu implements IDrawable {
     @Override
     public void setupActivateMenu() {
         // make this active
-        this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
 
-        this.panelsList.add(new LevelSelectMenuPanel(
-            1,
-            100,
-            100,
-            Constants.PANEL_WIDTH,
-            Constants.PANEL_HEIGHT,
-            this.isActive
-        ));
+        int leftXPanelPosition = 100;
+        int topYPanelPosition = 100;
+        for (int i = 1; i < levelsHeightArray.length; i++) {
+            if (leftXPanelPosition + Constants.PANEL_SIZE > getLevelBackgroundImage().width) {
+                leftXPanelPosition = 100;
+                topYPanelPosition += (100 + Constants.PANEL_SIZE);
+            }
 
-        this.panelsList.add(new LevelSelectMenuPanel(
-            2,
-            400,
-            100,
-            Constants.PANEL_WIDTH,
-            Constants.PANEL_HEIGHT,
-            this.isActive
-        ));
+            this.panelsList.add(new LevelSelectMenuPanel(
+                i,
+                leftXPanelPosition,
+                topYPanelPosition,
+                Constants.PANEL_SIZE,
+                Constants.PANEL_SIZE,
+                true
+            ));
+
+            leftXPanelPosition += Constants.PANEL_SIZE + 100;
+        }
 
         loopSong(ESongType.LEVEL_SELECT_MENU);
     }

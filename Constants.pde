@@ -5,8 +5,7 @@ public class Constants {
 
     /*** level panel config ***/
     public static final int TEXT_SIZE = 24;
-    public static final int PANEL_HEIGHT = 200;
-    public static final int PANEL_WIDTH = 200;
+    public static final int PANEL_SIZE = 200;
     public static final int PANEL_COLOR = #00FF00;
 
     /*** screen config ***/
@@ -20,6 +19,7 @@ public class Constants {
      */
     public static final double HORIZONTAL_VIEWBOX_BOUNDARY = 0.35;
     public static final double VERTICAL_VIEWBOX_BOUNDARY = 0.1;
+
 
     /*** velocity and acceleration physics ***/
     public static final float GRAVITY = 0.4;
@@ -39,8 +39,10 @@ public class Constants {
     public static final int PLAYER_LEVEL_COMPLETE_SPEED = 1;
     public static final int PLAYER_JUMP_VERTICAL_VELOCITY = -12;
     public static final int PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY = -7;
-    public static final int PLAYER_COLOR = #000000;
+    public static final int PLAYER_DEFAULT_COLOR = #000000;
+    public static final int PLAYER_DAMAGED_COLOR = #888888;
     public static final int PLAYER_DIAMETER = 60;
+    public  static final int PLAYER_HEALTH_TEXT_COLOR = #FFFFFF;
     // minimum angle (degrees) of collision between player and enemy
     // for player to kill enemy
     public static final double MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE = 20.0;
@@ -58,9 +60,17 @@ public class Constants {
     public static final int BOUNDARY_COLOR = #000000;
     public static final int DEFAULT_BOUNDARY_LINE_THICKNESS = 1;
 
+    public static final int BREAKABLE_BLOCK_COLOR = #800000;
     public static final int DEFAULT_BLOCK_COLOR = #CD853F;
     public static final int DEFAULT_BLOCK_SIZE = 100;
 
+    public static final int ITEM_BLOCK_TEXT_COLOR = #000000;
+
+    public static final int EVENT_BLOCK_COLOR = #00E500;
+    public static final int DEFAULT_EVENT_BLOCK_WIDTH = 125;
+    public static final int DEFAULT_EVENT_BLOCK_HEIGHT = 200;
+
+    /*** collectable config ***/
     public static final int CHECKPOINT_COLOR = #FFD700;
     public static final int CHECKPOINT_WIDTH = 40;
     public static final int CHECKPOINT_HEIGHT = 100;
@@ -69,10 +79,11 @@ public class Constants {
     public static final int LEVEL_GOAL_WIDTH = 40;
     public static final int LEVEL_GOAL_HEIGHT = LEVEL_FLOOR_Y_POSITION;
 
-    public static final int EVENT_BLOCK_COLOR = #00E500;
-    public static final int BREAKABLE_BLOCK_COLOR = #800000;
-    public static final int DEFAULT_EVENT_BLOCK_WIDTH = 125;
-    public static final int DEFAULT_EVENT_BLOCK_HEIGHT = 200;
+    public static final int HEALTH_ITEM_COLOR = #DCDCDC;
+    public static final int NEGATIVE_HEALTH_ITEM_TEXT_COLOR = #FF0000;
+    public static final int ZERO_HEALTH_ITEM_TEXT_COLOR = #888888;
+    public static final int POSITIVE_HEALTH_ITEM_TEXT_COLOR = #008000;
+    public static final int HEALTH_ITEM_SIZE = 60;
 
     /*** assets path ***/
     public static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
@@ -81,6 +92,7 @@ public class Constants {
     public static final String PLAYER_DEATH_SONG_NAME = "player-death-song.mp3"; 
     public static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3";
     public static final String PLAYER_ACTION_SOUND_NAME = "player-action-sound.mp3";
+    public static final String PLAYER_DAMAGE_SOUND_NAME = "player-damage-sound.mp3";
     public static final String EVENT_BLOCK_DESCENT_SOUND_NAME = "event-block-descent-sound.mp3";
 
     /**

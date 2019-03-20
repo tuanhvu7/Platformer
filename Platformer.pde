@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.ref.WeakReference;
 import java.util.Optional;
+import java.net.URI;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -47,6 +48,11 @@ private MediaPlayer levelCompleteSongPlayer;
 private Media playerActionSong;
 // player for player action 
 private MediaPlayer playerActionSongPlayer;
+
+// player damage 
+private Media playerDamageSong;
+// player for player damage 
+private MediaPlayer playerDamageSongPlayer;
 
 // event block descent song
 private Media eventBlockDescentSong;
@@ -98,6 +104,7 @@ void settings() {
     playerDeathSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
     levelCompleteSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
     playerActionSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
+    playerDamageSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DAMAGE_SOUND_NAME)));
     eventBlockDescentSong = new Media(convertPathToValidUri(dataPath(Constants.EVENT_BLOCK_DESCENT_SOUND_NAME)));
     // set song players
     levelSelectMenuSongPlayer = new MediaPlayer(levelSelectMenuSong);
@@ -105,6 +112,7 @@ void settings() {
     playerDeathSongPlayer = new MediaPlayer(playerDeathSong);
     levelCompleteSongPlayer = new MediaPlayer(levelCompleteSong);
     playerActionSongPlayer = new MediaPlayer(playerActionSong);
+    playerDamageSongPlayer = new MediaPlayer(playerDamageSong);
     eventBlockDescentSongPlayer = new MediaPlayer(eventBlockDescentSong);
 
     currentActiveLevelNumber = 0;
@@ -122,24 +130,26 @@ void draw() { }
  * reset level
  */
 private void resetLevel() {
-    stopSong();
-    playSong(ESongType.PLAYER_DEATH);
-
     // to reset level after player death song finishes without freezing game
     new Thread( new Runnable() {
         public void run()  {
             try  {
-                // println("running reset level thread!!!");
-                if(levelCompleteThread != null) {
+                if (levelCompleteThread != null) {
                     levelCompleteThread.interrupt();
+                    levelCompleteThread = null;
                 }
+
                 getCurrentActivePlayer().makeNotActive();
+                currentActiveLevel.get().setPlayer(null);  // to stop interactions with player
+
+                stopSong();
+                playSong(ESongType.PLAYER_DEATH);
                 Thread.sleep( (long) playerDeathSong.getDuration().toMillis() );  // wait for song duration
-                
-                boolean loadPlayerFromCheckPoint = currentActiveLevel.get().loadPlayerFromCheckPoint;    // TODO: encapsulate
-                currentActiveLevel.get().deactivateLevel();
+
+                boolean loadPlayerFromCheckPoint = getCurrentActiveLevel().isLoadPlayerFromCheckPoint();
+                getCurrentActiveLevel().deactivateLevel();
                 LevelFactory levelFactory = new LevelFactory();
-                currentActiveLevel = new WeakReference( levelFactory.getLevel(true, loadPlayerFromCheckPoint) );
+                currentActiveLevel = new WeakReference(levelFactory.getLevel(true, loadPlayerFromCheckPoint));
             }
             catch (InterruptedException ie)  { }
         }
@@ -151,9 +161,6 @@ private void resetLevel() {
  * complete level
  */
 private void handleLevelComplete() {
-    stopSong();
-    playSong(ESongType.LEVEL_COMPLETE);
-
     levelCompleteThread =
         new Thread(new Runnable() {
             public void run()  {
@@ -164,13 +171,15 @@ private void handleLevelComplete() {
                     getCurrentActivePlayer().setVel(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
+                    stopSong();
+                    playSong(ESongType.LEVEL_COMPLETE);
                     Thread.sleep( (long) levelCompleteSong.getDuration().toMillis() );  // wait for song duration
+                    
                     getCurrentActivePlayer().makeNotActive();
                     currentActiveLevel.get().deactivateLevel();
                     currentActiveLevelNumber = 0;
                     levelSelectMenu.setupActivateMenu();
-                }
-                catch (InterruptedException ie)  { }
+                } catch (InterruptedException ie)  { }
             }
         });
     levelCompleteThread.start();
@@ -210,6 +219,20 @@ private void playSong(ESongType songType) {
             levelCompleteSongPlayer.setCycleCount(1);
             levelCompleteSongPlayer.play();
         break;
+
+        case PLAYER_DAMAGE:
+            // to player damage song in parallel with level song
+            new Thread( new Runnable() {
+                public void run() {
+                    try {
+                        playerDamageSongPlayer.setCycleCount(1);
+                        playerDamageSongPlayer.play();
+                        Thread.sleep((long) playerDamageSong.getDuration().toMillis());  // wait for song duration
+                        playerDamageSongPlayer.stop();
+                    } catch (InterruptedException ie) { }
+                }
+            }).start();
+            break;
 
         case PLAYER_ACTION:
             // to reset level after player death song finishes without freezing game
@@ -262,10 +285,7 @@ private void stopSong() {
  * convert given string to valid uri path and return result
  */
 private String convertPathToValidUri(String path) {
-    return path
-        .replace(" ", "%20")            // space is illegal character
-        .replace("\\", "/")             // back-slash illegal character
-        .replace("C:/", "file:///C:/"); // prevent unsupported protocol c
+    return new File(path).toURI().toString();
 }
 
 /*** getters and setters ***/
@@ -309,31 +329,17 @@ public Player getCurrentActivePlayer() {
 }
 
 /**
- * return non-player characters of current active level
- */
-public Set<ACharacter> getCurrentActiveCharactersList() {
-    return currentActiveLevel.get().charactersList;    // TODO: encapsulate
-}
-
-/**
- * return blocks of current active level
- */
-public Set<ABlock> getCurrentActiveBlocksList() {
-    return currentActiveLevel.get().blocksList;    // TODO: encapsulate
-}
-
-/**
- * return collectables of current active level
- */
-public Set<ACollectable> getCurrentActiveLevelCollectables() {
-    return currentActiveLevel.get().collectablesList;    // TODO: encapsulate
-}
-
-/**
  * return viewbox of current active level
  */
 public ViewBox getCurrentActiveViewBox() {
     return currentActiveLevel.get().viewBox; // TODO: encapsulate
+}
+
+/**
+    * return drawable collection of current active level
+    */
+public LevelDrawableCollection getCurrentActiveLevelDrawableCollection() {
+    return this.currentActiveLevel.get().getLevelDrawableCollection();
 }
 
 /**

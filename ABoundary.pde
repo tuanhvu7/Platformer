@@ -1,7 +1,7 @@
 /**
  * Common for line boundaries
  */
-public abstract class ABoundary {
+public abstract class ABoundary implements IDrawable {
 
     // start point (smaller x and smaller y) coordinate for boundary
     final PVector startPoint;
@@ -57,6 +57,27 @@ public abstract class ABoundary {
             this.makeActive();
         }
     }
+
+    /**
+     * runs continuously
+     */
+    public void draw() {
+        this.show();
+        if (getCurrentActivePlayer() != null) {
+            this.checkHandleContactWithPlayer();
+        }
+        this.checkHandleContactWithNonPlayerCharacters();
+    }
+
+    /**
+     * check and handle contact with player
+     */
+    abstract void checkHandleContactWithPlayer();
+
+    /**
+     * check and handle contact with non-player characters
+     */
+    abstract void checkHandleContactWithNonPlayerCharacters();
 
     /**
      * display line boundary

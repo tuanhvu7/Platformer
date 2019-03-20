@@ -1,7 +1,7 @@
 /**
  * event block;
  */
-public class EventBlock extends ABlock implements IDrawable {
+public class EventBlock extends ABlock {
 
     // boundary that events player upon player contact
     private final EventTriggerHorizontalBoundary eventTriggerBoundary;

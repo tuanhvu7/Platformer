@@ -1,7 +1,7 @@
 /**
  * panel in level select menu
  */
-public class LevelSelectMenuPanel extends APanel implements IDrawable {
+public class LevelSelectMenuPanel extends APanel {
 
     // level associated with this
     private final int panelLevel;
@@ -27,3 +27,4 @@ public class LevelSelectMenuPanel extends APanel implements IDrawable {
         setCurrentActiveLevel(levelFactory.getLevel(true, false));
     }
 }
+

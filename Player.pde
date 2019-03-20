@@ -1,7 +1,14 @@
 /**
  * player controllable character in game
  */
-public class Player extends ACharacter implements IDrawable {
+public class Player extends ACharacter {
+
+    // health of this, 0 means dead
+    private int health;
+
+    // true means this does interact with enemies
+    private boolean canHaveContactWithEnemies;
+
     // number of wall-like boundaries this is touching;
     private int numberOfVerticalBoundaryContacts;
 
@@ -30,12 +37,43 @@ public class Player extends ACharacter implements IDrawable {
     private boolean isDescendingDownEventBlock;
 
     /**
-     * set properties of this
+     * set properties of this;
+     * set this to have 1 health
      */
     public Player(int x, int y, int diameter, boolean isActive) {
         super(x, y, diameter, isActive);
 
-        this.fillColor = Constants.PLAYER_COLOR;
+        this.health = 1;
+        this.canHaveContactWithEnemies = true;
+        this.fillColor = Constants.PLAYER_DEFAULT_COLOR;
+
+        this.numberOfVerticalBoundaryContacts = 0;
+        this.numberOfFloorBoundaryContacts = 0;
+
+        this.eventBlockTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
+        this.previousFloorBoundaryContact = null;
+        this.shouldSetPreviousFloorBoundaryContact = true;
+
+        this.resetControlPressed();
+
+        this.isDescendingDownEventBlock = false;
+
+        this.ableToMoveRight = true;
+        this.ableToMoveLeft = true;
+    }
+
+    /**
+     * set properties of this
+     */
+    public Player(int x, int y, int diameter, int health, boolean isActive) {
+        super(x, y, diameter, isActive);
+        if (this.health < 1) {
+            throw new IllegalArgumentException("Initial player health must be greater than 1");
+        }
+
+        this.health = health;
+        this.canHaveContactWithEnemies = true;
+        this.fillColor = Constants.PLAYER_DEFAULT_COLOR;
 
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
@@ -104,12 +142,26 @@ public class Player extends ACharacter implements IDrawable {
         this.show();
     }
 
+    @Override
+    void show() {
+        fill(this.fillColor);
+        strokeWeight(0);
+        ellipse(this.pos.x, this.pos.y, this.diameter, this.diameter);
+
+        fill(Constants.PLAYER_HEALTH_TEXT_COLOR);
+        textAlign(CENTER, CENTER);
+        textSize(this.diameter / 2);
+        text(
+            this.health + "",
+            this.pos.x - (this.diameter / 2), this.pos.y - (this.diameter / 2),
+            this.diameter, this.diameter);
+    }
+
     /**
      * active and add this to game
      */
     @Override
     public void makeActive() {
-        this.isActive = true;
         registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
         registerMethod("draw", this); // connect this draw() from main draw()
     }
@@ -119,7 +171,6 @@ public class Player extends ACharacter implements IDrawable {
      */
     @Override
     public void makeNotActive() {
-        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
         unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
     }
@@ -168,7 +219,8 @@ public class Player extends ACharacter implements IDrawable {
     }
 
     /**
-     * handle contact with this and event boundary
+     * handle contact with this and event boundary;
+     * null endWarpPosition means launch event, non-null endWarpPosition means warp event
      */
     public void handleContactWithEventBoundary(EventBlockTopBoundary eventBlockTopBoundary, PVector endWarpPosition) {
         registerMethod("keyEvent", this); // connect this draw() from main draw()
@@ -208,6 +260,33 @@ public class Player extends ACharacter implements IDrawable {
      */
     void handleJumpKillEnemyPhysics() {
         this.vel.y = Constants.PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY;
+    }
+
+    /**
+     * change health of this by given amount;
+     * handle death if death is 0
+     */
+    public void changeHealth(int healthChangeAmount) {
+        this.health += healthChangeAmount;
+        if (this.health == 0) {
+            this.handleDeath(false);
+        } else if (healthChangeAmount < 0) {
+            this.canHaveContactWithEnemies = false;
+            this.fillColor = Constants.PLAYER_DAMAGED_COLOR;
+            playSong(ESongType.PLAYER_DAMAGE);
+
+            // make this unaffected by enemies for a duration
+            new Thread(new Runnable() {
+              public void run()  {
+                try {
+                    Thread.sleep((long) playerDamageSong.getDuration().toMillis());  // wait for song duration
+                    canHaveContactWithEnemies = true;
+                    fillColor = Constants.PLAYER_DEFAULT_COLOR;
+                } catch (InterruptedException ie) {
+                }
+              }
+            }).start();
+        }
     }
 
     /**
@@ -289,8 +368,11 @@ public class Player extends ACharacter implements IDrawable {
         this.numberOfVerticalBoundaryContacts += amount;
     }
 
-
     /*** getters and setters ***/
+    boolean isCanHaveContactWithEnemies() {
+        return canHaveContactWithEnemies;
+    }
+
     public Set<EventBlockTopBoundary> getEventBlockTopBoundaryContacts() {
         return eventBlockTopBoundaryContacts;
     }
@@ -322,4 +404,5 @@ public class Player extends ACharacter implements IDrawable {
     public boolean isShouldSetPreviousFloorBoundaryContact() {
         return shouldSetPreviousFloorBoundaryContact;
     }
+
 }

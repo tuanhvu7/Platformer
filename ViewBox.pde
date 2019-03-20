@@ -26,8 +26,10 @@ public class ViewBox implements IDrawable {
      */
     @Override
     public void draw() {
-        this.handleMovement();
-
+        if (getCurrentActivePlayer() != null) {
+            this.handleHorizontalMovement();
+            this.handleVerticalMovement();
+        }
         // move viewbox as necessary
         translate(-this.pos.x, -this.pos.y);
     }
@@ -59,14 +61,6 @@ public class ViewBox implements IDrawable {
         } else {
             this.pos.x = middleXPos - (Constants.SCREEN_WIDTH / 2);
         }
-    }
-
-    /**
-     * handle movement (position, velocity)
-     */
-    private void handleMovement() {
-        this.handleHorizontalMovement();
-        this.handleVerticalMovement();
     }
 
     /**

@@ -1,13 +1,10 @@
 /**
  * common for menus
  */
-public abstract class AMenu {
+public abstract class AMenu implements IDrawable {
 
     // horizontal offset of this from viewbox
     final int horizontalOffset;
-
-    // true means displayed
-    boolean isActive;
 
     // list of panels in menu
     final List<APanel> panelsList;
@@ -39,8 +36,7 @@ public abstract class AMenu {
     /**
      * activate and setup this; to override in extended classes
      */
-    void setupActivateMenu() {
-    }
+    abstract void setupActivateMenu();
 
     /**
      * deactivate this
@@ -52,7 +48,6 @@ public abstract class AMenu {
 
         this.panelsList.clear();
         // make this not active
-        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 

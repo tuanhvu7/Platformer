@@ -1,19 +1,17 @@
 /**
  * common for blocks
  */
-/**
- * common for blocks
- */
-public abstract class ABlock {
+public abstract class ABlock implements IDrawable {
+
     boolean isVisible;
 
     int fillColor;
 
     // position and dimensions
-    private final int leftX;
-    private final int topY;
-    private final int width;
-    private final int height;
+    final int leftX;
+    final int topY;
+    final int width;
+    final int height;
 
     // boundaries that make up block
     HorizontalBoundary topSide;
@@ -119,7 +117,6 @@ public abstract class ABlock {
      * deactivate and remove this from game;
      * to override in extended classes
      */
-    public void makeNotActive() {
-    }
+    public abstract void makeNotActive();
 
 }

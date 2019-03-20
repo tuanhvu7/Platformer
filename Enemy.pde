@@ -1,7 +1,7 @@
 /**
  * enemy
  */
-public class Enemy extends ACharacter implements IDrawable {
+public class Enemy extends ACharacter {
 
     // true means invulnerable; always kills player on contact
     private final boolean isInvulnerable;
@@ -30,7 +30,9 @@ public class Enemy extends ACharacter implements IDrawable {
     public void draw() {
         this.checkHandleOffscreenDeath();
 
-        this.checkHandleContactWithPlayer();
+        if (getCurrentActivePlayer() != null) {
+            this.checkHandleContactWithPlayer();
+        }
         this.handleMovement();
 
         if (this.isVisible) {
@@ -59,18 +61,19 @@ public class Enemy extends ACharacter implements IDrawable {
      * check and handle contact with player
      */
     private void checkHandleContactWithPlayer() {
-        if (getCurrentActivePlayer().isActive()) {   // to prevent multiple consecutive deaths TODO: encapsulate
+        Player curPlayer = getCurrentActivePlayer();
+        if (curPlayer.isCanHaveContactWithEnemies()) {   // to prevent multiple consecutive deaths and damage
             double collisionAngle = this.collisionWithPlayer();
             if (collisionAngle >= 0) {
                 if (Math.toDegrees(collisionAngle) >= Constants.MIN_PLAYER_KILL_ENEMY_COLLISION_ANGLE
-                    && this.pos.y > getCurrentActivePlayer().getPos().y
+                    && this.pos.y > curPlayer.getPos().y
                     && !this.isInvulnerable)  // player is above this
                 {
                     this.handleDeath(false);
 
                 } else {
                     this.isVisible = true;
-                    getCurrentActivePlayer().handleDeath(false);
+                    curPlayer.changeHealth(-1);
                 }
             }
         }
@@ -82,11 +85,12 @@ public class Enemy extends ACharacter implements IDrawable {
      * negative angle means no collision
      */
     private double collisionWithPlayer() {
-        float xDifference = Math.abs(this.pos.x - getCurrentActivePlayer().getPos().x);
-        float yDifference = Math.abs(this.pos.y - getCurrentActivePlayer().getPos().y);
+        Player curPlayer = getCurrentActivePlayer();
+        float xDifference = Math.abs(this.pos.x - curPlayer.getPos().x);
+        float yDifference = Math.abs(this.pos.y - curPlayer.getPos().y);
 
         // distance between player and this must be sum of their radii for collision
-        float distanceNeededForCollision = (this.diameter / 2) + (getCurrentActivePlayer().getDiameter() / 2);
+        float distanceNeededForCollision = (this.diameter / 2) + (curPlayer.getDiameter() / 2);
 
         // pythagorean theorem
         boolean isAtCollisionDistance =
@@ -113,7 +117,7 @@ public class Enemy extends ACharacter implements IDrawable {
     @Override
     void handleDeath(boolean isOffscreenDeath) {
         this.makeNotActive();
-        getCurrentActiveCharactersList().remove(this);
+        getCurrentActiveLevelDrawableCollection().removeDrawable(this);
         if (!isOffscreenDeath) {
             playSong(ESongType.PLAYER_ACTION);
             getCurrentActivePlayer().handleJumpKillEnemyPhysics();

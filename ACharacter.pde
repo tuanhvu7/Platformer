@@ -1,7 +1,7 @@
 /**
  * Common for circular characters
  */
-public abstract class ACharacter {
+public abstract class ACharacter implements IDrawable {
 
     // (x, y) coordinates of center of character (x, y)
     final PVector pos;
@@ -15,8 +15,6 @@ public abstract class ACharacter {
     // number of floor-like boundaries this is touching;
     int numberOfFloorBoundaryContacts;
 
-    boolean isActive;
-
     /**
      * set properties of this
      */
@@ -24,8 +22,6 @@ public abstract class ACharacter {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
         this.diameter = diameter;
-
-        this.isActive = true;
 
         this.numberOfFloorBoundaryContacts = 0;
 
@@ -83,7 +79,6 @@ public abstract class ACharacter {
      * active and add this to game
      */
     public void makeActive() {
-        this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
@@ -91,7 +86,6 @@ public abstract class ACharacter {
      * deactivate and remove this from game
      */
     public void makeNotActive() {
-        this.isActive = false;
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
@@ -136,9 +130,5 @@ public abstract class ACharacter {
 
     public int getDiameter() {
         return diameter;
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 }

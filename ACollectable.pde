@@ -6,18 +6,19 @@ public abstract class ACollectable implements IDrawable {
     int fillColor;
 
     // position and dimensions
-    private final int leftX;
-    private final int topY;
-    private final int width;
-    private final int height;
+    int leftX;
+    int topY;
+    final int width;
+    final int height;
 
-    private final int blockLineThickness;
+    final int blockLineThickness;
 
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    ACollectable(int leftX, int topY, int width, int height, int blockLineThickness, boolean isActive) {
+    ACollectable(int leftX, int topY, int width, int height,
+                 int blockLineThickness, boolean isActive) {
 
         this.leftX = leftX;
         this.topY = topY;
@@ -37,13 +38,15 @@ public abstract class ACollectable implements IDrawable {
     @Override
     public void draw() {
         this.show();
-        this.checkHandleContactWithPlayer();
+        if (getCurrentActivePlayer() != null) {
+            this.checkHandleContactWithPlayer();
+        }
     }
 
     /**
      * active and add this to game
      */
-    private void makeActive() {
+    public void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
     }
 
@@ -57,7 +60,7 @@ public abstract class ACollectable implements IDrawable {
     /**
      * display block
      */
-    private void show() {
+    void show() {
         fill(this.fillColor);
         strokeWeight(this.blockLineThickness);
         rect(this.leftX, this.topY, this.width, this.height);
@@ -67,8 +70,7 @@ public abstract class ACollectable implements IDrawable {
      * check and handle contact with player;
      * to override in extended classes
      */
-    void checkHandleContactWithPlayer() {
-    }
+    abstract void checkHandleContactWithPlayer();
 
     /**
      * true means this contact with player
@@ -84,5 +86,22 @@ public abstract class ACollectable implements IDrawable {
                 (curPlayer.getPos().y - (curPlayer.getDiameter() / 2) <= this.topY + this.height);
 
         return playerInHorizontalRange && playerInVerticalRange;
+    }
+
+    /*** getters and setters ***/
+    public void setLeftX(int leftX) {
+        this.leftX = leftX;
+    }
+
+    public void setTopY(int topY) {
+        this.topY = topY;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * pause menu
  */
-public class PauseMenu extends AMenu implements IDrawable {
+public class PauseMenu extends AMenu {
 
     /**
      * set properties of this
@@ -16,27 +16,26 @@ public class PauseMenu extends AMenu implements IDrawable {
     @Override
     public void setupActivateMenu() {
         // make this active
-        this.isActive = true;
         registerMethod("draw", this); // connect this draw() from main draw()
 
         this.panelsList.add(new PauseMenuPanel(
             EPauseMenuButtonType.CONTINUE,
             100 + this.horizontalOffset,    // add offset to account for viewbox
             100,
-            Constants.PANEL_WIDTH,
-            Constants.PANEL_HEIGHT,
+            Constants.PANEL_SIZE,
+            Constants.PANEL_SIZE,
             this.horizontalOffset,
-            this.isActive
+            true
         ));
 
         this.panelsList.add(new PauseMenuPanel(
             EPauseMenuButtonType.QUIT,
             400 + this.horizontalOffset,    // add offset to account for viewbox
             100,
-            Constants.PANEL_WIDTH,
-            Constants.PANEL_HEIGHT,
+            Constants.PANEL_SIZE,
+            Constants.PANEL_SIZE,
             this.horizontalOffset,
-            this.isActive
+            true
         ));
     }
 

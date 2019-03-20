@@ -14,8 +14,11 @@ public class LevelFactory {
             case 2:
                 return new LevelTwo(makeActive, loadPlayerFromCheckPoint);
             
+            case 3:
+                return new LevelThree(makeActive, loadPlayerFromCheckPoint);
+
             default:
-                return null;
+                throw new IllegalStateException("getCurrentActiveLevelNumber() is not valid level value");
         }
     }
 }

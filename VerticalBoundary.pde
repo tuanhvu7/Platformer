@@ -1,7 +1,7 @@
 /**
  * vertical line boundaries; walls
  */
-public class VerticalBoundary extends ABoundary implements IDrawable, IBoundary {
+public class VerticalBoundary extends ABoundary {
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
@@ -35,8 +35,7 @@ public class VerticalBoundary extends ABoundary implements IDrawable, IBoundary 
     /**
      * return true if collide with given character
      */
-    @Override
-    public boolean contactWithCharacter(ACharacter character) {
+    boolean contactWithCharacter(ACharacter character) {
         return
             character.getPos().x + (character.getDiameter() / 2) >= this.startPoint.x         // contact right of character
                 && character.getPos().x - (character.getDiameter() / 2) <= this.startPoint.x      // contact left of character
@@ -45,21 +44,12 @@ public class VerticalBoundary extends ABoundary implements IDrawable, IBoundary 
     }
 
     /**
-     * runs continuously. checks and handles contact between this and characters
-     */
-    public void draw() {
-        this.show();
-        this.checkHandleContactWithPlayer();
-        this.checkHandleContactWithNonPlayerCharacters();
-    }
-
-    /**
      * check and handle contact with player
      */
     void checkHandleContactWithPlayer() {
         Player curPlayer = getCurrentActivePlayer();
 
-        if (this.doesAffectPlayer && curPlayer.isActive()) {
+        if (this.doesAffectPlayer) {
             // boundary collision for player
             if (contactWithCharacter(curPlayer)) {  // this has contact with non-player
                 if (!this.charactersTouchingThis.contains(curPlayer)) {  // new collision detected
@@ -82,11 +72,11 @@ public class VerticalBoundary extends ABoundary implements IDrawable, IBoundary 
     /**
      * check and handle contact with non-player characters
      */
-    private void checkHandleContactWithNonPlayerCharacters() {
+    void checkHandleContactWithNonPlayerCharacters() {
         if (this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
-            for (ACharacter curCharacter : getCurrentActiveCharactersList()) {
-                if (curCharacter.isActive() && this.contactWithCharacter(curCharacter)) {
+            for (ACharacter curCharacter : getCurrentActiveLevelDrawableCollection().getCharactersList()) {
+                if (this.contactWithCharacter(curCharacter)) {
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);
                 }
             }

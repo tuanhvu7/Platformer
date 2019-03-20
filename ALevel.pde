@@ -2,27 +2,14 @@
  * common for levels
  */
 public abstract class ALevel implements IDrawable {
-
-    // true means this is active
-    boolean isActive;
-
     // player-controllable character
     Player player;
 
     // level viewbox
     ViewBox viewBox;
 
-    // set of all non-playable characters in level
-    final Set<ACharacter> charactersList;
-
-    // set of all boundaries in level
-    final Set<ABoundary> boundariesList;
-
-    // set of all blocks in level
-    final Set<ABlock> blocksList;
-
-    // set of all collectables in level
-    final Set<ACollectable> collectablesList;
+    // drawables in this
+    final LevelDrawableCollection levelDrawableCollection;
 
     // pause menu for level
     private PauseMenu pauseMenu;
@@ -44,10 +31,7 @@ public abstract class ALevel implements IDrawable {
      */
     ALevel(boolean isActive, boolean loadPlayerFromCheckPoint, int goalRightSideOffsetWithStageWidth) {
 
-        this.charactersList = new HashSet<ACharacter>();
-        this.boundariesList = new HashSet<ABoundary>();
-        this.blocksList = new HashSet<ABlock>();
-        this.collectablesList = new HashSet<ACollectable>();
+        this.levelDrawableCollection = new LevelDrawableCollection();
 
         this.isPaused = false;
 
@@ -65,7 +49,6 @@ public abstract class ALevel implements IDrawable {
      * active and add this to game
      */
     void makeActive() {
-        this.isActive = true;
         registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
         registerMethod("draw", this); // connect this draw() from main draw()
     }
@@ -73,8 +56,7 @@ public abstract class ALevel implements IDrawable {
     /**
      * setup and activate this; to override in extended classes
      */
-    void setUpActivateLevel() {
-    }
+    abstract void setUpActivateLevel();
 
     /**
      * handle conditional enemy triggers in this;
@@ -83,38 +65,19 @@ public abstract class ALevel implements IDrawable {
     void handleConditionalEnemyTriggers() {
     }
 
-
     /**
      * deactivate this;
      */
     public void deactivateLevel() {
-        this.player.makeNotActive();
+        if (this.player != null) {
+            this.player.makeNotActive();
+        }
 
         this.viewBox.makeNotActive();
 
-        for (ACharacter curCharacter : this.charactersList) {
-            curCharacter.makeNotActive();
-        }
-
-        for (ABoundary curBoundary : this.boundariesList) {
-            curBoundary.makeNotActive();
-        }
-
-        for (ABlock curBlock : this.blocksList) {
-            curBlock.makeNotActive();
-        }
-
-        for (ACollectable curCollectable : this.collectablesList) {
-            curCollectable.makeNotActive();
-        }
-
-        this.charactersList.clear();
-        this.boundariesList.clear();
-        this.blocksList.clear();
-        this.collectablesList.clear();
+        this.levelDrawableCollection.deactivateClearAllDrawable();
 
         // make this not active
-        this.isActive = false;
         unregisterMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
@@ -175,7 +138,7 @@ public abstract class ALevel implements IDrawable {
      * handle character keypress controls
      */
     public void keyEvent(KeyEvent keyEvent) {
-        if (this.player.isActive() && !this.isHandlingLevelComplete) {  // only allow pause if player is active
+        if (this.player != null && !this.isHandlingLevelComplete) {  // only allow pause if player is active
             // press 'p' for pause
             if (keyEvent.getAction() == KeyEvent.PRESS) {
                 char keyPressed = keyEvent.getKey();
@@ -208,31 +171,30 @@ public abstract class ALevel implements IDrawable {
      */
     private void setUpActivateWallsGoal(int goalRightSideOffsetWithStageWidth) {
         // stage goal
-        this.collectablesList.add(new LevelGoal(
-            
+        this.levelDrawableCollection.addDrawable(new LevelGoal(
             getCurrentActiveLevelWidth() - Constants.LEVEL_GOAL_WIDTH - goalRightSideOffsetWithStageWidth,
             Constants.LEVEL_FLOOR_Y_POSITION - Constants.LEVEL_GOAL_HEIGHT,
             Constants.LEVEL_GOAL_WIDTH,
             Constants.LEVEL_GOAL_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive)
+            true)
         );
 
         // stage right and left walls
-        this.boundariesList.add(new VerticalBoundary(
+        this.levelDrawableCollection.addDrawable(new VerticalBoundary(
             0,
             0,
             Constants.LEVEL_FLOOR_Y_POSITION,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
+            true
         ));
 
-        this.boundariesList.add(new VerticalBoundary(
+        this.levelDrawableCollection.addDrawable(new VerticalBoundary(
             getCurrentActiveLevelWidth(),
             0,
             Constants.LEVEL_FLOOR_Y_POSITION,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            this.isActive
+            true
         ));
     }
 
@@ -241,20 +203,16 @@ public abstract class ALevel implements IDrawable {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public ViewBox getViewBox() {
         return viewBox;
     }
 
-    public Set<ACharacter> getCharactersList() {
-        return charactersList;
-    }
-
-    public Set<ABlock> getBlocksList() {
-        return blocksList;
-    }
-
-    public Set<ACollectable> getCollectablesList() {
-        return collectablesList;
+    public LevelDrawableCollection getLevelDrawableCollection() {
+        return levelDrawableCollection;
     }
 
     public void setPaused(boolean paused) {

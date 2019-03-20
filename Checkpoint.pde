@@ -17,10 +17,10 @@ public class Checkpoint extends ACollectable {
      */
     @Override
     void checkHandleContactWithPlayer() {
-        if (getCurrentActivePlayer().isActive() && this.contactWithPlayer()) {
+        if (this.contactWithPlayer()) {
             getCurrentActiveLevel().setLoadPlayerFromCheckPoint(true);
             this.makeNotActive();
-            getCurrentActiveLevelCollectables().remove(this);
+            getCurrentActiveLevelDrawableCollection().removeDrawable(this);
         }
     }
 

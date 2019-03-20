@@ -1,7 +1,7 @@
 /**
  * panels in pause menu
  */
-public class PauseMenuPanel extends APanel implements IDrawable {
+public class PauseMenuPanel extends APanel {
 
     // horizontal offset of this due to viewbox
     private final int horizontalOffset;

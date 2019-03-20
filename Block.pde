@@ -2,17 +2,18 @@
  * Block;
  * invisible block only has bottom boundary active
  */
-public class Block extends ABlock implements IDrawable {
+public class Block extends ABlock {
 
     // true means breakable from bottom
-    private final boolean isBreakableFromBottom;
+    final boolean isBreakableFromBottom;
 
     /**
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    public Block(int leftX, int topY, int width, int height, int blockLineThickness, boolean isBreakableFromBottom,
-                 boolean isActive) {
+    public Block(int leftX, int topY,
+                 int width, int height, int blockLineThickness,
+                 boolean isBreakableFromBottom, boolean isActive) {
 
         super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
 
@@ -22,7 +23,7 @@ public class Block extends ABlock implements IDrawable {
             this.fillColor = Constants.DEFAULT_BLOCK_COLOR;
         }
         this.isBreakableFromBottom = isBreakableFromBottom;
-        
+
         this.topSide = new HorizontalBoundary(
             leftX,
             topY,
@@ -80,8 +81,9 @@ public class Block extends ABlock implements IDrawable {
             this.show();
         }
 
+        Player player = getCurrentActivePlayer();
         // handle player collision with invisible block
-        if (this.bottomSide.contactWithCharacter(getCurrentActivePlayer())) {
+        if (player != null && this.bottomSide.contactWithCharacter(player)) {
             if (!this.isVisible) {
                 this.handleInvisibleBlockCollisionWithPlayer();
 
@@ -95,7 +97,7 @@ public class Block extends ABlock implements IDrawable {
     /**
      * active and add this to game
      */
-    private void makeActive() {
+    void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
 
         // make horizontal boundaries first since their detection takes precedence
@@ -117,14 +119,14 @@ public class Block extends ABlock implements IDrawable {
         this.bottomSide.makeNotActive();
         this.leftSide.makeNotActive();
         this.rightSide.makeNotActive();
-        
+
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
     }
 
     /**
      * handle invisible block player contact
      */
-    private void handleInvisibleBlockCollisionWithPlayer() {
+    void handleInvisibleBlockCollisionWithPlayer() {
         if (this.isBreakableFromBottom) {
             this.removeBlockFromPlayerContact();
 
@@ -146,12 +148,12 @@ public class Block extends ABlock implements IDrawable {
     /**
      * remove block from player contact
      */
-    private void removeBlockFromPlayerContact() {
+    void removeBlockFromPlayerContact() {
         getCurrentActivePlayer().handleContactWithHorizontalBoundary(
             this.bottomSide.getStartPoint().y,
             false);
         playSong(ESongType.PLAYER_ACTION);
         this.makeNotActive();
-        getCurrentActiveBlocksList().remove(this);
+        getCurrentActiveLevelDrawableCollection().removeDrawable(this);
     }
 }

@@ -1,7 +1,7 @@
 /**
  * horizontal line boundaries; floors or ceilings
  */
-public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundary {
+public class HorizontalBoundary extends ABoundary {
     // true means character cannot go through top side of boundary
     // false means character cannot go through bottom side of boundary
     boolean isFloorBoundary;
@@ -34,9 +34,9 @@ public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundar
     /**
      * set properties of this
      */
-    HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
-                       boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                       boolean isFloorBoundary, boolean isActive) {
+    public HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
+                              boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
+                              boolean isFloorBoundary, boolean isActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
             isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
 
@@ -46,7 +46,6 @@ public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundar
     /**
      * return true if valid collision with given character
      */
-    @Override
     public boolean contactWithCharacter(ACharacter character) {
 
 //        boolean characterWithinXRange =
@@ -83,6 +82,7 @@ public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundar
         boolean validBoundaryContactVelocity =
             this.isFloorBoundary && character.getVel().y > 0 || !this.isFloorBoundary && character.getVel().y < 0;
 
+
         if (validBoundaryContactVelocity) {
             return
                 characterWithinXRange
@@ -94,74 +94,61 @@ public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundar
     }
 
     /**
-     * runs continuously. checks and handles contact between this and characters
-     */
-    @Override
-    public void draw() {
-        this.show();
-        this.checkHandleContactWithPlayer();
-        this.checkHandleContactWithNonPlayerCharacters();
-    }
-
-    /**
      * check and handle contact with player
      */
     void checkHandleContactWithPlayer() {
         Player curPlayer = getCurrentActivePlayer();
 
-        if (curPlayer.isActive()) {
-            // boundary collision for player
-            if (this.contactWithCharacter(curPlayer) && !this.isPreviousContactWithPlayer()) { // this has contact with player
-                if (this.doesAffectPlayer) {
-                    if (!this.charactersTouchingThis.contains(curPlayer)) { // new collision detected
-                        this.charactersTouchingThis.add(curPlayer);
-                        if (this.isFloorBoundary) {
-                            curPlayer.changeNumberOfFloorBoundaryContacts(1);
-                        } else {
-                            curPlayer.changeNumberOfCeilingBoundaryContacts(1);
-                        }
-                    }
-                    curPlayer.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
-                } else {    // does NOT affect player
-                    this.setVisible(false);
-                }
-
-            } else {    // this DOES NOT have contact with player
-                if (this.charactersTouchingThis.contains(curPlayer)) {
+        // boundary collision for player
+        if (this.contactWithCharacter(curPlayer) && !this.isPreviousContactWithPlayer()) { // this has contact with player
+            if (this.doesAffectPlayer) {
+                if (!this.charactersTouchingThis.contains(curPlayer)) { // new collision detected
+                    this.charactersTouchingThis.add(curPlayer);
                     if (this.isFloorBoundary) {
-                        if (curPlayer.isShouldSetPreviousFloorBoundaryContact()) {
-                            curPlayer.setPreviousFloorBoundaryContact(this);
-                        }
-                        curPlayer.changeNumberOfFloorBoundaryContacts(-1);
+                        curPlayer.changeNumberOfFloorBoundaryContacts(1);
                     } else {
-                        curPlayer.changeNumberOfCeilingBoundaryContacts(-1);
+                        curPlayer.changeNumberOfCeilingBoundaryContacts(1);
                     }
-                    this.charactersTouchingThis.remove(curPlayer);
                 }
+                curPlayer.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
+            } else {    // does NOT affect player
+                this.setVisible(false);
+            }
+
+        } else {    // this DOES NOT have contact with player
+            if (this.charactersTouchingThis.contains(curPlayer)) {
+                if (this.isFloorBoundary) {
+                    if (curPlayer.isShouldSetPreviousFloorBoundaryContact()) {
+                        curPlayer.setPreviousFloorBoundaryContact(this);
+                    }
+                    curPlayer.changeNumberOfFloorBoundaryContacts(-1);
+                } else {
+                    curPlayer.changeNumberOfCeilingBoundaryContacts(-1);
+                }
+                this.charactersTouchingThis.remove(curPlayer);
             }
         }
+
     }
 
     /**
      * check and handle contact with non-player characters
      */
-    private void checkHandleContactWithNonPlayerCharacters() {
+    void checkHandleContactWithNonPlayerCharacters() {
         if (this.doesAffectNonPlayers) {
             // boundary collision for non-player characters
-            for (ACharacter curCharacter : getCurrentActiveCharactersList()) { // this has contact with non-player
-                if (curCharacter.isActive()) {
-                    if (this.contactWithCharacter(curCharacter)) {
-                        if (this.isFloorBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
-                            curCharacter.changeNumberOfFloorBoundaryContacts(1);
-                            this.charactersTouchingThis.add(curCharacter);
-                        }
-                        curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
+            for (ACharacter curCharacter : getCurrentActiveLevelDrawableCollection().getCharactersList()) {
+                if (this.contactWithCharacter(curCharacter)) { // this has contact with non-player
+                    if (this.isFloorBoundary && !this.charactersTouchingThis.contains(curCharacter)) { // new collision detected
+                        curCharacter.changeNumberOfFloorBoundaryContacts(1);
+                        this.charactersTouchingThis.add(curCharacter);
+                    }
+                    curCharacter.handleContactWithHorizontalBoundary(this.startPoint.y, this.isFloorBoundary);
 
-                    } else {    // this DOES NOT have contact with non-player
-                        if (this.isFloorBoundary && this.charactersTouchingThis.contains(curCharacter)) { // curCharacter no longer colliding with this
-                            curCharacter.changeNumberOfFloorBoundaryContacts(-1);
-                            this.charactersTouchingThis.remove(curCharacter);
-                        }
+                } else {    // this DOES NOT have contact with non-player
+                    if (this.isFloorBoundary && this.charactersTouchingThis.contains(curCharacter)) { // curCharacter no longer colliding with this
+                        curCharacter.changeNumberOfFloorBoundaryContacts(-1);
+                        this.charactersTouchingThis.remove(curCharacter);
                     }
                 }
             }
@@ -173,8 +160,8 @@ public class HorizontalBoundary extends ABoundary implements IDrawable, IBoundar
      */
     boolean isPreviousContactWithPlayer() {
         Player curPlayer = getCurrentActivePlayer();
-        return 
-            curPlayer.getPreviousFloorBoundaryContact() != null 
+        return
+            curPlayer.getPreviousFloorBoundaryContact() != null
                 && curPlayer.getPreviousFloorBoundaryContact().equals(this);
     }
 }
