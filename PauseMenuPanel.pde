@@ -26,7 +26,7 @@ public class PauseMenuPanel extends APanel {
     @Override
     void executeWhenClicked() {
         if (panelType == EPauseMenuButtonType.CONTINUE) {
-            loopSong(ESongType.LEVEL);
+            resourceUtils.loopSong(ESongType.LEVEL);
             getCurrentActiveLevel().setPaused(false);
             getCurrentActiveLevel().closePauseMenu();
 

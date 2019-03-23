@@ -119,7 +119,7 @@ public class Enemy extends ACharacter {
         this.makeNotActive();
         getCurrentActiveLevelDrawableCollection().removeDrawable(this);
         if (!isOffscreenDeath) {
-            playSong(ESongType.PLAYER_ACTION);
+            resourceUtils.playSong(ESongType.PLAYER_ACTION);
             getCurrentActivePlayer().handleJumpKillEnemyPhysics();
         }
     }

@@ -97,31 +97,31 @@ public abstract class ALevel implements IDrawable {
         // draw background image horizontally until level width is filled
         int levelWidthLeftToDraw = getCurrentActiveLevelWidth();
         int numberHorizontalBackgroundIterations =
-            (int) Math.ceil((double) getCurrentActiveLevelWidth() / getLevelBackgroundImage().width);
+            (int) Math.ceil((double) getCurrentActiveLevelWidth() / resourceUtils.levelBackgroundImage.width);
 
         int levelHeightLeftToDraw = getCurrentActiveLevelHeight();
         int numberVerticalBackgroundIterations =
-            (int) Math.ceil((double) getCurrentActiveLevelHeight() / getLevelBackgroundImage().height);
+            (int) Math.ceil((double) getCurrentActiveLevelHeight() / resourceUtils.levelBackgroundImage.height);
 
         for (int i = 0; i < numberVerticalBackgroundIterations; i++) {
             for (int j = 0; j < numberHorizontalBackgroundIterations; j++) {
                 int curIterationWidthToDraw =
                     Math.min(
-                        getLevelBackgroundImage().width,
+                        resourceUtils.levelBackgroundImage.width,
                         levelWidthLeftToDraw);
 
                 int curIterationHeightToDraw =
                     Math.min(
-                        getLevelBackgroundImage().height,
+                        resourceUtils.levelBackgroundImage.height,
                         levelHeightLeftToDraw);
 
                 int startYPosToDraw =
-                    -i * getLevelBackgroundImage().height
-                        - (getLevelBackgroundImage().height - curIterationHeightToDraw);
+                    -i * resourceUtils.levelBackgroundImage.height
+                        - (resourceUtils.levelBackgroundImage.height - curIterationHeightToDraw);
 
                 image(
-                    getLevelBackgroundImage(),
-                    i * getLevelBackgroundImage().width, // start x pos
+                    resourceUtils.levelBackgroundImage,
+                    i * resourceUtils.levelBackgroundImage.width, // start x pos
                     startYPosToDraw,  // start y pos
                     curIterationWidthToDraw,
                     curIterationHeightToDraw);
@@ -147,14 +147,14 @@ public abstract class ALevel implements IDrawable {
                     this.isPaused = !this.isPaused;
 
                     if (this.isPaused) {
-                        stopSong();
+                        resourceUtils.stopSong();
                         noLoop();
                         this.pauseMenu = new PauseMenu(
                             (int) this.viewBox.getPos().x,
                             true);
 
                     } else {
-                        loopSong(ESongType.LEVEL);
+                        resourceUtils.loopSong(ESongType.LEVEL);
                         loop();
                         this.closePauseMenu();
                     }

@@ -17,7 +17,7 @@ public class LevelTwo extends ALevel {
     public void setUpActivateLevel() {
         this.makeActive();
 
-        loopSong(ESongType.LEVEL);
+        resourceUtils.loopSong(ESongType.LEVEL);
 
         final int levelMiddleXPos = getCurrentActiveLevelWidth() / 2;
         this.checkpointXPos = levelMiddleXPos - 1750 - 50;

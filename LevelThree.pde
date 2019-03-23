@@ -10,7 +10,7 @@ public class LevelThree extends ALevel {
     @Override
     void setUpActivateLevel() {
         this.makeActive();
-        loopSong(ESongType.LEVEL);
+        resourceUtils.loopSong(ESongType.LEVEL);
 
         this.viewBox = new ViewBox(0, 0, true);
         this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, true);

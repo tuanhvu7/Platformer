@@ -273,13 +273,12 @@ public class Player extends ACharacter {
         } else if (healthChangeAmount < 0) {
             this.canHaveContactWithEnemies = false;
             this.fillColor = Constants.PLAYER_DAMAGED_COLOR;
-            playSong(ESongType.PLAYER_DAMAGE);
-
             // make this unaffected by enemies for a duration
             new Thread(new Runnable() {
               public void run()  {
                 try {
-                    Thread.sleep((long) playerDamageSong.getDuration().toMillis());  // wait for song duration
+                    resourceUtils.playSong(ESongType.PLAYER_DAMAGE);
+                    Thread.sleep((long) resourceUtils.getSongDurationMilliSec(ESongType.PLAYER_DAMAGE));  // wait for song duration
                     canHaveContactWithEnemies = true;
                     fillColor = Constants.PLAYER_DEFAULT_COLOR;
                 } catch (InterruptedException ie) {
@@ -307,7 +306,7 @@ public class Player extends ACharacter {
             this.pos.x = middleOfBoundary;
             this.vel.x = 0;
             this.vel.y = Constants.EVENT_BLOCK_DESCENT_VERTICAL_VELOCITY;
-            playSong(ESongType.EVENT_BLOCK_DESCENT);
+            resourceUtils.playSong(ESongType.EVENT_BLOCK_DESCENT);
         }
     }
 
@@ -333,7 +332,7 @@ public class Player extends ACharacter {
         if (this.jumpPressed) {    // jump button pressed/held
             if (this.numberOfFloorBoundaryContacts > 0 ||
                 (this.numberOfVerticalBoundaryContacts > 0 && this.numberOfCeilingBoundaryContacts == 0)) { // able to jump
-                playSong(ESongType.PLAYER_ACTION);
+                resourceUtils.playSong(ESongType.PLAYER_ACTION);
                 this.vel.y = Constants.PLAYER_JUMP_VERTICAL_VELOCITY;
 
                 this.shouldSetPreviousFloorBoundaryContact = false;

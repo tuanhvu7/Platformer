@@ -85,16 +85,6 @@ public class Constants {
     public static final int POSITIVE_HEALTH_ITEM_TEXT_COLOR = #008000;
     public static final int HEALTH_ITEM_SIZE = 60;
 
-    /*** assets path ***/
-    public static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
-    public static final String LEVEL_SELECT_MENU_SONG_NAME = "level-select-menu-song.mp3";
-    public static final String LEVEL_SONG_NAME = "level-song.mp3"; 
-    public static final String PLAYER_DEATH_SONG_NAME = "player-death-song.mp3"; 
-    public static final String LEVEL_COMPLETE_SONG_NAME = "level-complete-song.mp3";
-    public static final String PLAYER_ACTION_SOUND_NAME = "player-action-sound.mp3";
-    public static final String PLAYER_DAMAGE_SOUND_NAME = "player-damage-sound.mp3";
-    public static final String EVENT_BLOCK_DESCENT_SOUND_NAME = "event-block-descent-sound.mp3";
-
     /**
      * make this class "static"
      */

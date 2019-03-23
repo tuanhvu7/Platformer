@@ -152,7 +152,7 @@ public class Block extends ABlock {
         getCurrentActivePlayer().handleContactWithHorizontalBoundary(
             this.bottomSide.getStartPoint().y,
             false);
-        playSong(ESongType.PLAYER_ACTION);
+        resourceUtils.playSong(ESongType.PLAYER_ACTION);
         this.makeNotActive();
         getCurrentActiveLevelDrawableCollection().removeDrawable(this);
     }

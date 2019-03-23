@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.ref.WeakReference;
 import java.util.Optional;
-import java.net.URI;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -15,49 +14,13 @@ import javafx.util.Duration;
 import javafx.embed.swing.JFXPanel;
 
 // gravity that affects characters
-private PVector gravity;
+private final PVector gravity = new PVector(0, Constants.GRAVITY);;
 
 // wall slide acceleration
-private PVector wallSlideAcceleration;
+private final PVector wallSlideAcceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);;
 
-// background image
-private PImage levelBackgroundImage;
-
-/*** MUSIC ***/
-// level select menu song
-private Media levelSelectMenuSong;
-// player for level select menu song
-private MediaPlayer levelSelectMenuSongPlayer;
-
-// level song
-private Media levelSong;
-// player for level song
-private MediaPlayer levelSongPlayer;
-
-// player death song
-private Media playerDeathSong;
-// player for player death song
-private MediaPlayer playerDeathSongPlayer;
-
-// level complete song
-private Media levelCompleteSong;
-// player for level complete song
-private MediaPlayer levelCompleteSongPlayer;
-
-// player action 
-private Media playerActionSong;
-// player for player action 
-private MediaPlayer playerActionSongPlayer;
-
-// player damage 
-private Media playerDamageSong;
-// player for player damage 
-private MediaPlayer playerDamageSongPlayer;
-
-// event block descent song
-private Media eventBlockDescentSong;
-// player for event block descent song
-private MediaPlayer eventBlockDescentSongPlayer;
+// handles resources (images, music)
+private ResourceUtils resourceUtils;
 
 // level complete thread
 Thread levelCompleteThread;
@@ -92,29 +55,11 @@ private final int[] levelsHeightArray = {
  * setup canvas size with variable values and initialize fields
  */
 void settings() {
-    levelBackgroundImage = loadImage(Constants.BACKGROUND_IMAGE_NAME);
-
-    gravity = new PVector(0, Constants.GRAVITY);
-    wallSlideAcceleration = new PVector(0, Constants.WALL_SLIDE_ACCELERATION);
+    
     
     new JFXPanel(); // initialize JavaFx toolkit
-    // set song files
-    levelSelectMenuSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SELECT_MENU_SONG_NAME)));
-    levelSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_SONG_NAME)));
-    playerDeathSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DEATH_SONG_NAME)));
-    levelCompleteSong = new Media(convertPathToValidUri(dataPath(Constants.LEVEL_COMPLETE_SONG_NAME)));
-    playerActionSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_ACTION_SOUND_NAME)));
-    playerDamageSong = new Media(convertPathToValidUri(dataPath(Constants.PLAYER_DAMAGE_SOUND_NAME)));
-    eventBlockDescentSong = new Media(convertPathToValidUri(dataPath(Constants.EVENT_BLOCK_DESCENT_SOUND_NAME)));
-    // set song players
-    levelSelectMenuSongPlayer = new MediaPlayer(levelSelectMenuSong);
-    levelSongPlayer = new MediaPlayer(levelSong);
-    playerDeathSongPlayer = new MediaPlayer(playerDeathSong);
-    levelCompleteSongPlayer = new MediaPlayer(levelCompleteSong);
-    playerActionSongPlayer = new MediaPlayer(playerActionSong);
-    playerDamageSongPlayer = new MediaPlayer(playerDamageSong);
-    eventBlockDescentSongPlayer = new MediaPlayer(eventBlockDescentSong);
 
+    resourceUtils = new ResourceUtils();
     currentActiveLevelNumber = 0;
 
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
@@ -142,9 +87,9 @@ private void resetLevel() {
                 getCurrentActivePlayer().makeNotActive();
                 currentActiveLevel.get().setPlayer(null);  // to stop interactions with player
 
-                stopSong();
-                playSong(ESongType.PLAYER_DEATH);
-                Thread.sleep( (long) playerDeathSong.getDuration().toMillis() );  // wait for song duration
+                resourceUtils.stopSong();
+                resourceUtils.playSong(ESongType.PLAYER_DEATH);
+                Thread.sleep((long) resourceUtils.getSongDurationMilliSec(ESongType.PLAYER_DEATH));  // wait for song duration
 
                 boolean loadPlayerFromCheckPoint = getCurrentActiveLevel().isLoadPlayerFromCheckPoint();
                 getCurrentActiveLevel().deactivateLevel();
@@ -166,14 +111,14 @@ private void handleLevelComplete() {
             public void run()  {
                 try  {
                     // println("running level complete thread!!!");
-                    currentActiveLevel.get().isHandlingLevelComplete = true;    // TODO: encapsulate
+                    getCurrentActiveLevel().setHandlingLevelComplete(true);
                     getCurrentActivePlayer().resetControlPressed();
                     getCurrentActivePlayer().setVel(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
                     unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
-                    stopSong();
-                    playSong(ESongType.LEVEL_COMPLETE);
-                    Thread.sleep( (long) levelCompleteSong.getDuration().toMillis() );  // wait for song duration
+                    resourceUtils.stopSong();
+                    resourceUtils.playSong(ESongType.LEVEL_COMPLETE);
+                    Thread.sleep((long) resourceUtils.getSongDurationMilliSec(ESongType.LEVEL_COMPLETE));  // wait for song duration
                     
                     getCurrentActivePlayer().makeNotActive();
                     currentActiveLevel.get().deactivateLevel();
@@ -185,109 +130,6 @@ private void handleLevelComplete() {
     levelCompleteThread.start();
 }
 
-/**
- * loop song
- */
-private void loopSong(ESongType songType) {
-    switch(songType) {
-        case LEVEL_SELECT_MENU:
-            levelSelectMenuSongPlayer.setCycleCount(Integer.MAX_VALUE);
-            levelSelectMenuSongPlayer.play();
-        break;
-
-        case LEVEL:
-            levelSongPlayer.setCycleCount(Integer.MAX_VALUE);
-            levelSongPlayer.play();
-        break;
-        
-        default:    
-        break;	
-    }
-}
-
-/**
- * play song
- */
-private void playSong(ESongType songType) {
-    switch(songType) {
-        case PLAYER_DEATH:
-            playerDeathSongPlayer.setCycleCount(1);
-            playerDeathSongPlayer.play();
-        break;
-
-        case LEVEL_COMPLETE:
-            levelCompleteSongPlayer.setCycleCount(1);
-            levelCompleteSongPlayer.play();
-        break;
-
-        case PLAYER_DAMAGE:
-            // to player damage song in parallel with level song
-            new Thread( new Runnable() {
-                public void run() {
-                    try {
-                        playerDamageSongPlayer.setCycleCount(1);
-                        playerDamageSongPlayer.play();
-                        Thread.sleep((long) playerDamageSong.getDuration().toMillis());  // wait for song duration
-                        playerDamageSongPlayer.stop();
-                    } catch (InterruptedException ie) { }
-                }
-            }).start();
-            break;
-
-        case PLAYER_ACTION:
-            // to reset level after player death song finishes without freezing game
-            new Thread( new Runnable() {
-                public void run()  {
-                    try  {
-                        playerActionSongPlayer.setCycleCount(1);
-                        playerActionSongPlayer.play();
-                        Thread.sleep( (long) playerActionSong.getDuration().toMillis() );  // wait for song duration
-                        playerActionSongPlayer.stop();
-                    }
-                    catch (InterruptedException ie)  { }
-                }
-            } ).start();
-        break;
-
-        case EVENT_BLOCK_DESCENT:
-            // to reset level after player death song finishes without freezing game
-            new Thread( new Runnable() {
-                public void run()  {
-                    try  {
-                        eventBlockDescentSongPlayer.setCycleCount(1);
-                        eventBlockDescentSongPlayer.play();
-                        Thread.sleep( (long) eventBlockDescentSong.getDuration().toMillis() );  // wait for song duration
-                        eventBlockDescentSongPlayer.stop();
-                    }
-                    catch (InterruptedException ie)  { }
-                }
-            } ).start();
-        break;
-
-        default:    
-        break;	
-    }
-}
-
-/**
- * stop song
- */
-private void stopSong() {
-    levelSelectMenuSongPlayer.stop();
-    levelSongPlayer.stop();
-    playerDeathSongPlayer.stop();
-    levelCompleteSongPlayer.stop();
-    playerActionSongPlayer.stop();
-    eventBlockDescentSongPlayer.stop();
-}
-
-/**
- * convert given string to valid uri path and return result
- */
-private String convertPathToValidUri(String path) {
-    return new File(path).toURI().toString();
-}
-
 /*** getters and setters ***/
 public PVector getGravity() {
     return gravity;
@@ -295,10 +137,6 @@ public PVector getGravity() {
 
 public PVector getWallSlideAcceleration() {
     return wallSlideAcceleration;
-}
-
-public PImage getLevelBackgroundImage() {
-    return levelBackgroundImage;
 }
 
 public LevelSelectMenu getLevelSelectMenu() {
@@ -325,14 +163,14 @@ public void setCurrentActiveLevelNumber(int newCurrentActiveLevelNumber) {
  * return player of current active level
  */
 public Player getCurrentActivePlayer() {
-    return currentActiveLevel.get().player;    // TODO: encapsulate
+    return currentActiveLevel.get().getPlayer();
 }
 
 /**
  * return viewbox of current active level
  */
 public ViewBox getCurrentActiveViewBox() {
-    return currentActiveLevel.get().viewBox; // TODO: encapsulate
+    return currentActiveLevel.get().getViewBox();
 }
 
 /**

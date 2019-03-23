@@ -21,7 +21,7 @@ public class LevelSelectMenu extends AMenu {
         int leftXPanelPosition = 100;
         int topYPanelPosition = 100;
         for (int i = 1; i < levelsHeightArray.length; i++) {
-            if (leftXPanelPosition + Constants.PANEL_SIZE > getLevelBackgroundImage().width) {
+            if (leftXPanelPosition + Constants.PANEL_SIZE > resourceUtils.levelBackgroundImage.width) {
                 leftXPanelPosition = 100;
                 topYPanelPosition += (100 + Constants.PANEL_SIZE);
             }
@@ -38,7 +38,7 @@ public class LevelSelectMenu extends AMenu {
             leftXPanelPosition += Constants.PANEL_SIZE + 100;
         }
 
-        loopSong(ESongType.LEVEL_SELECT_MENU);
+        resourceUtils.loopSong(ESongType.LEVEL_SELECT_MENU);
     }
 
     /**
@@ -47,11 +47,11 @@ public class LevelSelectMenu extends AMenu {
     @Override
     public void draw() {
         image(
-            getLevelBackgroundImage(),
+            resourceUtils.levelBackgroundImage,
             0,
             0,
-            getLevelBackgroundImage().width,
-            getLevelBackgroundImage().height);
+            resourceUtils.levelBackgroundImage.width,
+            resourceUtils.levelBackgroundImage.height);
     }
 
 }

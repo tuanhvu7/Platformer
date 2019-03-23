@@ -20,11 +20,10 @@ public class LevelSelectMenuPanel extends APanel {
     @Override
     void executeWhenClicked() {
         getLevelSelectMenu().deactivateMenu();
-        stopSong();
+        resourceUtils.stopSong();
         // setup and load level associated with this
         setCurrentActiveLevelNumber(this.panelLevel);
         LevelFactory levelFactory = new LevelFactory();
         setCurrentActiveLevel(levelFactory.getLevel(true, false));
     }
 }
-
