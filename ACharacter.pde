@@ -51,6 +51,7 @@ public abstract class ACharacter implements IDrawable {
         } else {    // ceiling-like boundary
             if (this.vel.y < 0) {    // boundary only act like ceiling if this is rising into boundary
                 this.vel.y = 1;
+                this.pos.y = boundaryYPoint + this.diameter / 2;
                 this.pos.add(this.vel);
             }
         }
@@ -62,7 +63,7 @@ public abstract class ACharacter implements IDrawable {
     public void handleContactWithVerticalBoundary(float boundaryXPoint) {
         final boolean movingIntoBoundaryFromRight = this.pos.x > boundaryXPoint && this.vel.x < 0;
         final boolean movingIntoBoundaryFromLeft = this.pos.x < boundaryXPoint && this.vel.x > 0;
-        if(movingIntoBoundaryFromRight || movingIntoBoundaryFromLeft) {
+        if (movingIntoBoundaryFromRight || movingIntoBoundaryFromLeft) {
             this.vel.x = -this.vel.x; // move in opposite horizontal direction
         }
     }

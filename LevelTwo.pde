@@ -92,6 +92,8 @@ public class LevelTwo extends ALevel {
                 Constants.SMALL_ENEMY_DIAMETER,
                 0,
                 0,
+                false,
+                false,
                 true,
                 true,
                 true
@@ -117,6 +119,8 @@ public class LevelTwo extends ALevel {
                 Constants.ENEMY_SLOW_MOVEMENT_SPEED,
                 200,
                 Constants.LEVEL_FLOOR_Y_POSITION - Constants.SMALL_ENEMY_DIAMETER,
+                false,
+                false,
                 false,
                 true,
                 true
@@ -212,6 +216,7 @@ public class LevelTwo extends ALevel {
             true
         ));
 
+        // enemies at end
         Set<Enemy> enemyAtEndToTrigger = new HashSet<Enemy>();
         for (int i = 0; i < 2; i++) {
             Enemy enemyToAdd = new FlyingEnemy(
@@ -220,6 +225,8 @@ public class LevelTwo extends ALevel {
                 Constants.SMALL_ENEMY_DIAMETER,
                 -Constants.ENEMY_REGULAR_MOVEMENT_SPEED,
                 0,
+                true,
+                true,
                 false,
                 true,
                 false
@@ -277,6 +284,8 @@ public class LevelTwo extends ALevel {
                 Constants.ENEMY_SLOW_MOVEMENT_SPEED,
                 200,
                 Constants.LEVEL_FLOOR_Y_POSITION - Constants.SMALL_ENEMY_DIAMETER,
+                false,
+                false,
                 i % 2 == 0,
                 true,
                 true
@@ -427,6 +436,7 @@ public class LevelTwo extends ALevel {
             true
         ));
 
+        // enemies at end
         Set<Enemy> enemyAtEndToTrigger = new HashSet<Enemy>();
         for (int i = 0; i < 2; i++) {
             Enemy enemyToAdd = new FlyingEnemy(
@@ -435,6 +445,8 @@ public class LevelTwo extends ALevel {
                 Constants.SMALL_ENEMY_DIAMETER,
                 Constants.ENEMY_REGULAR_MOVEMENT_SPEED,
                 0,
+                true,
+                true,
                 true,
                 true,
                 false

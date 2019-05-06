@@ -271,6 +271,8 @@ public class LevelOne extends ALevel {
             -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             0,
             false,
+            false,
+            false,
             true,
             false);
         triggerEnemySet.add(enemyToAdd);
@@ -282,6 +284,8 @@ public class LevelOne extends ALevel {
             -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             0,
             false,
+            false,
+            false,
             true,
             false);
         triggerEnemySet.add(enemyToAdd);
@@ -292,6 +296,8 @@ public class LevelOne extends ALevel {
             Constants.BIG_ENEMY_DIAMETER,
             -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             0,
+            false,
+            false,
             false,
             true,
             false);

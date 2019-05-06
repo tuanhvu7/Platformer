@@ -62,6 +62,8 @@ public class LevelThree extends ALevel {
             Constants.SMALL_ENEMY_DIAMETER,
             0,
             Constants.ENEMY_FAST_MOVEMENT_SPEED,
+            false,
+            false,
             true,
             true,
             true
@@ -77,7 +79,7 @@ public class LevelThree extends ALevel {
 
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             4 * playerStartXPos,
-            getCurrentActiveLevelHeight() + Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            getCurrentActiveLevelHeight(),
             1000,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
@@ -91,6 +93,8 @@ public class LevelThree extends ALevel {
                 Constants.SMALL_ENEMY_DIAMETER,
                 0,
                 Constants.ENEMY_FAST_MOVEMENT_SPEED,
+                false,
+                false,
                 true,
                 true,
                 true
@@ -104,6 +108,8 @@ public class LevelThree extends ALevel {
                 Constants.SMALL_ENEMY_DIAMETER,
                 0,
                 -Constants.ENEMY_FAST_MOVEMENT_SPEED,
+                true,
+                false,
                 true,
                 true,
                 true
