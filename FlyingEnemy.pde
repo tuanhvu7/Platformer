@@ -11,7 +11,7 @@ public class FlyingEnemy extends Enemy {
 
     /**
      * set properties of this;
-     * set upper and lower Y boundaries of level
+     * set upper and lower Y limits to boundaries of level
      */
     public FlyingEnemy(int x, int y, int diameter,
                        float horizontalVel, float verticalVel,
@@ -20,8 +20,8 @@ public class FlyingEnemy extends Enemy {
 
         this.fillColor = Constants.ENEMY_COLOR;
 
-        this.topY = Constants.SCREEN_HEIGHT - getCurrentActiveLevelHeight() - this.diameter / 2;
-        this.bottomY = Constants.SCREEN_HEIGHT + this.diameter / 2;
+        this.topY = Constants.SCREEN_HEIGHT - getCurrentActiveLevelHeight() + this.diameter / 2;
+        this.bottomY = Constants.SCREEN_HEIGHT - this.diameter / 2;
 
         this.vel.x = horizontalVel;
         this.vel.y = verticalVel;

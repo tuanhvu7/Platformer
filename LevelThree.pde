@@ -12,62 +12,109 @@ public class LevelThree extends ALevel {
         this.makeActive();
         resourceUtils.loopSong(ESongType.LEVEL);
 
-        this.viewBox = new ViewBox(0, 0, true);
-        this.player = new Player(200, 0, Constants.PLAYER_DIAMETER, true);
+        final int playerStartXPos = Constants.SCREEN_WIDTH / 6;
+        final int playerStartYPos = Constants.SCREEN_HEIGHT / 4;
 
-        this.levelDrawableCollection.addDrawable(new HealthItem(
-            -1,
-            this.checkpointXPos,
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.HEALTH_ITEM_SIZE,
-            Constants.HEALTH_ITEM_SIZE,
-            Constants.HEALTH_ITEM_SIZE,
-            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            true)
-        );
+        this.viewBox = new ViewBox(
+            0,
+            playerStartYPos,
+            true);
+        this.player = new Player(
+            playerStartXPos,
+            playerStartYPos,
+            Constants.PLAYER_DIAMETER,
+            true);
 
-        this.setupActivateBeforeCheckpoint();
+        this.setupActivateBeforeCheckpoint(playerStartXPos, playerStartYPos);
     }
 
-    private void setupActivateBeforeCheckpoint() {
-        // stage floor
-        this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
+    private void setupActivateBeforeCheckpoint(final int playerStartXPos, final int playerStartYPos) {
+        // extend left wall to bottom of level
+        this.levelDrawableCollection.addDrawable(new VerticalBoundary(
             0,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            2500,
+            getCurrentActiveLevelHeight() - Constants.LEVEL_FLOOR_Y_POSITION,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true
+        ));
+
+
+        this.levelDrawableCollection.addDrawable(new LevelGoal(
+            playerStartXPos,
+            playerStartYPos + 2 * Constants.PLAYER_DIAMETER,
+            Constants.CHECKPOINT_WIDTH,
+            Constants.SCREEN_HEIGHT,
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true
+        ));
+
+        this.levelDrawableCollection.addDrawable(new VerticalBoundary(
+            2 * playerStartXPos,
+            playerStartYPos,
+            getCurrentActiveLevelHeight() - (playerStartYPos / 2),
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true
+        ));
+
+        this.levelDrawableCollection.addDrawable(new FlyingEnemy(
+            2 * playerStartXPos,
+            Constants.SMALL_ENEMY_DIAMETER,
+            Constants.SMALL_ENEMY_DIAMETER,
+            0,
+            Constants.ENEMY_FAST_MOVEMENT_SPEED,
+            true,
+            true,
+            true
+        ));
+
+        this.levelDrawableCollection.addDrawable(new VerticalBoundary(
+            4 * playerStartXPos,
+            playerStartYPos,
+            getCurrentActiveLevelHeight() - (playerStartYPos / 2),
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            true
+        ));
+
+        this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
+            4 * playerStartXPos,
+            getCurrentActiveLevelHeight() + Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            1000,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
         ));
 
-        this.levelDrawableCollection.addDrawable(new Enemy(
-            500,
-            Constants.LEVEL_FLOOR_Y_POSITION - (2 * Constants.REGULAR_ENEMY_DIAMETER),
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
-            false,
-            true,
-            true
-        ));
+        for (int i = 0; i < 10; i++) {
+            this.levelDrawableCollection.addDrawable(new FlyingEnemy(
+                5 * playerStartXPos,
+                (Constants.SMALL_ENEMY_DIAMETER / 2) + (Constants.SMALL_ENEMY_DIAMETER * i),
+                Constants.SMALL_ENEMY_DIAMETER,
+                0,
+                Constants.ENEMY_FAST_MOVEMENT_SPEED,
+                true,
+                true,
+                true
+            ));
+        }
 
-        HealthItem itemForBlockNearStart =
-            new HealthItem(
-                1,
+        for (int i = 0; i < 10; i++) {
+            this.levelDrawableCollection.addDrawable(new FlyingEnemy(
+                5 * playerStartXPos,
+                (getCurrentActiveLevelHeight() - (Constants.SMALL_ENEMY_DIAMETER / 2)) - (Constants.SMALL_ENEMY_DIAMETER * i),
+                Constants.SMALL_ENEMY_DIAMETER,
                 0,
-                0,
-                Constants.HEALTH_ITEM_SIZE,
-                Constants.HEALTH_ITEM_SIZE,
-                1,
-                false
-            );
-        this.levelDrawableCollection.addDrawable((itemForBlockNearStart));
-        this.levelDrawableCollection.addDrawable(new ItemBlock(
-            500,
-            Constants.LEVEL_FLOOR_Y_POSITION - 2 * Constants.DEFAULT_BLOCK_SIZE,
-            Constants.DEFAULT_BLOCK_SIZE,
-            Constants.DEFAULT_BLOCK_SIZE,
-            itemForBlockNearStart,
-            1,
-            false,
+                -Constants.ENEMY_FAST_MOVEMENT_SPEED,
+                true,
+                true,
+                true
+            ));
+        }
+
+        this.levelDrawableCollection.addDrawable(new VerticalBoundary(
+            6 * playerStartXPos,
+            playerStartYPos,
+            getCurrentActiveLevelHeight() - (playerStartYPos / 2),
+            Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true
         ));
     }

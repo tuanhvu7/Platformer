@@ -40,14 +40,16 @@ private int currentActiveLevelNumber;
 private final int[] levelsWidthArray = {
     0,          // non-existent level zero
     8750,
-    12000
+    12000,
+    9000
 };
 
 // heights of all levels
 private final int[] levelsHeightArray = {
     0,      // non-existent level zero
     900,    // level one
-    1300
+    1300,
+    900
 };
 
 /**

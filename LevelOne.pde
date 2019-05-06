@@ -65,7 +65,7 @@ public class LevelOne extends ALevel {
                 3000,
                 0,
                 Constants.BIG_ENEMY_DIAMETER,
-                -Constants.ENEMY_REGULAR_RUN_SPEED,
+                -Constants.ENEMY_REGULAR_MOVEMENT_SPEED,
                 false,
                 true,
                 false
@@ -104,7 +104,7 @@ public class LevelOne extends ALevel {
             500,
             0,
             Constants.BIG_ENEMY_DIAMETER,
-            -Constants.ENEMY_REGULAR_RUN_SPEED,
+            -Constants.ENEMY_REGULAR_MOVEMENT_SPEED,
             false,
             true,
             true)
@@ -123,62 +123,62 @@ public class LevelOne extends ALevel {
         this.levelDrawableCollection.addDrawable(new Enemy(
             1750,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
         );
         this.levelDrawableCollection.addDrawable(new Enemy(
-            1750 + Constants.REGULAR_ENEMY_DIAMETER,
+            1750 + Constants.SMALL_ENEMY_DIAMETER,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
         );
         this.levelDrawableCollection.addDrawable(new Enemy(
-            1750 + 2 * Constants.REGULAR_ENEMY_DIAMETER,
+            1750 + 2 * Constants.SMALL_ENEMY_DIAMETER,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
         );
         this.levelDrawableCollection.addDrawable(new Enemy(
-            1750 + 3 * Constants.REGULAR_ENEMY_DIAMETER,
+            1750 + 3 * Constants.SMALL_ENEMY_DIAMETER,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
         );
         this.levelDrawableCollection.addDrawable(new Enemy(
-            1750 + 4 * Constants.REGULAR_ENEMY_DIAMETER,
+            1750 + 4 * Constants.SMALL_ENEMY_DIAMETER,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
         );
         this.levelDrawableCollection.addDrawable(new Enemy(
-            1750 + 5 * Constants.REGULAR_ENEMY_DIAMETER,
+            1750 + 5 * Constants.SMALL_ENEMY_DIAMETER,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
         );
         this.levelDrawableCollection.addDrawable(new Enemy(
-            1750 + 6 * Constants.REGULAR_ENEMY_DIAMETER,
+            1750 + 6 * Constants.SMALL_ENEMY_DIAMETER,
             0,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_SLOW_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_SLOW_MOVEMENT_SPEED,
             false,
             true,
             true)
@@ -245,9 +245,9 @@ public class LevelOne extends ALevel {
         // controllable enemy
         Enemy enemyToAdd = new ControllableEnemy(
             startXPos + 1000 + 4 * Constants.PLAYER_DIAMETER,
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.REGULAR_ENEMY_DIAMETER - 10,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_FAST_RUN_SPEED,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.SMALL_ENEMY_DIAMETER - 10,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             false,
             true,
             false
@@ -267,8 +267,8 @@ public class LevelOne extends ALevel {
         enemyToAdd = new FlyingEnemy(
             startXPos + 1600 + 4 * Constants.PLAYER_DIAMETER,
             Constants.LEVEL_FLOOR_Y_POSITION - 4 * Constants.PLAYER_DIAMETER,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_FAST_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             0,
             false,
             true,
@@ -278,8 +278,8 @@ public class LevelOne extends ALevel {
         enemyToAdd = new FlyingEnemy(
             startXPos + 1600 + 8 * Constants.PLAYER_DIAMETER,
             Constants.LEVEL_FLOOR_Y_POSITION - 6 * Constants.PLAYER_DIAMETER,
-            Constants.REGULAR_ENEMY_DIAMETER,
-            -Constants.ENEMY_FAST_RUN_SPEED,
+            Constants.SMALL_ENEMY_DIAMETER,
+            -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             0,
             false,
             true,
@@ -290,7 +290,7 @@ public class LevelOne extends ALevel {
             startXPos + 1600 + 14 * Constants.PLAYER_DIAMETER,
             Constants.LEVEL_FLOOR_Y_POSITION - 5 * Constants.PLAYER_DIAMETER,
             Constants.BIG_ENEMY_DIAMETER,
-            -Constants.ENEMY_FAST_RUN_SPEED,
+            -Constants.ENEMY_FAST_MOVEMENT_SPEED,
             0,
             false,
             true,
@@ -359,7 +359,7 @@ public class LevelOne extends ALevel {
         ));
         this.levelDrawableCollection.addDrawable(new Enemy(
             eventBlockInvulnerableEnemyXReference + (Constants.DEFAULT_EVENT_BLOCK_WIDTH / 2),
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT - Constants.REGULAR_ENEMY_DIAMETER,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT - Constants.SMALL_ENEMY_DIAMETER,
             Constants.DEFAULT_EVENT_BLOCK_WIDTH,
             0,
             true,
@@ -377,7 +377,7 @@ public class LevelOne extends ALevel {
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             eventBlockTrapXReference + (Constants.DEFAULT_EVENT_BLOCK_WIDTH / 2),
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.REGULAR_ENEMY_DIAMETER,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.SMALL_ENEMY_DIAMETER,
             true,
             true
         ));
@@ -407,7 +407,7 @@ public class LevelOne extends ALevel {
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             eventBlockInvulnerableEnemyXReference + (Constants.DEFAULT_EVENT_BLOCK_WIDTH / 2),
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.REGULAR_ENEMY_DIAMETER,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.SMALL_ENEMY_DIAMETER,
             true,
             true
         ));
@@ -435,7 +435,7 @@ public class LevelOne extends ALevel {
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             eventBlockSurroundedByBlocksXPos + (Constants.DEFAULT_EVENT_BLOCK_WIDTH / 2),
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.REGULAR_ENEMY_DIAMETER,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.SMALL_ENEMY_DIAMETER,
             true,
             true
         ));
@@ -467,7 +467,7 @@ public class LevelOne extends ALevel {
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             eventBlockInvulnerableEnemyXReference + (Constants.DEFAULT_EVENT_BLOCK_WIDTH / 2),
-            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.REGULAR_ENEMY_DIAMETER,
+            Constants.LEVEL_FLOOR_Y_POSITION - Constants.DEFAULT_EVENT_BLOCK_HEIGHT + Constants.SMALL_ENEMY_DIAMETER,
             true,
             true
         ));
