@@ -67,7 +67,7 @@ public class Player extends ACharacter {
      */
     public Player(int x, int y, int diameter, int health, boolean isActive) {
         super(x, y, diameter, isActive);
-        if (this.health < 1) {
+        if (health < 1) {
             throw new IllegalArgumentException("Initial player health must be greater than 1");
         }
 

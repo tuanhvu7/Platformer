@@ -320,10 +320,10 @@ public class LevelOne extends ALevel {
     private void setupActivateEndSection(final int startXPos) {
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
-            Constants.LEVEL_FLOOR_Y_POSITION,
+            getCurrentActiveLevelHeight(),
             250,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
-            false,
+            true,
             true,
             false,
             true,
