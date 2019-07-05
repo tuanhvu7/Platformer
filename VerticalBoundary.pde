@@ -78,6 +78,10 @@ public class VerticalBoundary extends ABoundary {
             for (ACharacter curCharacter : getCurrentActiveLevelDrawableCollection().getCharactersList()) {
                 if (this.contactWithCharacter(curCharacter)) {
                     curCharacter.handleContactWithVerticalBoundary(this.startPoint.x);
+
+                } else if (curCharacter instanceof ControllableEnemy) { // this DOES NOT have contact with character AND character is controllable
+                    ((ControllableEnemy) curCharacter).setAbleToMoveLeft(true);
+                    ((ControllableEnemy) curCharacter).setAbleToMoveRight(true);
                 }
             }
         }

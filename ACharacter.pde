@@ -69,6 +69,11 @@ public abstract class ACharacter implements IDrawable {
     }
 
     /**
+     * handle movement (horizontal, vertical) of this
+     */
+    abstract void handleMovement();
+
+    /**
      * handle arial physics
      */
     void handleInAirPhysics() {
