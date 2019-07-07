@@ -190,6 +190,7 @@ public class LevelOne extends ALevel {
             Constants.DEFAULT_EVENT_BLOCK_WIDTH,
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            Constants.CHARACTER_LAUNCH_EVENT_VERTICAL_VELOCITY,
             true,
             true
         ));
@@ -362,6 +363,7 @@ public class LevelOne extends ALevel {
             Constants.DEFAULT_EVENT_BLOCK_WIDTH,
             Constants.DEFAULT_EVENT_BLOCK_HEIGHT,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
+            Constants.CHARACTER_LAUNCH_EVENT_VERTICAL_VELOCITY,
             true,
             true
         ));
