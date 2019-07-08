@@ -9,6 +9,8 @@ public abstract class APanel implements IDrawable {
     final int topY;
     final int bottomY;
 
+    int panelColor;
+
     private final int width;
     private final int height;
 
@@ -17,8 +19,9 @@ public abstract class APanel implements IDrawable {
     /**
      * set properties of this
      */
-    APanel(String panelText, int leftX, int topY, int width, int height, boolean isActive) {
+    APanel(int panelColor, String panelText, int leftX, int topY, int width, int height, boolean isActive) {
         this.panelText = panelText;
+        this.panelColor = panelColor;
         this.width = width;
         this.height = height;
 
@@ -36,7 +39,7 @@ public abstract class APanel implements IDrawable {
     /**
      * active and add this to game
      */
-    private void makeActive() {
+    void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
         registerMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
     }
@@ -54,7 +57,7 @@ public abstract class APanel implements IDrawable {
      */
     @Override
     public void draw() {
-        fill(Constants.PANEL_COLOR);
+        fill(this.panelColor);
         rect(this.leftX, this.topY, this.width, this.height);
 
         fill(0);
