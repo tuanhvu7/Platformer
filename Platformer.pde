@@ -41,7 +41,7 @@ private final int[] levelsWidthArray = {
     0,          // non-existent level zero
     8750,
     12000,
-    8000
+    8500
 };
 
 // heights of all levels
