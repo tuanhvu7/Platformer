@@ -157,9 +157,9 @@ public abstract class ALevel implements IDrawable {
         if (this.player != null && !this.isHandlingLevelComplete) {  // only allow pause if player is active
             // press 'p' for pause
             if (keyEvent.getAction() == KeyEvent.PRESS) {
-                char keyPressed = keyEvent.getKey();
+                String keyPressed = keyEvent.getKey() + "";
 
-                if (keyPressed == 'p') {   // pause
+                if ("p".equalsIgnoreCase(keyPressed)) {   // pause
                     this.isPaused = !this.isPaused;
 
                     if (this.isPaused) {
