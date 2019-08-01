@@ -94,41 +94,57 @@ public abstract class ALevel implements IDrawable {
      */
     @Override
     public void draw() {
-        // draw background image horizontally until level width is filled
+        // for scrolling background
+        translate(-this.viewBox.getPos().x, -this.viewBox.getPos().y);
+
         int levelWidthLeftToDraw = getCurrentActiveLevelWidth();
         int numberHorizontalBackgroundIterations =
-            (int) Math.ceil((double) getCurrentActiveLevelWidth() / resourceUtils.levelBackgroundImage.width);
+            (int) Math.ceil((double) getCurrentActiveLevelWidth() / Constants.SCREEN_WIDTH);
+        for (int curHorizontalItr = 0; curHorizontalItr < numberHorizontalBackgroundIterations; curHorizontalItr++) {
+            int curIterationWidthToDraw =
+                Math.min(
+                    Constants.SCREEN_WIDTH,
+                    levelWidthLeftToDraw);
 
-        int levelHeightLeftToDraw = getCurrentActiveLevelHeight();
-        int numberVerticalBackgroundIterations =
-            (int) Math.ceil((double) getCurrentActiveLevelHeight() / resourceUtils.levelBackgroundImage.height);
+            // lazy load level background
+            final int curItrLeftX = curHorizontalItr * Constants.SCREEN_WIDTH;
+            final boolean viewBoxInCurXRange =
+                (curItrLeftX <= this.viewBox.getPos().x
+                    && curItrLeftX + Constants.SCREEN_WIDTH >= this.viewBox.getPos().x)
+                || (curItrLeftX <= this.viewBox.getPos().x + Constants.SCREEN_WIDTH
+                    && curItrLeftX + Constants.SCREEN_WIDTH >= this.viewBox.getPos().x + Constants.SCREEN_WIDTH);
 
-        for (int i = 0; i < numberVerticalBackgroundIterations; i++) {
-            for (int j = 0; j < numberHorizontalBackgroundIterations; j++) {
-                int curIterationWidthToDraw =
-                    Math.min(
-                        resourceUtils.levelBackgroundImage.width,
-                        levelWidthLeftToDraw);
+            if (viewBoxInCurXRange) {
+                int levelHeightLeftToDraw = getCurrentActiveLevelHeight();
+                int numberVerticalBackgroundIterations =
+                    (int) Math.ceil((double) getCurrentActiveLevelHeight() / Constants.SCREEN_HEIGHT);
 
-                int curIterationHeightToDraw =
-                    Math.min(
-                        resourceUtils.levelBackgroundImage.height,
-                        levelHeightLeftToDraw);
+                for (int curVerticalItr = 0; curVerticalItr < numberVerticalBackgroundIterations; curVerticalItr++) {
+                    int curIterationHeightToDraw =
+                        Math.min(
+                            Constants.SCREEN_HEIGHT,
+                            levelHeightLeftToDraw);
 
-                int startYPosToDraw =
-                    -i * resourceUtils.levelBackgroundImage.height
-                        - (resourceUtils.levelBackgroundImage.height - curIterationHeightToDraw);
+                    int startYPosToDraw =
+                        -curVerticalItr * Constants.SCREEN_HEIGHT
+                            + (Constants.SCREEN_HEIGHT - curIterationHeightToDraw);
 
-                image(
-                    resourceUtils.levelBackgroundImage,
-                    i * resourceUtils.levelBackgroundImage.width, // start x pos
-                    startYPosToDraw,  // start y pos
-                    curIterationWidthToDraw,
-                    curIterationHeightToDraw);
+                    image(
+                        resourceUtils.levelBackgroundImage,
+                        (curHorizontalItr * Constants.SCREEN_WIDTH), // start x pos
+                        startYPosToDraw,  // start y pos
+                        curIterationWidthToDraw,
+                        curIterationHeightToDraw,
 
-                levelWidthLeftToDraw -= curIterationWidthToDraw;
-                levelHeightLeftToDraw -= curIterationHeightToDraw;
+                        0,
+                        0,
+                        curIterationWidthToDraw,
+                        curIterationHeightToDraw);
+
+                    levelHeightLeftToDraw -= curIterationHeightToDraw;
+                }
             }
+            levelWidthLeftToDraw -= curIterationWidthToDraw;
         }
 
         this.handleConditionalEnemyTriggers();

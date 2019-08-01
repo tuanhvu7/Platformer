@@ -1,6 +1,6 @@
 /**
  * viewbox that keeps track of screen position to display character;
- * to be used in translate(x, y) in draw()
+ * to be used in translate(x, y) in level's draw()
  */
 public class ViewBox implements IDrawable {
 
@@ -30,8 +30,6 @@ public class ViewBox implements IDrawable {
             this.handleHorizontalMovement();
             this.handleVerticalMovement();
         }
-        // move viewbox as necessary
-        translate(-this.pos.x, -this.pos.y);
     }
 
     /**
@@ -121,12 +119,14 @@ public class ViewBox implements IDrawable {
             this.vel.y = 0;
         }
 
-        this.pos.add(0, this.vel.y);
+        this.pos.add(0, (int) this.vel.y);  // int cast to avoid frame rate drop
 
         // fix viewbox level boundary overflows
+        final boolean isPlayerAtGroundLevel
+            = player.getPos().y + (Constants.PLAYER_DIAMETER / 2) == Constants.LEVEL_FLOOR_Y_POSITION;
         if (this.pos.y < height - getCurrentActiveLevelHeight()) {    // top overflow
             this.pos.y = height - getCurrentActiveLevelHeight();
-        } else if (this.pos.y > 0) { // bottom overflow
+        } else if (this.pos.y > 0 || isPlayerAtGroundLevel) { // bottom overflow or player at ground level
             this.pos.y = 0;
         }
     }

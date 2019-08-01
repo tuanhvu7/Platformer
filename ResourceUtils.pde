@@ -4,8 +4,8 @@ public class ResourceUtils {
     }
 
     // background image
-    private static final String BACKGROUND_IMAGE_NAME = "sky-blue-bg.png";
-    public final PImage levelBackgroundImage = loadImage(ResourceUtils.BACKGROUND_IMAGE_NAME);
+    private static final String LEVEL_BACKGROUND_IMAGE_NAME = "sky-bg.png";
+    public final PImage levelBackgroundImage = loadImage(ResourceUtils.LEVEL_BACKGROUND_IMAGE_NAME);
 
     /*** MUSIC ***/
     // level select menu song

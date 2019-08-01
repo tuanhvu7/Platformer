@@ -46,12 +46,7 @@ public class LevelSelectMenu extends AMenu {
      */
     @Override
     public void draw() {
-        image(
-            resourceUtils.levelBackgroundImage,
-            0,
-            0,
-            resourceUtils.levelBackgroundImage.width,
-            resourceUtils.levelBackgroundImage.height);
+        background(resourceUtils.levelBackgroundImage);
     }
 
 }
