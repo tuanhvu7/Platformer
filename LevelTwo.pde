@@ -52,25 +52,27 @@ public class LevelTwo extends ALevel {
             );
         }
 
+        int levelFloorXPosReference = this.setupActivateStartWrongSection(levelMiddleXPos);
+        levelFloorXPosReference = this.setupActivateMiddleWrongSection(levelFloorXPosReference + 750);
+        this.setupActivateEndWrongSection(levelFloorXPosReference + 250);
 
-        this.setupActivateStartWrongSection(levelMiddleXPos);
-        this.setupActivateMiddleWrongSection(levelMiddleXPos + 1750);
-        this.setupActivateEndWrongSection(levelMiddleXPos + 1750 + 2250);
-
-        this.setupActivateStartCorrectSection(levelMiddleXPos);
-        final int widthOfMiddleCorrectSection = 2000;
-        this.setupActivateMiddleCorrectSection(levelMiddleXPos - 1750, widthOfMiddleCorrectSection);
-        this.setupActivateEndCorrectSection(levelMiddleXPos - 1750 - widthOfMiddleCorrectSection - 250);
+        levelFloorXPosReference = this.setupActivateStartCorrectSection(levelMiddleXPos);
+        levelFloorXPosReference = this.setupActivateMiddleCorrectSection(levelFloorXPosReference - 750);
+        this.setupActivateEndCorrectSection(levelFloorXPosReference - 250);
     }
 
     /* ****** WRONG SECTION ****** */
 
-    private void setupActivateStartWrongSection(final int startXPos) {
+    /**
+     * @return sum of given startXPos and section floor x offset
+     */
+    private int setupActivateStartWrongSection(final int startXPos) {
+        final int sectionFloorXOffset = 1000;
         // section floor
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            1000,
+            sectionFloorXOffset,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
@@ -126,14 +128,20 @@ public class LevelTwo extends ALevel {
                 true
             ));
         }
+
+        return startXPos + sectionFloorXOffset;
     }
 
-    private void setupActivateMiddleWrongSection(final int startXPos) {
+    /**
+     * @return sum of given startXPos and section floor x offset
+     */
+    private int setupActivateMiddleWrongSection(final int startXPos) {
+        final int sectionFloorXOffset = 2000;
         // section floor
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            2000,
+            sectionFloorXOffset,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
@@ -193,6 +201,8 @@ public class LevelTwo extends ALevel {
             true,
             enemyToAddForTrigger
         ));
+
+        return startXPos + sectionFloorXOffset;
     }
 
     private void setupActivateEndWrongSection(final int startXPos) {
@@ -247,12 +257,16 @@ public class LevelTwo extends ALevel {
 
     /* ****** CORRECT SECTION ****** */
 
-    private void setupActivateStartCorrectSection(final int startXPos) {
+    /**
+     * @return sum of given startXPos and section floor x offset
+     */
+    private int setupActivateStartCorrectSection(final int startXPos) {
+        final int sectionFloorXOffset = -1000;
         // section floor
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            -1000,
+            sectionFloorXOffset,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
@@ -292,14 +306,20 @@ public class LevelTwo extends ALevel {
                 true
             ));
         }
+
+        return startXPos + sectionFloorXOffset;
     }
 
-    private void setupActivateMiddleCorrectSection(final int startXPos, final int widthOfMiddleCorrectSection) {
+    /**
+     * @return sum of given startXPos and section floor x offset
+     */
+    private int setupActivateMiddleCorrectSection(final int startXPos) {
+        final int sectionFloorXOffset = -2000;
         // section floor
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            -widthOfMiddleCorrectSection,
+            sectionFloorXOffset,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
@@ -364,7 +384,7 @@ public class LevelTwo extends ALevel {
 
         // calculated using distance from pit to start from left most x pos of stairs
         final int numTimesBlockIterate =
-            ((widthOfMiddleCorrectSection - (startXPos - leftXPosOfStairsSection))
+            ((Math.abs(sectionFloorXOffset) - (startXPos - leftXPosOfStairsSection))
                 / Constants.DEFAULT_BLOCK_SIZE) - 1; // -1 to not have block at end
         for (int i = 0; i < numTimesBlockIterate; i++) {
             if (i == 0) {   // block closest to stairs is item block
@@ -403,6 +423,8 @@ public class LevelTwo extends ALevel {
                 ));
             }
         }
+
+        return startXPos + sectionFloorXOffset;
     }
 
     private void setupActivateEndCorrectSection(final int startXPos) {
@@ -477,3 +499,4 @@ public class LevelTwo extends ALevel {
     }
 
 }
+

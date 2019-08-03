@@ -43,11 +43,10 @@ public class LevelOne extends ALevel {
             );
         }
 
-        this.setupActivateBeforeCheckpoint();
+        int levelFloorXPosReference = this.setupActivateBeforeCheckpoint();
+        levelFloorXPosReference = this.setupActivateMiddleSectionAfterCheckpoint(levelFloorXPosReference + 500);
+        this.setupActivateEndSection(levelFloorXPosReference);
 
-        final int startMiddleSectionXPos = 3000;
-        this.setupActivateMiddleSectionAfterCheckpoint(startMiddleSectionXPos);
-        this.setupActivateEndSection(startMiddleSectionXPos + 2000);
         this.bigEnemyTriggerCharacterListSizeCondition
             = this.levelDrawableCollection.getCharactersList().size() - 2;
     }
@@ -70,7 +69,6 @@ public class LevelOne extends ALevel {
                 true,
                 false
             );
-
             this.levelDrawableCollection.addDrawable(triggerEnemy);
 
             this.levelDrawableCollection.addDrawable(new EnemyTriggerVerticalBoundary(
@@ -87,14 +85,15 @@ public class LevelOne extends ALevel {
     }
 
     /**
-     * setup activate section before checkpoint
+     * @return sum of given startXPos and section floor x offset
      */
-    private void setupActivateBeforeCheckpoint() {
+    private int setupActivateBeforeCheckpoint() {
+        final int sectionFloorXOffset = 2500;
         // stage floor
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             0,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            2500,
+            sectionFloorXOffset,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
@@ -218,17 +217,20 @@ public class LevelOne extends ALevel {
             false,
             true
         ));
+
+        return sectionFloorXOffset;
     }
 
     /**
-     * setup activate middle section after checkpoint
+     * @return sum of given startXPos and section floor x offset
      */
-    private void setupActivateMiddleSectionAfterCheckpoint(final int startXPos) {
+    private int setupActivateMiddleSectionAfterCheckpoint(final int startXPos) {
+        final int sectionFloorXOffset = 2000;
         // stage floor
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
             Constants.LEVEL_FLOOR_Y_POSITION,
-            2000,
+            sectionFloorXOffset,
             Constants.DEFAULT_BOUNDARY_LINE_THICKNESS,
             true,
             true
@@ -267,32 +269,21 @@ public class LevelOne extends ALevel {
 
         // flying enemies
         Set<Enemy> triggerEnemySet = new HashSet<Enemy>();
-        enemyToAdd = new FlyingEnemy(
-            startXPos + 1600 + 4 * Constants.PLAYER_DIAMETER,
-            Constants.LEVEL_FLOOR_Y_POSITION - 4 * Constants.PLAYER_DIAMETER,
-            Constants.SMALL_ENEMY_DIAMETER,
-            -Constants.ENEMY_FAST_MOVEMENT_SPEED,
-            0,
-            false,
-            false,
-            false,
-            true,
-            false);
-        triggerEnemySet.add(enemyToAdd);
-        this.levelDrawableCollection.addDrawable(enemyToAdd);
-        enemyToAdd = new FlyingEnemy(
-            startXPos + 1600 + 8 * Constants.PLAYER_DIAMETER,
-            Constants.LEVEL_FLOOR_Y_POSITION - 6 * Constants.PLAYER_DIAMETER,
-            Constants.SMALL_ENEMY_DIAMETER,
-            -Constants.ENEMY_FAST_MOVEMENT_SPEED,
-            0,
-            false,
-            false,
-            false,
-            true,
-            false);
-        triggerEnemySet.add(enemyToAdd);
-        this.levelDrawableCollection.addDrawable(enemyToAdd);
+        for (int i = 1; i <= 2; i++) {
+            enemyToAdd = new FlyingEnemy(
+                startXPos + 1600 + (4 * i) * Constants.PLAYER_DIAMETER,
+                Constants.LEVEL_FLOOR_Y_POSITION - (2 + 2 * i) * Constants.PLAYER_DIAMETER,
+                Constants.SMALL_ENEMY_DIAMETER,
+                -Constants.ENEMY_FAST_MOVEMENT_SPEED,
+                0,
+                false,
+                false,
+                false,
+                true,
+                false);
+            triggerEnemySet.add(enemyToAdd);
+        }
+
         enemyToAdd = new FlyingEnemy(
             startXPos + 1600 + 14 * Constants.PLAYER_DIAMETER,
             Constants.LEVEL_FLOOR_Y_POSITION - 5 * Constants.PLAYER_DIAMETER,
@@ -315,11 +306,10 @@ public class LevelOne extends ALevel {
             true,
             triggerEnemySet
         ));
+
+        return startXPos + sectionFloorXOffset;
     }
 
-    /**
-     * setup activate middle section after checkpoint
-     */
     private void setupActivateEndSection(final int startXPos) {
         this.levelDrawableCollection.addDrawable(new HorizontalBoundary(
             startXPos,
