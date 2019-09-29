@@ -274,6 +274,9 @@ public class Player extends ACharacter implements IControllableCharacter {
      */
     void handleJumpKillEnemyPhysics() {
         this.vel.y = Constants.PLAYER_JUMP_KILL_ENEMY_HOP_VERTICAL_VELOCITY;
+        //  prevent fall through floor after killing enemy while touching floor
+        this.shouldSetPreviousFloorBoundaryContact = false;
+        this.previousFloorBoundaryContact = null;
     }
 
     /**
