@@ -25,7 +25,6 @@ public class LevelSelectMenuPanel extends APanel {
     void makeActive() {
         registerMethod("draw", this); // connect this draw() from main draw()
         registerMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
-        registerMethod("keyEvent", this); // connect this keyEvent() from main keyEvent()
     }
 
     /**
@@ -34,8 +33,7 @@ public class LevelSelectMenuPanel extends APanel {
     @Override
     public void makeNotActive() {
         unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
-        unregisterMethod("keyEvent", this); // connect this keyEvent() from main keyEvent()
+        unregisterMethod("mouseEvent", this); // disconnect this mouseEvent() from main mouseEvent()
     }
 
     
@@ -53,19 +51,14 @@ public class LevelSelectMenuPanel extends APanel {
     }
 
     /**
-     * handle panel keypress controls
+     * toggle loadLevelFromCheckpoint
      */
-    public void keyEvent(KeyEvent keyEvent) {
-        if (keyEvent.getAction() == KeyEvent.PRESS) {
-            String keyPressed = keyEvent.getKey() + "";
-            if ("c".equalsIgnoreCase(keyPressed)) {
-                this.loadLevelFromCheckpoint = !this.loadLevelFromCheckpoint;
-                if (this.loadLevelFromCheckpoint) {
-                    this.panelColor = Constants.LEVEL_CHECKPOINT_LOAD_PANEL_COLOR;
-                } else {
-                    this.panelColor = Constants.DEFAULT_PANEL_COLOR;
-                }
-            }
+    public void toggleLoadLevelFromCheckpoint() {
+        this.loadLevelFromCheckpoint = !this.loadLevelFromCheckpoint;
+        if (this.loadLevelFromCheckpoint) {
+            this.panelColor = Constants.ALTERNATE_PANEL_COLOR;
+        } else {
+            this.panelColor = Constants.DEFAULT_PANEL_COLOR;
         }
     }
 }

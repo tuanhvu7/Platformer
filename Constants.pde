@@ -7,7 +7,7 @@ public class Constants {
     public static final int TEXT_SIZE = 24;
     public static final int PANEL_SIZE = 200;
     public static final int DEFAULT_PANEL_COLOR = #00FF00;
-    public static final int LEVEL_CHECKPOINT_LOAD_PANEL_COLOR = #FFDAB9;
+    public static final int ALTERNATE_PANEL_COLOR = #FFDAB9;
 
     /*** screen config ***/
     public static final int SCREEN_HEIGHT = 900;

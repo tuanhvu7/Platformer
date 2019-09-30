@@ -1,12 +1,12 @@
 /**
- * menu to select level to play;
+ * Menu to change player controls
  */
-public class LevelSelectMenu extends AMenuWithKeyboardControl {
+public class ConfigurePlayerControlMenu extends AMenuWithKeyboardControl {
 
     /**
      * set properties of this
      */
-    public LevelSelectMenu(boolean isActive) {
+    public ConfigurePlayerControlMenu(boolean isActive) {
         super(isActive);
     }
 
@@ -17,18 +17,17 @@ public class LevelSelectMenu extends AMenuWithKeyboardControl {
     public void setupActivateMenu() {
         // make this active
         registerMethod("draw", this); // connect this draw() from main draw()
-        registerMethod("keyEvent", this); // connect this keyEvent() from main keyEvent()
-
+        registerMethod("keyEvent", this); // connect this draw() from main draw()
         int leftXPanelPosition = 100;
         int topYPanelPosition = 100;
-        for (int i = 1; i < levelsHeightArray.length; i++) {
+        for (EConfigurablePlayerControls curConfigurablePlayerControls : EConfigurablePlayerControls.values()) {
             if (leftXPanelPosition + Constants.PANEL_SIZE > resourceUtils.defaultMenuImage.width) {
                 leftXPanelPosition = 100;
                 topYPanelPosition += (100 + Constants.PANEL_SIZE);
             }
 
-            this.panelsList.add(new LevelSelectMenuPanel(
-                i,
+            this.panelsList.add(new ConfigurePlayerControlPanel(
+                curConfigurablePlayerControls,
                 leftXPanelPosition,
                 topYPanelPosition,
                 Constants.PANEL_SIZE,
@@ -37,9 +36,8 @@ public class LevelSelectMenu extends AMenuWithKeyboardControl {
             ));
 
             leftXPanelPosition += Constants.PANEL_SIZE + 100;
+            resourceUtils.loopSong(ESongType.OUT_OF_LEVEL_MENU);
         }
-
-        resourceUtils.loopSong(ESongType.OUT_OF_LEVEL_MENU);
     }
 
     /**
@@ -50,22 +48,25 @@ public class LevelSelectMenu extends AMenuWithKeyboardControl {
         background(resourceUtils.defaultMenuImage);
     }
 
-
     /**
      * handle keypress
      */
     public void keyEvent(KeyEvent keyEvent) {
         if (keyEvent.getAction() == KeyEvent.PRESS) {
             String keyPressed = keyEvent.getKey() + "";
-            if (EReservedControlKeys.c.toString().equalsIgnoreCase(keyPressed)) {  // toggle checkpoint start
-                for (APanel curPanel : this.panelsList) {
-                    ((LevelSelectMenuPanel) curPanel).toggleLoadLevelFromCheckpoint();
-                }
-            } else if (EReservedControlKeys.u.toString().equalsIgnoreCase(keyPressed)) {   // switch to user control menu
-                getLevelSelectMenu().deactivateMenu();
-                getChangePlayerControlMenu().setupActivateMenu();
+            if (EReservedControlKeys.u.toString().equalsIgnoreCase(keyPressed)) {   // switch to level select
+                this.deactivateMenu();
+                getLevelSelectMenu().setupActivateMenu();
             }
         }
     }
 
+    /**
+     * reset all of this' panel colors and unregister from all of this' panel keyEvent
+     */
+    public void resetPanelsColorAndUnregisterKeyEvent() {
+        for (APanel curPanel : this.panelsList) {
+            ((ConfigurePlayerControlPanel) curPanel).resetColorAndUnregisterKeyEvent();
+        }
+    }
 }

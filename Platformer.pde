@@ -22,12 +22,21 @@ private final PVector wallSlideAcceleration = new PVector(0, Constants.WALL_SLID
 // handles resources (images, music)
 private ResourceUtils resourceUtils;
 
+// handles player control settings
+private PlayerControlSettings playerControlSettings;
+
+// handles reserved control keys
+private ReservedControlUtils reservedControlUtils;
+
 // level complete thread
 Thread levelCompleteThread;
 
-/*** LEVEL ***/
+/*** MENUS ***/
 // level select menu
 private LevelSelectMenu levelSelectMenu;
+
+// configure player control menu
+private ConfigurePlayerControlMenu configurePlayerControlMenu;
 
 /*** MUSIC ***/
 // stores current active level
@@ -58,14 +67,16 @@ private final int[] levelsHeightArray = {
  */
 void settings() {
     
-    
     new JFXPanel(); // initialize JavaFx toolkit
 
     resourceUtils = new ResourceUtils();
+    playerControlSettings = new PlayerControlSettings();
+    reservedControlUtils = new ReservedControlUtils();
     currentActiveLevelNumber = 0;
 
     size(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     levelSelectMenu = new LevelSelectMenu(true);
+    configurePlayerControlMenu = new ConfigurePlayerControlMenu(false);
 }
 
 /**
@@ -143,6 +154,10 @@ public PVector getWallSlideAcceleration() {
 
 public LevelSelectMenu getLevelSelectMenu() {
     return levelSelectMenu;
+}
+
+public ConfigurePlayerControlMenu getChangePlayerControlMenu() {
+    return configurePlayerControlMenu;
 }
 
 public ALevel getCurrentActiveLevel() {

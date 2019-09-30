@@ -98,26 +98,26 @@ public class ControllableEnemy extends Enemy implements IControllableCharacter {
      */
     @Override
     public void keyEvent(KeyEvent keyEvent) {
-        String key = keyEvent.getKey() + "";
+        int keyCode = Character.toLowerCase(keyEvent.getKeyCode());
         if (keyEvent.getAction() == KeyEvent.PRESS) {
-            if ("a".equalsIgnoreCase(key)) {   //left
+            if (playerControlSettings.getPlayerLeft() == keyCode) {   //left
                 this.moveLeftPressed = true;
             }
-            if ("d".equalsIgnoreCase(key)) {   //right
+            if (playerControlSettings.getPlayerRight() == keyCode) {   //right
                 this.moveRightPressed = true;
             }
-            if ("w".equalsIgnoreCase(key)) {
+            if (playerControlSettings.getPlayerUp() == keyCode) {
                 this.jumpPressed = true;
             }
 
         } else if (keyEvent.getAction() == KeyEvent.RELEASE) {
-            if ("a".equalsIgnoreCase(key)) {       //left
+            if (playerControlSettings.getPlayerLeft() == keyCode) {       //left
                 this.moveLeftPressed = false;
             }
-            if ("d".equalsIgnoreCase(key)) {       //right
+            if (playerControlSettings.getPlayerRight() == keyCode) {       //right
                 this.moveRightPressed = false;
             }
-            if ("w".equalsIgnoreCase(key)) {
+            if (playerControlSettings.getPlayerUp() == keyCode) {
                 this.jumpPressed = false;
             }
         }

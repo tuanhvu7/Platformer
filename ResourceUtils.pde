@@ -3,17 +3,20 @@ public class ResourceUtils {
     public ResourceUtils() {
     }
 
+    private static final String DEFAULT_MENU_IMAGE_NAME = "sky-blue-bg.png";
+    public final PImage defaultMenuImage = loadImage(ResourceUtils.DEFAULT_MENU_IMAGE_NAME);
+
     // background image
     private static final String LEVEL_BACKGROUND_IMAGE_NAME = "sky-bg.png";
     public final PImage levelBackgroundImage = loadImage(ResourceUtils.LEVEL_BACKGROUND_IMAGE_NAME);
 
     /*** MUSIC ***/
     // level select menu song
-    private static final String LEVEL_SELECT_MENU_SONG_NAME = "level-select-menu-song.mp3";
-    private final Media levelSelectMenuSong 
-        = new Media(convertPathToValidUri(dataPath(LEVEL_SELECT_MENU_SONG_NAME)));
+    private static final String OUT_OF_LEVEL_MENU_SONG_NAME = "level-select-menu-song.mp3";
+    private final Media outOfLevelMenuSong 
+        = new Media(convertPathToValidUri(dataPath(OUT_OF_LEVEL_MENU_SONG_NAME)));
     // player for level select menu song
-    private final MediaPlayer levelSelectMenuSongPlayer = new MediaPlayer(levelSelectMenuSong);
+    private final MediaPlayer outOfLevelMenuSongPlayer = new MediaPlayer(outOfLevelMenuSong);
 
     // level song
     private static final String LEVEL_SONG_NAME = "level-song.mp3"; 
@@ -62,9 +65,9 @@ public class ResourceUtils {
     */
     public void loopSong(ESongType songType) {
         switch(songType) {
-            case LEVEL_SELECT_MENU:
-                levelSelectMenuSongPlayer.setCycleCount(Integer.MAX_VALUE);
-                levelSelectMenuSongPlayer.play();
+            case OUT_OF_LEVEL_MENU:
+                outOfLevelMenuSongPlayer.setCycleCount(Integer.MAX_VALUE);
+                outOfLevelMenuSongPlayer.play();
             break;
 
             case LEVEL:
@@ -161,7 +164,7 @@ public class ResourceUtils {
     * stop song
     */
     public void stopSong() {
-        levelSelectMenuSongPlayer.stop();
+        outOfLevelMenuSongPlayer.stop();
         levelSongPlayer.stop();
         playerDeathSongPlayer.stop();
         levelCompleteSongPlayer.stop();

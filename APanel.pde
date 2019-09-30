@@ -10,11 +10,10 @@ public abstract class APanel implements IDrawable {
     final int bottomY;
 
     int panelColor;
+    String panelText;
 
     private final int width;
     private final int height;
-
-    private final String panelText;
 
     /**
      * set properties of this

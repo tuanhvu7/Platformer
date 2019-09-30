@@ -159,7 +159,7 @@ public abstract class ALevel implements IDrawable {
             if (keyEvent.getAction() == KeyEvent.PRESS) {
                 String keyPressed = keyEvent.getKey() + "";
 
-                if ("p".equalsIgnoreCase(keyPressed)) {   // pause
+                if (EReservedControlKeys.p.toString().equalsIgnoreCase(keyPressed)) {   // pause
                     this.isPaused = !this.isPaused;
 
                     if (this.isPaused) {
