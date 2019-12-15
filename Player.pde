@@ -68,7 +68,7 @@ public class Player extends ACharacter implements IControllableCharacter {
     public Player(int x, int y, int diameter, int health, boolean isActive) {
         super(x, y, diameter, isActive);
         if (health < 1) {
-            throw new IllegalArgumentException("Initial player health must be greater than 1");
+            throw new IllegalArgumentException("Initial player health must be at least 1");
         }
 
         this.health = health;
