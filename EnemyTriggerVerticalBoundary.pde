@@ -13,7 +13,7 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
                                         boolean isActive, Enemy enemy) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
             false, isActive);
-        Set<Enemy> set = new HashSet<Enemy>();
+        Set<Enemy> set = Collections.newSetFromMap(new ConcurrentHashMap<Enemy, Boolean>());
         set.add(enemy);
         this.enemiesToAddSet = set;
     }

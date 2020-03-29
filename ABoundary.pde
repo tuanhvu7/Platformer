@@ -51,7 +51,7 @@ public abstract class ABoundary implements IDrawable {
         this.doesAffectPlayer = doesAffectPlayer;
         this.doesAffectNonPlayers = doesAffectNonPlayers;
 
-        this.charactersTouchingThis = new HashSet<ACharacter>();
+        this.charactersTouchingThis = Collections.newSetFromMap(new ConcurrentHashMap<ACharacter, Boolean>());
 
         if (isActive) {
             this.makeActive();

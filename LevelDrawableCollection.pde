@@ -18,10 +18,10 @@ public class LevelDrawableCollection {
      * sets properties of this
      */
     LevelDrawableCollection() {
-        this.charactersList = new HashSet<ACharacter>();
-        this.boundariesList = new HashSet<ABoundary>();
-        this.blocksList = new HashSet<ABlock>();
-        this.collectablesList = new HashSet<ACollectable>();
+        this.charactersList = Collections.newSetFromMap(new ConcurrentHashMap<ACharacter, Boolean>());
+        this.boundariesList = Collections.newSetFromMap(new ConcurrentHashMap<ABoundary, Boolean>());
+        this.blocksList = Collections.newSetFromMap(new ConcurrentHashMap<ABlock, Boolean>());
+        this.collectablesList = Collections.newSetFromMap(new ConcurrentHashMap<ACollectable, Boolean>());
     }
 
     /**

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.ref.WeakReference;
 import java.util.Optional;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;

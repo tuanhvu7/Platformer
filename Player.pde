@@ -50,7 +50,7 @@ public class Player extends ACharacter implements IControllableCharacter {
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
 
-        this.eventBlockTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
+        this.eventBlockTopBoundaryContacts = Collections.newSetFromMap(new ConcurrentHashMap<EventBlockTopBoundary, Boolean>());
         this.previousFloorBoundaryContact = null;
         this.shouldSetPreviousFloorBoundaryContact = true;
 
@@ -78,7 +78,7 @@ public class Player extends ACharacter implements IControllableCharacter {
         this.numberOfVerticalBoundaryContacts = 0;
         this.numberOfFloorBoundaryContacts = 0;
 
-        this.eventBlockTopBoundaryContacts = new HashSet<EventBlockTopBoundary>();
+        this.eventBlockTopBoundaryContacts = Collections.newSetFromMap(new ConcurrentHashMap<EventBlockTopBoundary, Boolean>());
         this.previousFloorBoundaryContact = null;
         this.shouldSetPreviousFloorBoundaryContact = true;
 
