@@ -54,6 +54,7 @@ public class LevelSelectMenu extends AMenuWithKeyboardControl {
     /**
      * handle keypress
      */
+    @Override
     public void keyEvent(KeyEvent keyEvent) {
         if (keyEvent.getAction() == KeyEvent.PRESS) {
             String keyPressed = keyEvent.getKey() + "";

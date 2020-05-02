@@ -1,7 +1,7 @@
 /**
  * player controllable character in game
  */
-public class Player extends ACharacter implements IControllableCharacter {
+public class Player extends ACharacter implements IKeyControllable {
 
     // health of this, 0 means dead
     private int health;
@@ -93,7 +93,7 @@ public class Player extends ACharacter implements IControllableCharacter {
     /**
      * handle character keypress controls
      */
-     @Override
+    @Override
     public void keyEvent(KeyEvent keyEvent) {
         int keyCode = Character.toLowerCase(keyEvent.getKeyCode());
         if (keyEvent.getAction() == KeyEvent.PRESS) {

@@ -1,7 +1,7 @@
 /**
  * common for levels
  */
-public abstract class ALevel implements IDrawable {
+public abstract class ALevel implements IDrawable, IKeyControllable {
     // player-controllable character
     Player player;
 
@@ -153,6 +153,7 @@ public abstract class ALevel implements IDrawable {
     /**
      * handle character keypress controls
      */
+    @Override
     public void keyEvent(KeyEvent keyEvent) {
         if (this.player != null && !this.isHandlingLevelComplete) {  // only allow pause if player is active
             // press 'p' for pause

@@ -1,7 +1,7 @@
 /**
  * Common for panels
  */
-public abstract class APanel implements IDrawable {
+public abstract class APanel implements IDrawable, IMouseControllable {
 
     final int leftX;
     final int rightX;
@@ -68,6 +68,7 @@ public abstract class APanel implements IDrawable {
     /**
      * Execute appropriate method (executeWhenClicked) when this is clicked
      */
+    @Override
     public void mouseEvent(MouseEvent event) {
         if (event.getAction() == MouseEvent.CLICK) {
             if (isMouseIn()) {

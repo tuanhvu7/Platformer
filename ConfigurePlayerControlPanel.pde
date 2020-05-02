@@ -1,7 +1,7 @@
 /**
  * Used to display and change player control settings
  */
-public class ConfigurePlayerControlPanel extends APanel {
+public class ConfigurePlayerControlPanel extends APanel implements IKeyControllable {
     // player control type linked to this
     private final EConfigurablePlayerControls configurablePlayerControlType;
 
@@ -50,6 +50,7 @@ public class ConfigurePlayerControlPanel extends APanel {
     /**
      * handle panel keypress controls
      */
+    @Override
     public void keyEvent(KeyEvent keyEvent) {
         if (keyEvent.getAction() == KeyEvent.PRESS) {
             int keyCode = Character.toLowerCase(keyEvent.getKeyCode());

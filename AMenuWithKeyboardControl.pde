@@ -1,7 +1,7 @@
 /**
  * common for menus with keyboard controls
  */
-public abstract class AMenuWithKeyboardControl extends AMenu {
+public abstract class AMenuWithKeyboardControl extends AMenu implements IKeyControllable {
     AMenuWithKeyboardControl(boolean isActive) {
         super(isActive);
     }

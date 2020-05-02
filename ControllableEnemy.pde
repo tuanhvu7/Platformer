@@ -1,7 +1,7 @@
 /**
  * controllable enemy
  */
-public class ControllableEnemy extends Enemy implements IControllableCharacter {
+public class ControllableEnemy extends Enemy implements IKeyControllable {
 
     // true means left and right button controls affect this
     final private boolean isHorizontalControllable;
