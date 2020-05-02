@@ -499,4 +499,3 @@ public class LevelTwo extends ALevel {
     }
 
 }
-

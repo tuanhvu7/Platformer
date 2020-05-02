@@ -39,16 +39,16 @@ public abstract class APanel implements IDrawable {
      * active and add this to game
      */
     void makeActive() {
-        registerMethod("draw", this); // connect this draw() from main draw()
-        registerMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.MOUSE_EVENT.toString(), this); // connect this mouseEvent() from main mouseEvent()
     }
 
     /**
      * deactivate and remove this from game
      */
     public void makeNotActive() {
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.MOUSE_EVENT.toString(), this); // connect this mouseEvent() from main mouseEvent()
     }
 
     /**

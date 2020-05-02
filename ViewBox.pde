@@ -36,14 +36,14 @@ public class ViewBox implements IDrawable {
      * activate and add this to game
      */
     private void makeActive() {
-        registerMethod("draw", this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
     }
 
     /**
      * deactivate and remove this from game
      */
     public void makeNotActive() {
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
     }
 
     /**

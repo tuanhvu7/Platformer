@@ -102,7 +102,7 @@ public class EventBlock extends ABlock {
      * active and add this to game
      */
     private void makeActive() {
-        registerMethod("draw", this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
 
         // make horizontal boundaries first since their detection takes precedence
         this.bottomSide.makeActive();
@@ -123,6 +123,6 @@ public class EventBlock extends ABlock {
         this.rightSide.makeNotActive();
         this.eventTriggerBoundary.makeNotActive();
 
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
     }
 }

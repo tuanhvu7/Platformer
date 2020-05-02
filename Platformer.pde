@@ -129,7 +129,7 @@ private void handleLevelComplete() {
                     getCurrentActiveLevel().setHandlingLevelComplete(true);
                     getCurrentActivePlayer().resetControlPressed();
                     getCurrentActivePlayer().setVel(new PVector(Constants.PLAYER_LEVEL_COMPLETE_SPEED, 0));
-                    unregisterMethod("keyEvent", getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
+                    unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), getCurrentActivePlayer()); // disconnect this keyEvent() from main keyEvent()
                     
                     resourceUtils.stopSong();
                     resourceUtils.playSong(ESongType.LEVEL_COMPLETE);

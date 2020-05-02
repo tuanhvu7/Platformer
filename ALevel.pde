@@ -49,8 +49,8 @@ public abstract class ALevel implements IDrawable {
      * active and add this to game
      */
     void makeActive() {
-        registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
-        registerMethod("draw", this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this);   // connect this keyEvent() from main keyEvent()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
     }
 
     /**
@@ -78,8 +78,8 @@ public abstract class ALevel implements IDrawable {
         this.levelDrawableCollection.deactivateClearAllDrawable();
 
         // make this not active
-        unregisterMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this);   // connect this keyEvent() from main keyEvent()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
     }
 
     /**

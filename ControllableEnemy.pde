@@ -46,8 +46,8 @@ public class ControllableEnemy extends Enemy implements IControllableCharacter {
      */
     @Override
     public void makeActive() {
-        registerMethod("draw", this); // connect this draw() from main draw()
-        registerMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
     }
 
     /**
@@ -55,8 +55,8 @@ public class ControllableEnemy extends Enemy implements IControllableCharacter {
      */
     @Override
     public void makeNotActive() {
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
     }
 
     /**

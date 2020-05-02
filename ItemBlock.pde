@@ -98,7 +98,7 @@ public class ItemBlock extends Block {
      * active and add this to game
      */
     void makeActive() {
-        registerMethod("draw", this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
 
         // make horizontal boundaries first since their detection takes precedence
         this.bottomSide.makeActive();

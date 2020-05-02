@@ -154,8 +154,8 @@ public class Player extends ACharacter implements IControllableCharacter {
      */
     @Override
     public void makeActive() {
-        registerMethod("keyEvent", this);   // connect this keyEvent() from main keyEvent()
-        registerMethod("draw", this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this);   // connect this keyEvent() from main keyEvent()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
     }
 
     /**
@@ -163,8 +163,8 @@ public class Player extends ACharacter implements IControllableCharacter {
      */
     @Override
     public void makeNotActive() {
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
     }
 
     /**
@@ -251,7 +251,7 @@ public class Player extends ACharacter implements IControllableCharacter {
         // event block top boundary can affect player again
         this.shouldSetPreviousFloorBoundaryContact = false;
         eventBlockTopBoundary.setDoesAffectPlayer(true);
-        registerMethod("keyEvent", this); // enable controls for this
+        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this); // enable controls for this
     }
 
     /**
@@ -312,7 +312,7 @@ public class Player extends ACharacter implements IControllableCharacter {
     private void handleEventBlockDescent() {
         if (this.eventBlockTopBoundaryContacts.size() == 1) {
             this.resetControlPressed();
-            unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+            unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
 
             EventBlockTopBoundary firstEventTopBoundaryContacts =
                 this.eventBlockTopBoundaryContacts.stream().findFirst().get();

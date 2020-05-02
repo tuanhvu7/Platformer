@@ -48,7 +48,7 @@ public abstract class AMenu implements IDrawable {
 
         this.panelsList.clear();
         // make this not active
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
     }
 
 }

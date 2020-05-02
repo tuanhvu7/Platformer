@@ -16,7 +16,7 @@ public class PauseMenu extends AMenu {
     @Override
     public void setupActivateMenu() {
         // make this active
-        registerMethod("draw", this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
 
         this.panelsList.add(new PauseMenuPanel(
             EPauseMenuButtonType.CONTINUE,

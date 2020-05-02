@@ -23,8 +23,8 @@ public class LevelSelectMenuPanel extends APanel {
      */
     @Override
     void makeActive() {
-        registerMethod("draw", this); // connect this draw() from main draw()
-        registerMethod("mouseEvent", this); // connect this mouseEvent() from main mouseEvent()
+        registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
+        registerMethod(EProcessingMethods.MOUSE_EVENT.toString(), this); // connect this mouseEvent() from main mouseEvent()
     }
 
     /**
@@ -32,8 +32,8 @@ public class LevelSelectMenuPanel extends APanel {
      */
     @Override
     public void makeNotActive() {
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("mouseEvent", this); // disconnect this mouseEvent() from main mouseEvent()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.MOUSE_EVENT.toString(), this); // disconnect this mouseEvent() from main mouseEvent()
     }
 
     

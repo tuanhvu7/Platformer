@@ -25,7 +25,7 @@ public abstract class AMenuWithKeyboardControl extends AMenu {
 
         this.panelsList.clear();
         // make this not active
-       unregisterMethod("draw", this); // disconnect this draw() from main draw()
-       unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+       unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
+       unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
     }
 }

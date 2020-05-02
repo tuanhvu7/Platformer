@@ -34,7 +34,7 @@ public class ConfigurePlayerControlPanel extends APanel {
     void executeWhenClicked() {
         getChangePlayerControlMenu().resetPanelsColorAndUnregisterKeyEvent();
         this.panelColor = Constants.ALTERNATE_PANEL_COLOR;
-        registerMethod("keyEvent", this);
+        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this);
     }
 
     /**
@@ -42,9 +42,9 @@ public class ConfigurePlayerControlPanel extends APanel {
      */
     @Override
     public void makeNotActive() {
-        unregisterMethod("draw", this); // disconnect this draw() from main draw()
-        unregisterMethod("mouseEvent", this); // disconnect this mouseEvent() from main mouseEvent()
-        unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+        unregisterMethod(EProcessingMethods.DRAW.toString(), this); // disconnect this draw() from main draw()
+        unregisterMethod(EProcessingMethods.MOUSE_EVENT.toString(), this); // disconnect this mouseEvent() from main mouseEvent()
+        unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
     }
 
     /**
@@ -84,7 +84,7 @@ public class ConfigurePlayerControlPanel extends APanel {
      */
     public void resetColorAndUnregisterKeyEvent() {
         this.panelColor = Constants.DEFAULT_PANEL_COLOR;
-        unregisterMethod("keyEvent", this); // disconnect this keyEvent() from main keyEvent()
+        unregisterMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
     }
 
     /**
