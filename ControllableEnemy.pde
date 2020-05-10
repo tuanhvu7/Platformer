@@ -47,7 +47,7 @@ public class ControllableEnemy extends Enemy implements IKeyControllable {
     @Override
     public void makeActive() {
         registerMethod(EProcessingMethods.DRAW.toString(), this); // connect this draw() from main draw()
-        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this); // disconnect this keyEvent() from main keyEvent()
+        registerMethod(EProcessingMethods.KEY_EVENT.toString(), this); // connect this keyEvent() from main keyEvent()
     }
 
     /**
