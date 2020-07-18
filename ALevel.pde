@@ -59,13 +59,6 @@ public abstract class ALevel implements IDrawable, IKeyControllable {
     abstract void setUpActivateLevel();
 
     /**
-     * handle conditional enemy triggers in this;
-     * to override in extended classes if needed
-     */
-    void handleConditionalEnemyTriggers() {
-    }
-
-    /**
      * deactivate this;
      */
     public void deactivateLevel() {
@@ -94,6 +87,43 @@ public abstract class ALevel implements IDrawable, IKeyControllable {
      */
     @Override
     public void draw() {
+        this.drawBackground();
+    }
+
+    /**
+     * handle character keypress controls
+     */
+    @Override
+    public void keyEvent(KeyEvent keyEvent) {
+        if (this.player != null && !this.isHandlingLevelComplete) {  // only allow pause if player is active
+            // press 'p' for pause
+            if (keyEvent.getAction() == KeyEvent.PRESS) {
+                String keyPressed = keyEvent.getKey() + "";
+
+                if (EReservedControlKeys.p.toString().equalsIgnoreCase(keyPressed)) {   // pause
+                    this.isPaused = !this.isPaused;
+
+                    if (this.isPaused) {
+                        resourceUtils.stopSong();
+                        noLoop();
+                        this.pauseMenu = new PauseMenu(
+                            (int) this.viewBox.getPos().x,
+                            true);
+
+                    } else {
+                        resourceUtils.loopSong(ESongType.LEVEL);
+                        loop();
+                        this.closePauseMenu();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * draw background at proper location
+     */
+    void drawBackground() {
         // for scrolling background
         translate(-this.viewBox.getPos().x, -this.viewBox.getPos().y);
 
@@ -111,7 +141,7 @@ public abstract class ALevel implements IDrawable, IKeyControllable {
             final boolean viewBoxInCurXRange =
                 (curItrLeftX <= this.viewBox.getPos().x
                     && curItrLeftX + Constants.SCREEN_WIDTH >= this.viewBox.getPos().x)
-                || (curItrLeftX <= this.viewBox.getPos().x + Constants.SCREEN_WIDTH
+                    || (curItrLeftX <= this.viewBox.getPos().x + Constants.SCREEN_WIDTH
                     && curItrLeftX + Constants.SCREEN_WIDTH >= this.viewBox.getPos().x + Constants.SCREEN_WIDTH);
 
             if (viewBoxInCurXRange) {
@@ -145,38 +175,6 @@ public abstract class ALevel implements IDrawable, IKeyControllable {
                 }
             }
             levelWidthLeftToDraw -= curIterationWidthToDraw;
-        }
-
-        this.handleConditionalEnemyTriggers();
-    }
-
-    /**
-     * handle character keypress controls
-     */
-    @Override
-    public void keyEvent(KeyEvent keyEvent) {
-        if (this.player != null && !this.isHandlingLevelComplete) {  // only allow pause if player is active
-            // press 'p' for pause
-            if (keyEvent.getAction() == KeyEvent.PRESS) {
-                String keyPressed = keyEvent.getKey() + "";
-
-                if (EReservedControlKeys.p.toString().equalsIgnoreCase(keyPressed)) {   // pause
-                    this.isPaused = !this.isPaused;
-
-                    if (this.isPaused) {
-                        resourceUtils.stopSong();
-                        noLoop();
-                        this.pauseMenu = new PauseMenu(
-                            (int) this.viewBox.getPos().x,
-                            true);
-
-                    } else {
-                        resourceUtils.loopSong(ESongType.LEVEL);
-                        loop();
-                        this.closePauseMenu();
-                    }
-                }
-            }
         }
     }
 
