@@ -13,10 +13,10 @@ public abstract class AMenu implements IDrawable {
      * set properties of this;
      * sets this if have no offset
      */
-    AMenu(boolean isActive) {
+    AMenu(boolean initAsActive) {
         this.horizontalOffset = 0;
         this.panelsList = new ArrayList<APanel>();
-        if (isActive) {
+        if (initAsActive) {
             this.setupActivateMenu();
         }
     }
@@ -25,10 +25,10 @@ public abstract class AMenu implements IDrawable {
      * set properties of this;
      * sets this to have given offset
      */
-    AMenu(int horizontalOffset, boolean isActive) {
+    AMenu(int horizontalOffset, boolean initAsActive) {
         this.horizontalOffset = horizontalOffset;
         this.panelsList = new ArrayList<APanel>();
-        if (isActive) {
+        if (initAsActive) {
             this.setupActivateMenu();
         }
     }

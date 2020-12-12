@@ -16,9 +16,9 @@ public class EventBlock extends ABlock {
      */
     public EventBlock(int leftX, int topY, int width, int height, int blockLineThickness,
                       int launchEventVerticalVelocity,
-                      boolean isEventTriggerFloorBoundary, boolean isActive) {
+                      boolean isEventTriggerFloorBoundary, boolean initAsActive) {
 
-        super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
+        super(leftX, topY, width, height, blockLineThickness);
 
         this.fillColor = Constants.EVENT_BLOCK_COLOR;
 
@@ -43,7 +43,7 @@ public class EventBlock extends ABlock {
             (EventBlockTopBoundary) this.topSide
         );
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }
@@ -55,9 +55,9 @@ public class EventBlock extends ABlock {
      */
     public EventBlock(int leftX, int topY, int width, int height, int blockLineThickness,
                       int endWarpXPosition, int endWarpYPosition,
-                      boolean isEventTriggerFloorBoundary, boolean isActive) {
+                      boolean isEventTriggerFloorBoundary, boolean initAsActive) {
 
-        super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
+        super(leftX, topY, width, height, blockLineThickness);
 
         this.fillColor = Constants.EVENT_BLOCK_COLOR;
 
@@ -83,7 +83,7 @@ public class EventBlock extends ABlock {
             (EventBlockTopBoundary) this.topSide
         );
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }

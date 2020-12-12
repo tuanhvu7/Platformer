@@ -12,8 +12,8 @@ public class Enemy extends ACharacter {
      * set properties of this
      */
     public Enemy(int x, int y, int diameter, float horizontalVel,
-                 boolean isInvulnerable, boolean isVisible, boolean isActive) {
-        super(x, y, diameter, isActive);
+                 boolean isInvulnerable, boolean isVisible, boolean initAsActive) {
+        super(x, y, diameter, initAsActive);
 
         this.fillColor = Constants.ENEMY_COLOR;
 

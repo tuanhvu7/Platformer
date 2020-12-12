@@ -6,8 +6,8 @@ public class ConfigurePlayerControlMenu extends AMenuWithKeyboardControl {
     /**
      * set properties of this
      */
-    public ConfigurePlayerControlMenu(boolean isActive) {
-        super(isActive);
+    public ConfigurePlayerControlMenu(boolean initAsActive) {
+        super(initAsActive);
     }
 
     /**

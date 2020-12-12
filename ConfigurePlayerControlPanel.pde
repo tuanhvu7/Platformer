@@ -9,8 +9,8 @@ public class ConfigurePlayerControlPanel extends APanel implements IKeyControlla
      * set properties of this
      */
     public ConfigurePlayerControlPanel(EConfigurablePlayerControls configurableControlPanelText,
-                                    int leftX, int topY, int width, int height, boolean isActive) {
-        super(Constants.DEFAULT_PANEL_COLOR, "", leftX, topY, width, height, isActive);
+                                    int leftX, int topY, int width, int height, boolean initAsActive) {
+        super(Constants.DEFAULT_PANEL_COLOR, "", leftX, topY, width, height, initAsActive);
         this.configurablePlayerControlType = configurableControlPanelText;
         switch (this.configurablePlayerControlType) {
             case UP:

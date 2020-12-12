@@ -6,8 +6,8 @@ public class LevelSelectMenu extends AMenuWithKeyboardControl {
     /**
      * set properties of this
      */
-    public LevelSelectMenu(boolean isActive) {
-        super(isActive);
+    public LevelSelectMenu(boolean initAsActive) {
+        super(initAsActive);
     }
 
     /**

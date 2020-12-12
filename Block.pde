@@ -13,9 +13,9 @@ public class Block extends ABlock {
      */
     public Block(int leftX, int topY,
                  int width, int height, int blockLineThickness,
-                 boolean isBreakableFromBottom, boolean isActive) {
+                 boolean isBreakableFromBottom, boolean initAsActive) {
 
-        super(leftX, topY, width, height, blockLineThickness, false);   // initially not active, to be set in makeActive()
+        super(leftX, topY, width, height, blockLineThickness);
 
         if (isBreakableFromBottom) {
             this.fillColor = Constants.BREAKABLE_BLOCK_COLOR;
@@ -33,7 +33,7 @@ public class Block extends ABlock {
             false  // initially not active, to be set in makeActive()
         );
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }
@@ -45,10 +45,9 @@ public class Block extends ABlock {
      * to all characters
      */
     public Block(int leftX, int topY, int width, int height, int blockLineThickness,
-                 boolean isVisible, boolean isBreakableFromBottom, boolean isActive) {
+                 boolean isVisible, boolean isBreakableFromBottom, boolean initAsActive) {
 
-        super(leftX, topY, width, height, blockLineThickness,
-            isVisible, false);  // initially not active, to be set in makeActive(), isVisible
+        super(leftX, topY, width, height, blockLineThickness, isVisible);
 
         if (isBreakableFromBottom) {
             this.fillColor = Constants.BREAKABLE_BLOCK_COLOR;
@@ -57,6 +56,7 @@ public class Block extends ABlock {
         }
         this.isBreakableFromBottom = isBreakableFromBottom;
 
+        // pass initAsActive=false to constructor since need this and its boundaries active state to be synced
         this.topSide = new HorizontalBoundary(
             leftX,
             topY,
@@ -64,10 +64,10 @@ public class Block extends ABlock {
             blockLineThickness,
             isVisible,
             true,
-            false  // initially not active, to be set in makeActive()
+            false
         );
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }

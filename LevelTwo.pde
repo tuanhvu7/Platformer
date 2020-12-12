@@ -6,8 +6,8 @@ public class LevelTwo extends ALevel {
     /**
      * sets properties, boundaries, and characters of this
      */
-    public LevelTwo(boolean isActive, boolean loadPlayerFromCheckPoint) {
-        super(isActive, loadPlayerFromCheckPoint, 4 * Constants.PLAYER_DIAMETER);
+    public LevelTwo(boolean initAsActive, boolean loadPlayerFromCheckPoint) {
+        super(initAsActive, loadPlayerFromCheckPoint, 4 * Constants.PLAYER_DIAMETER);
     }
 
     /**

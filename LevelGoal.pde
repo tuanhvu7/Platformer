@@ -6,8 +6,8 @@ public class LevelGoal extends ACollectable {
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    public LevelGoal(int leftX, int topY, int width, int height, int blockLineThickness, boolean isActive) {
-        super(leftX, topY, width, height, blockLineThickness, isActive);
+    public LevelGoal(int leftX, int topY, int width, int height, int blockLineThickness, boolean initAsActive) {
+        super(leftX, topY, width, height, blockLineThickness, initAsActive);
         this.fillColor = Constants.LEVEL_GOAL_COLOR;
     }
 

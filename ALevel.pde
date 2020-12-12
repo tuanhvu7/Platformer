@@ -29,7 +29,7 @@ public abstract class ALevel implements IDrawable, IKeyControllable {
     /**
      * sets properties of this
      */
-    ALevel(boolean isActive, boolean loadPlayerFromCheckPoint, int goalRightSideOffsetWithStageWidth) {
+    ALevel(boolean initAsActive, boolean loadPlayerFromCheckPoint, int goalRightSideOffsetWithStageWidth) {
 
         this.levelDrawableCollection = new LevelDrawableCollection();
 
@@ -39,7 +39,7 @@ public abstract class ALevel implements IDrawable, IKeyControllable {
 
         this.isHandlingLevelComplete = false;
 
-        if (isActive) {
+        if (initAsActive) {
             this.setUpActivateLevel();
             this.setUpActivateWallsGoal(goalRightSideOffsetWithStageWidth);
         }

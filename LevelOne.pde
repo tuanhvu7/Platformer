@@ -11,8 +11,8 @@ public class LevelOne extends ALevel {
     /**
      * sets properties, boundaries, and characters of this
      */
-    public LevelOne(boolean isActive, boolean loadPlayerFromCheckPoint) {
-        super(isActive, loadPlayerFromCheckPoint, Constants.BIG_ENEMY_DIAMETER + 200);
+    public LevelOne(boolean initAsActive, boolean loadPlayerFromCheckPoint) {
+        super(initAsActive, loadPlayerFromCheckPoint, Constants.BIG_ENEMY_DIAMETER + 200);
     }
 
     /**

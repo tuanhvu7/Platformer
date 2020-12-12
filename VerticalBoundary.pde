@@ -7,9 +7,9 @@ public class VerticalBoundary extends ABoundary {
      * sets this to affect all characters and be visible
      */
     public VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                            boolean isActive) {
+                            boolean initAsActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-            true, true, true, isActive);
+            true, true, true, initAsActive);
     }
 
     /**
@@ -17,9 +17,9 @@ public class VerticalBoundary extends ABoundary {
      * sets this to affect all characters
      */
     public VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                            boolean isVisible, boolean isActive) {
+                            boolean isVisible, boolean initAsActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-            isVisible, true, true, isActive);
+            isVisible, true, true, initAsActive);
     }
 
     /**
@@ -27,9 +27,9 @@ public class VerticalBoundary extends ABoundary {
      */
     public VerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
                             boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                            boolean isActive) {
+                            boolean initAsActive) {
         super(startXPoint, startYPoint, 0, y2Offset, boundaryLineThickness,
-            isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
+            isVisible, doesAffectPlayer, doesAffectNonPlayers, initAsActive);
     }
 
     /**

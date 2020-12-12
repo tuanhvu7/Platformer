@@ -8,8 +8,8 @@ public class HealthItem extends ACollectable {
      */
     public HealthItem(int healthChangeAmount,
                       int leftX, int topY, int width, int height,
-                      int blockLineThickness, boolean isActive) {
-        super(leftX, topY, width, height, blockLineThickness, isActive);
+                      int blockLineThickness, boolean initAsActive) {
+        super(leftX, topY, width, height, blockLineThickness, initAsActive);
         this.healthChangeAmount = healthChangeAmount;
         this.fillColor = Constants.HEALTH_ITEM_COLOR;
     }

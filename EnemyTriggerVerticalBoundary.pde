@@ -10,9 +10,9 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
      * only one enemy to trigger
      */
     public EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                                        boolean isActive, Enemy enemy) {
+                                        boolean initAsActive, Enemy enemy) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
-            false, isActive);
+            false, initAsActive);
         Set<Enemy> set = Collections.newSetFromMap(new ConcurrentHashMap<Enemy, Boolean>());
         set.add(enemy);
         this.enemiesToAddSet = set;
@@ -23,9 +23,9 @@ public class EnemyTriggerVerticalBoundary extends VerticalBoundary {
      * set of enemies to trigger
      */
     public EnemyTriggerVerticalBoundary(int startXPoint, int startYPoint, int y2Offset, int boundaryLineThickness,
-                                        boolean isActive, Set<Enemy> enemySet) {
+                                        boolean initAsActive, Set<Enemy> enemySet) {
         super(startXPoint, startYPoint, y2Offset, boundaryLineThickness,
-            false, isActive);
+            false, initAsActive);
         this.enemiesToAddSet = enemySet;
     }
 

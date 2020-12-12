@@ -18,14 +18,14 @@ public abstract class ACharacter implements IDrawable {
     /**
      * set properties of this
      */
-    ACharacter(int x, int y, int diameter, boolean isActive) {
+    ACharacter(int x, int y, int diameter, boolean initAsActive) {
         this.pos = new PVector(x, y);
         this.vel = new PVector();
         this.diameter = diameter;
 
         this.numberOfFloorBoundaryContacts = 0;
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }

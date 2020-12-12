@@ -22,8 +22,8 @@ public class FlyingEnemy extends Enemy {
     public FlyingEnemy(int x, int y, int diameter,
                        float horizontalVel, float verticalVel,
                        boolean isAffectedByHorizontalBoundaries, boolean isAffectedByVerticalBoundaries,
-                       boolean isInvulnerable, boolean isVisible, boolean isActive) {
-        super(x, y, diameter, horizontalVel, isInvulnerable, isVisible, isActive);
+                       boolean isInvulnerable, boolean isVisible, boolean initAsActive) {
+        super(x, y, diameter, horizontalVel, isInvulnerable, isVisible, initAsActive);
 
         this.fillColor = Constants.ENEMY_COLOR;
 
@@ -47,8 +47,8 @@ public class FlyingEnemy extends Enemy {
                        float horizontalVel, float verticalVel,
                        int topYLimit, int bottomYLimit,
                        boolean isAffectedByHorizontalBoundaries, boolean isAffectedByVerticalBoundaries,
-                       boolean isInvulnerable, boolean isVisible, boolean isActive) {
-        super(x, y, diameter, horizontalVel, isInvulnerable, isVisible, isActive);
+                       boolean isInvulnerable, boolean isVisible, boolean initAsActive) {
+        super(x, y, diameter, horizontalVel, isInvulnerable, isVisible, initAsActive);
 
         this.fillColor = Constants.ENEMY_COLOR;
 

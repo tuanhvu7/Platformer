@@ -3,8 +3,8 @@ public class LevelThree extends ALevel {
     /**
      * sets properties, boundaries, and characters of this
      */
-    public LevelThree(boolean isActive, boolean loadPlayerFromCheckPoint) {
-        super(isActive, loadPlayerFromCheckPoint, 200);
+    public LevelThree(boolean initAsActive, boolean loadPlayerFromCheckPoint) {
+        super(initAsActive, loadPlayerFromCheckPoint, 200);
     }
 
     @Override

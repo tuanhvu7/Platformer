@@ -7,8 +7,8 @@ public class Checkpoint extends ACollectable {
      * set properties of this;
      * sets this to affect all characters and be visible
      */
-    public Checkpoint(int leftX, int topY, int width, int height, int blockLineThickness, boolean isActive) {
-        super(leftX, topY, width, height, blockLineThickness, isActive);
+    public Checkpoint(int leftX, int topY, int width, int height, int blockLineThickness, boolean initAsActive) {
+        super(leftX, topY, width, height, blockLineThickness, initAsActive);
         this.fillColor = Constants.CHECKPOINT_COLOR;
     }
 

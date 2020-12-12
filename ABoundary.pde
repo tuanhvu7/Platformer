@@ -33,7 +33,7 @@ public abstract class ABoundary implements IDrawable {
      */
     ABoundary(int x1Point, int y1Point, int x2Offset, int y2Offset, int boundaryLineThickness,
               boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-              boolean isActive) {
+              boolean initAsActive) {
 
         // set start points to be smaller of given values
         this.startPoint = new PVector(
@@ -53,7 +53,7 @@ public abstract class ABoundary implements IDrawable {
 
         this.charactersTouchingThis = Collections.newSetFromMap(new ConcurrentHashMap<ACharacter, Boolean>());
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }

@@ -18,7 +18,7 @@ public abstract class ACollectable implements IDrawable {
      * sets this to affect all characters and be visible
      */
     ACollectable(int leftX, int topY, int width, int height,
-                 int blockLineThickness, boolean isActive) {
+                 int blockLineThickness, boolean initAsActive) {
 
         this.leftX = leftX;
         this.topY = topY;
@@ -27,7 +27,7 @@ public abstract class ACollectable implements IDrawable {
 
         this.blockLineThickness = blockLineThickness;
 
-        if (isActive) {
+        if (initAsActive) {
             this.makeActive();
         }
     }

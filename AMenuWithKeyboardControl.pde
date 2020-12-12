@@ -2,16 +2,16 @@
  * common for menus with keyboard controls
  */
 public abstract class AMenuWithKeyboardControl extends AMenu implements IKeyControllable {
-    AMenuWithKeyboardControl(boolean isActive) {
-        super(isActive);
+    AMenuWithKeyboardControl(boolean initAsActive) {
+        super(initAsActive);
     }
 
     /**
      * set properties of this;
      * sets this to have given offset
      */
-    AMenuWithKeyboardControl(int horizontalOffset, boolean isActive) {
-        super(horizontalOffset, isActive);
+    AMenuWithKeyboardControl(int horizontalOffset, boolean initAsActive) {
+        super(horizontalOffset, initAsActive);
     }
 
     /**

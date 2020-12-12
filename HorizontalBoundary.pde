@@ -11,9 +11,9 @@ public class HorizontalBoundary extends ABoundary {
      * sets this to affect all characters and be visible
      */
     public HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
-                              boolean isFloorBoundary, boolean isActive) {
+                              boolean isFloorBoundary, boolean initAsActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
-            true, true, true, isActive);
+            true, true, true, initAsActive);
 
         this.isFloorBoundary = isFloorBoundary;
     }
@@ -24,9 +24,9 @@ public class HorizontalBoundary extends ABoundary {
      */
     public HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                               boolean isVisible, boolean isFloorBoundary,
-                              boolean isActive) {
+                              boolean initAsActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
-            isVisible, true, true, isActive);
+            isVisible, true, true, initAsActive);
 
         this.isFloorBoundary = isFloorBoundary;
     }
@@ -36,9 +36,9 @@ public class HorizontalBoundary extends ABoundary {
      */
     public HorizontalBoundary(int startXPoint, int startYPoint, int x2Offset, int boundaryLineThickness,
                               boolean isVisible, boolean doesAffectPlayer, boolean doesAffectNonPlayers,
-                              boolean isFloorBoundary, boolean isActive) {
+                              boolean isFloorBoundary, boolean initAsActive) {
         super(startXPoint, startYPoint, x2Offset, 0, boundaryLineThickness,
-            isVisible, doesAffectPlayer, doesAffectNonPlayers, isActive);
+            isVisible, doesAffectPlayer, doesAffectNonPlayers, initAsActive);
 
         this.isFloorBoundary = isFloorBoundary;
     }

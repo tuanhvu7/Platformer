@@ -6,8 +6,8 @@ public class PauseMenu extends AMenu {
     /**
      * set properties of this
      */
-    public PauseMenu(int horizontalOffset, boolean isActive) {
-        super(horizontalOffset, isActive);
+    public PauseMenu(int horizontalOffset, boolean initAsActive) {
+        super(horizontalOffset, initAsActive);
     }
 
     /**
